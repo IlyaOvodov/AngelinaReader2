@@ -2,5 +2,10 @@
     "4f123d98d18c4e458e3248ea13f3a9ca": {
         "email": "b@ovdv.ru",
         "name": "Илья Оводов"
+    },
+    "52569b4f70e740a5a9cc7c3b0419cb84": {
+        "email": "il@ovdv.ru",
+        "name": "Илья Оводов 2",
+        "password_hash": "123123"
     }
 }

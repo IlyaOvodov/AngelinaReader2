@@ -52,7 +52,7 @@ def upload_photo():
         has_public_confirm = request.form.get('has_public_confirm')
         if file != "" and lang != "" and find_orientation != "" and process_2_sides != "" and has_public_confirm != "" :
             userID = None
-            if session.get('user_id') is None:
+            if session.get('user_id') is not None:
                 userID = session['user_id']
 
             login = AngelinaSolver()
@@ -158,7 +158,7 @@ def registration():
 
             product_list = AngelinaSolver()
             items_id = product_list.find_users_by_email(email)
-            if items_id == False:
+            if not items_id:
                 user = product_list.register_user(name,email,password,network_name,network_id)
                 session['user_id'] = user.id
                 session['user_name'] = user.name
@@ -233,7 +233,7 @@ def result_list():
 
 
     product_list = AngelinaSolver()
-    my_list_item = product_list.get_tasks_list(id, count)
+    my_list_item = product_list.get_tasks_list(id, 2)
     return render_template('result_list.html',item_list=my_list_item, language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
 
@@ -268,7 +268,7 @@ def index():
     return render_template('base.html',my_list_item=items_id,   language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
 
-@app.route("/result/<int:item_id>/")
+@app.route("/result/<string:item_id>/")
 def result(item_id):
     #Вывод стр результата распознавания
     status, id, user_name = user_data()
@@ -330,7 +330,6 @@ def showItem(slug):
 
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
-    db = get_db()
 
 
     help_item = AngelinaSolver()
