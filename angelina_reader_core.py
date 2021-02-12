@@ -8,6 +8,7 @@ from datetime import datetime
 import json
 import os
 import time
+import timeit
 import uuid
 
 class User:
@@ -171,13 +172,20 @@ class AngelinaSolver:
     help_articles = ["test_about", "test_photo"]
     help_contents = {
         "RU": {
-            "test_about": {"title": "О программе", "announce": "Это очень крутая программа! Не пожалеете! Просто нажмите кнопку"},
-            "test_photo": {"title": "Как сделать фото", "announce": "Чтобы сделать фото нужен фотоаппарат"}
+            "test_about": {"title": "О программе",
+                           "announce": "Это очень крутая программа! Не пожалеете! Просто нажмите кнопку",
+                           "text": ""},
+            "test_photo": {"title": "Как сделать фото",
+                           "announce": "Чтобы сделать фото нужен фотоаппарат",
+                           "text": ""}
         },
         "EN": {
-            "test_about": {"title": "О программе",
-                           "announce": "Это очень крутая программа! Не пожалеете! Просто нажмите кнопку"},
-            "test_photo": {"title": "Как сделать фото", "announce": "Чтобы сделать фото нужен фотоаппарат"}
+            "test_about": {"title": "About",
+                           "announce": "Это очень крутая программа! Не пожалеете! Просто нажмите кнопку",
+                           "text": ""},
+            "test_photo": {"title": "How to make photo",
+                           "announce": "Чтобы сделать фото нужен фотоаппарат",
+                           "text": ""}
         }
     }
 
@@ -186,17 +194,19 @@ class AngelinaSolver:
         Возвращаем список материалов для страницы help. Поскольку создавать html файл для каждой информационной статьи
         не самая лучшая идея, это лучше делать через вывод материалов из БД
         """
-        return [{"title": self.help_contents[target_language]["title"], "announce"  for slug in self.help_articles]
-            {"title": "О программе", "announce": "Это очень крутая программа! Не пожалеете! Просто нажмите кнопку",
-             "slug": "test_about"},
-            {"title": "Как сделать фото", "announce": "Чтобы сделать фото нужен фотоаппарат", "slug": "test_photo"},
-        ]
+        return [{tag: self.help_contents[target_language][slug][tag] for tag in ["title", "announce"]} + {"slug": slug}
+                for slug in self.help_articles]
+        # [
+        #     {"title": "О программе", "announce": "Это очень крутая программа! Не пожалеете! Просто нажмите кнопку", "slug": "test_about"},
+        #     {"title": "Как сделать фото", "announce": "Чтобы сделать фото нужен фотоаппарат", "slug": "test_photo"},
+        # ]
 
     def help_item(self, target_language, slug):
         """
         Возвращаем материал для странии help.
         """
-        return {"title":"name","text":"def_text"}
+        return self.help_contents[target_language][slug]
+        # {"title":"name","text":"def_text"}
 
 
     #Работа с записями пользователей: создание (регистрация), обработка логина:
@@ -230,10 +240,11 @@ class AngelinaSolver:
     #GVNC
     TMP_RESULT_SELECTOR = 1
     TMP_RESILTS = ['IMG_20210104_093412', 'IMG_20210104_093217']
-    PREFIX = "" #"static/data/results/"
+    PREFIX = "/static/data/results/"
+    TMP_TASK_POST_TIMES = {}
 
     # собственно распознавание
-    def process(self, user, img_paths, lang, find_orientation, process_2_sides, has_public_confirm, timeout):
+    def process(self, user, img_paths, lang, find_orientation, process_2_sides, has_public_confirm, timeout=0):
         """
         user: User class object or None для анонимного доступа
         img_paths: полный пусть к загруженному изображению, pdf или zip или список (list) полных путей к изображению
@@ -244,21 +255,23 @@ class AngelinaSolver:
         timeout: время ожидания результата. Если None или < 0 - жадть пока не будет завершена. 0 поставить в очередь и не ждать.
         
         Ставит задачу в очередь на распознавание и ждет ее завершения в пределах timeout.
-        Возвращает пару task_id (id задачи), завершена ли
+        После успешной загрузки возвращаем id материалов в системе распознавания или False если в процессе обработки 
+        запроса возникла ошибка. Далее по данному id мы переходим на страницу просмотра результатов данного распознавнаия
         """
         if timeout and timeout > 0:
             time.sleep(timeout)
 
         AngelinaSolver.TMP_RESULT_SELECTOR = 1 - AngelinaSolver.TMP_RESULT_SELECTOR
-        return AngelinaSolver.TMP_RESILTS[AngelinaSolver.TMP_RESULT_SELECTOR], True
+        TMP_TASK_POST_TIMES[AngelinaSolver.TMP_RESILTS[AngelinaSolver.TMP_RESULT_SELECTOR]] = timeit.default_timer()
+        return AngelinaSolver.TMP_RESILTS[AngelinaSolver.TMP_RESULT_SELECTOR]
         
     def is_completed(self, task_id):
         """
         Проверяет, завершена ли задача с заданным id
         """
         assert task_id in AngelinaSolver.TMP_RESILTS
-        return True
-        
+        return timeit.default_timer() - TMP_TASK_POST_TIMES[AngelinaSolver.TMP_RESILTS[AngelinaSolver.TMP_RESULT_SELECTOR]] > 2
+
     def get_results(self, task_id):
         """
         Возвращает результаты распознавания по задаче task_id.
@@ -269,27 +282,34 @@ class AngelinaSolver:
         params - полный путь к файлу с сохраненным словарем параметров распознавания
         """
         prefix = AngelinaSolver.PREFIX
-        return [(prefix + task_id + ".marked.jpg", prefix + task_id + ".marked.txt", prefix + task_id + ".marked.brl",),], prefix + task_id + ".protocol.txt"
-        
-    def get_tasks_list(self, user):
+        return {"name":"test_itemName","create_date":"20200104 200001","item_data":
+        [
+        (prefix + task_id + ".marked.jpg", prefix[1:] + task_id + ".marked.txt", prefix[1:] + task_id + ".marked.brl",),
+        (prefix + task_id + ".marked.jpg", prefix[1:] + task_id + ".marked.txt", prefix[1:] + task_id + ".marked.brl",),
+        ],
+        "protocol": prefix + task_id + ".protocol.txt"}
+
+    def get_tasks_list(self, user_id, count):
         """
+        count - кол-во запиисей
         Возвращает список task_id задач для данного юзера, отсортированный от старых к новым
         """
-        return AngelinaSolver.TMP_RESILTS
-        
-    def get_task_breif(self, task_id):
-        """
-        Возвращает краткую информацию для заданнонй задачи для отображения в истории:
-        время, имя, маленькую картинку, первые 3 строки текста, признак публичной доступности, признак, что задача завершена.
-        TOFO открытый вопрос: 1) в каком формате время, 2) как возвращать картиннку (имя файла или битмап).
-        """
+        lst = [
+            "id":task,
+            "date":"20200104 200001",  #datetime.fromisoformat('2011-11-04T00:05:23')
+            "name":task + ".jpg",
+            "img_url":"/static/data/results/pic.jpg",  # PIL.Image.Open("web_app/static/data/results/pic.jpg")
+            "desc":"буря\nмглою\nнебо",
+            "public": i%2 ==0,
+            "sost": self.is_completed(task)
+            for i, task in enumerate(TMP_RESILTS)
+        ]*10
 
-        return (datetime.fromisoformat('2011-11-04T00:05:23'),
-                task_id + ".jpg",
-                PIL.Image.Open("web_app/static/data/results/pic.jpg"),
-                "буря\nмглою\nнебо",
-                True,
-                True)
+        if count:
+            lst = lst[:count]
+        return lst
+
+
 
     CONTENT_IMAGE = 1
     CONTENT_TEXT = 2
@@ -297,23 +317,6 @@ class AngelinaSolver:
     CONTENT_ALL = CONTENT_IMAGE | CONTENT_TEXT | CONTENT_BRAILLE
 
     # отправка почты
-    def send_results_to_mail(self, results_list, to_email, send_to_developers=False, title="", comment="", content_options=CONTENT_ALL):
-        """
-        Отправляет результаты на to_email и/или разработчикам. Что-то одно - обязательно.
-        results_list - список результатов такой же, как возвращает get_results(...)
-        to_email - адрес или список адресов
-        title - заголовок
-        comment - комментарий, ставится в начале письма
-        content_options - опции, что выводить: картинку, тектс, текст на брайле или их комбинация (добавить enum  битовой маской)
-        """
-        raise NotImplementedError
-        pass
-    
-    
-    
-        
-        
-    
+    def send_results_to_mail(self, mail,item_id):
 
-        
-    
+        return True
