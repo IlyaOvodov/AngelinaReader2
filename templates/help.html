@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block content %}
+
+      <div class="site-content  container ">
+          <main class="site-main ">
+             <h1>{% if language == 'rus' %}Помощь{%else%}Help{%endif%}</h1>
+              <form method="get" class="search">
+                  <input name="s" type="text" value="{{s}}" placeholder="{% if language == 'rus' %}Поиск{%else%}Search{%endif%}">
+                  <input type="submit" value="{% if language == 'rus' %}Поиск{%else%}Search{%endif%}">
+              </form>
+              {% for item in item_list %}
+                <a href="/help/{{item.slug}}/" class="help_item">
+                  <div >
+                      <div class="item_title">{{item.title}}</div>
+                      <div class="item_text">{{item.announce}}</div>
+                  </div>
+                </a>
+              {% endfor %}
+
+          </main>
+    </div> 
+
+
+{% endblock %}

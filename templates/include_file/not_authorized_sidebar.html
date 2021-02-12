@@ -1,0 +1,48 @@
+<aside class="site-sidebar">
+          <div class="curious site-block">
+            <div class="curious__mediabox">
+              <img class="item_rezBlock " style="max-width: 100%; height: auto;" src="/static/images/br_text.jpg" alt="">
+            </div>
+            <div class="curious__body">
+              <div class="curious__inner">
+                <div class="curious__text">
+                  В результате распознавания вы получите:<br><br>
+                  -	изображение с подписанными плоскими буквами<br>
+                  -	текст обычным (плоским) письмом<br>
+                  -	текст на Брайле<br>
+                </div>
+              </div>
+            </div>
+          </div> <!-- eof site-block -->
+
+        {% if language == 'rus' %}
+          <div class="registration site-block">
+            <a data-fancybox href="#regmodal" class="registration__btn btn">РЕГИСТРАЦИЯ</a>
+            <div class="registration__label">Преимущества зарегистрированного
+              пользователя:</div>
+            <ul class="registration-list">
+              <li class="registration-list__item">возможность видеть историю ранее распознанных документов и вернуться к ней</li>
+              <li class="registration-list__item">возможноcть отправить результат по E-Mail</li>
+              <li class="registration-list__item">возможность установить настройки распознавания по умолчанию</li>
+              <li class="registration-list__item">возможность запретить публичный доступ к загрженным изображениям</li>
+            </ul>
+          </div>
+        {% else %}
+          <div class="registration site-block">
+            <a data-fancybox href="#regmodal" class="registration__btn btn">REGISTRATION</a>
+            <div class="registration__label">Advantages of a registered user:</div>
+            <ul class="registration-list">
+              <li class="registration-list__item">ability to see the history of previously recognized documents and return to it</li>
+              <li class="registration-list__item">the ability to send the result by E-Mail</li>
+              <li class="registration-list__item">ability to set default options for speech recognition</li>
+              <li class="registration-list__item">the ability to prohibit the public availability of recognized materials</li>
+            </ul>
+          </div>
+        {% endif %}
+
+          <div class="photo-card mb-vis">
+            <div class="photo-card__mediabox ">
+              <div class="mediabox"><img src="{{ url_for('static', filename='images/photo.jpg') }}" alt=""></div>
+            </div>
+          </div>
+        </aside><!-- eof site-content -->

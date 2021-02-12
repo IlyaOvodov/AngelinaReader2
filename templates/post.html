@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block content %}
+
+      <div class="site-content container ">
+          <main class="site-main ">
+              <p><a href="/help/" style="color: black;">< {% if language == 'rus' %}Назад{%else%}Back{%endif%}</a></p>
+             <h1>{{itemData.title}}</h1>
+              <div class="post_body">
+                   {{itemData.text|safe}}
+              </div>
+
+          </main>
+    </div> 
+
+
+{% endblock %}
