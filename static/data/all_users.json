@@ -1,4 +1,9 @@
 {
+    "2af31c73a829443a8a2b7ada97a904e1": {
+        "email": "pub@ovdv.ru",
+        "name": "Васисуалий Ипполитович Птибурдуков-Задрищенский",
+        "password_hash": "123123"
+    },
     "4f123d98d18c4e458e3248ea13f3a9ca": {
         "email": "b@ovdv.ru",
         "name": "Илья Оводов"
@@ -7,5 +12,15 @@
         "email": "il@ovdv.ru",
         "name": "Илья Оводов 2",
         "password_hash": "123123"
+    },
+    "567c3aadcaf240f7a4b397c14842ff4c": {
+        "email": "pub2@ovdv.ru",
+        "name": "Илья Оводов",
+        "password_hash": "123123"
+    },
+    "6c5b8b09b56a44538723a73178aa95c6": {
+        "email": "test@gmail.com",
+        "name": "qweqwe выаыва",
+        "password_hash": "qweasdzxc"
     }
 }

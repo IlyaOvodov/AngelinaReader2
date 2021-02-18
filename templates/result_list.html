@@ -30,7 +30,7 @@
                                     {% if item.sost == "false" %}
                                         <div class="documents-card__body">{% if language == 'rus' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
                                     {% else %}
-                                        <div class="documents-card__body">{{item.desc}}...</div>
+                                        <div class="documents-card__body">{{item.desc|safe}}...</div>
                                     {% endif %}
                                 </div>
                             </div>

@@ -24,7 +24,7 @@
     <ul role="menu">
 
         {% if status == "true" %}
-            <li><a href="/doc_list/" role="menuitem">{% if language == 'rus' %}Ваши документы{% else %}Your documents{% endif %}</a></li>
+            <li><a href="/result_list/" role="menuitem">{% if language == 'rus' %}Ваши документы{% else %}Your documents{% endif %}</a></li>
             <li><a href="/help/" role="menuitem">{% if language == 'rus' %}Помощь{% else %}Help{% endif %}</a></li>
             <li><a href="/?exit=true" role="menuitem">{% if language == 'rus' %}Выход{% else %}Exit{% endif %}</a></li>
         {% else %}
@@ -442,7 +442,7 @@ $("#file_id").attr("value","{{item_id}}");
 
     <div class="rg-form__group">
     	<input type="text" name="mail" class="rg-form__inp" required placeholder="mail">
-    	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id">
+    	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
     </div>
     <div class="rg-form__btn-cont">
     	<button type="submit" class="rg-form__button btn">Отправить</button>
@@ -459,7 +459,7 @@ $("#file_id").attr("value","{{item_id}}");
 
     <div class="rg-form__group">
     	<input type="text" name="mail" class="rg-form__inp"  required placeholder="mail">
-    	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id">
+    	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
 
     </div>
     <div class="rg-form__btn-cont">

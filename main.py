@@ -123,15 +123,21 @@ def login():
         if username != "" and password !="":
             login = AngelinaSolver()
             user = login.find_user("","",username)
-            if user.check_password(password) == True:
-                session['user_id'] = user.id
-                session['user_name'] = user.name
-                return redirect("/")
+            if user is not None:
+                if user.check_password(password) == True:
+                    session['user_id'] = user.id
+                    session['user_name'] = user.name
+                    return redirect("/")
+                else:
+                    if session.get('language') == "rus":
+                        msg = "Ошибка ввода пароля"
+                    else:
+                        msg = "Login error"
             else:
                 if session.get('language') == "rus":
-                    msg = "Ошибка ввода пароля"
+                    msg = "Пользователя с данные email не обнаружено"
                 else:
-                    msg = "Login error"
+                    msg = "User with email data not detected"
         else:
             if session.get('language') == "rus":
                 msg = "Ошибка авторизации"
@@ -339,6 +345,6 @@ def showItem(slug):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=80)
+    app.run(host='0.0.0.0')
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
