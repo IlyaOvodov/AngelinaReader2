@@ -303,11 +303,13 @@ def result(item_id):
         next_page = int(page) + 1
 
 
-    file = open(items_id["item_data"][int(page)][1], "r")
+    file = open(items_id["item_data"][int(page)][1], "r", encoding='utf-8')
     file_text = file.read()
+    file_text = "<TT>"+file_text.replace('\r\n','</br>').replace('\n','</br>').replace(' ',' ')+"</TT>"  # простой пробел в неразрывный (&nbsp)
 
-    file = open(items_id["item_data"][int(page)][2], "r")
+    file = open(items_id["item_data"][int(page)][2], "r", encoding='utf-8')
     filt_cod = file.read()
+    filt_cod = filt_cod.replace('\r\n','</br>').replace('\n','</br>').replace(' ','\u2800')  # простой пробел в брайлевский
 
     return render_template('result.html',item_id=item_id,next_page=next_page, prev_page=prev, product_name=items_id["name"], item_data=items_id["item_data"][int(page)][0], item_text=file_text, item_desc=filt_cod, create_date=items_id["create_date"], language=target_language, status=status, id=id, name=user_name)
 
