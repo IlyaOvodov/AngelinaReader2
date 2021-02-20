@@ -171,8 +171,8 @@ class AngelinaSolver:
     help_contents = {
         "rus": {
             "test_about": {"title": "О программе",
-                           "announce": "Это очень крутая программа! <b>Не пожалеете</b>! Просто нажмите кнопку",
-                           "text": "Ну что вам еще надо. <b>Вы не верите</b>?"},
+                           "announce": 'Это очень крутая программа!<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 30px; height: auto "> <b>Не пожалеете</b>! <a href="http://angelina-reader.ru/">angelina-reader</a>.Просто нажмите кнопку',
+                           "text": '"Ну что вам еще надо.<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 300px; height: auto ">  <b>Вы не верите</b>?'},
             "test_photo": {"title": "Как сделать фото",
                            "announce": "Чтобы сделать фото нужен фотоаппарат",
                            "text": "Просто нажмите кнопку!"}
@@ -287,9 +287,13 @@ class AngelinaSolver:
         Возвращает результаты распознавания по задаче task_id.
         Не проверяет, что задача была поставлена этим пользователем. Это ответственность вызывающей стороны.
         
-        Возвращает пару results_list, params.
-        results_list - список (list) результатов по количеству страниц в задании. Каждый элемени списка - tuple из полных путей к файлам с изображением, распознанным текстом, распознанным брайлем
-        params - полный путь к файлу с сохраненным словарем параметров распознавания
+        Возвращает словарь с полями:
+            {"name": str,
+             "create_date": datetime,
+             "protocol": путь к protocol.txt
+			 "item_data": список (list) результатов по количеству страниц в задании. 
+			 Каждый элемени списка - tuple из полных путей к файлам с изображением, распознанным текстом, распознанным брайлем
+            }
         """
         """
         В тестововм варианте по очереди выдается то 1 документ, то 2.
@@ -344,8 +348,16 @@ class AngelinaSolver:
     CONTENT_ALL = CONTENT_IMAGE | CONTENT_TEXT | CONTENT_BRAILLE
 
     # отправка почты
-    def send_results_to_mail(self, mail,item_id, parameters=None):
-
+    def send_results_to_mail(self, mail, item_id, parameters=None):
+        """
+        Отправляет результаты на to_email и/или разработчикам. Что-то одно - обязательно.
+        results_list - список результатов такой же, как возвращает get_results(...)
+        to_email - адрес или список адресов
+        parameters - словарь с параметрами формирования и отправки письма, в т.ч.:
+            title - заголовок
+            comment - комментарий, ставится в начале письма
+        """
+        # raise NotImplementedError
         return True
 
     def get_user_emails(self, user_id):
