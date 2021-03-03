@@ -3,9 +3,9 @@
 
       <div class="site-content  container ">
           <main class="site-main ">
-             <h1>{% if language == 'rus' %}Помощь{%else%}Help{%endif%}</h1>
+             <h1>{% if language == 'RU' %}Помощь{%else%}Help{%endif%}</h1>
               <form method="get" class="search">
-                  <input name="s" type="text" value="{{s}}" placeholder="{% if language == 'rus' %}Поиск{%else%}Search{%endif%}">
+                  <input name="s" type="text" value="{{s}}" placeholder="{% if language == 'RU' %}Поиск{%else%}Search{%endif%}">
                   <input type="submit" value=" " >
               </form>
               {% for item in item_list %}

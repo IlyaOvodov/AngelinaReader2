@@ -1,6 +1,6 @@
 
         <aside class="site-sidebar">
-          <h3>{% if language == 'rus' %}Ваши документы{% else %}Your documents{% endif %}</h3>
+          <h3>{% if language == 'RU' %}Ваши документы{% else %}Your documents{% endif %}</h3>
           <div class="site-block documents">
             <div class="documents-list">
 
@@ -17,8 +17,8 @@
                         <div class="documents-card__mediabox mediabox">
                           <img src="{{item.img_url}}" alt="">
                         </div>
-                        {% if item.sost == "false" %}
-                            <div class="documents-card__body">{% if language == 'rus' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
+                        {% if item.sost == False %}
+                            <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
                         {% else %}
                             <div class="documents-card__body">{{item.desc}}...</div>
                         {% endif %}

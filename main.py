@@ -23,7 +23,7 @@ def switch_language(switch_data):
     #Получаем выбранный язык из url и сохраняем его в session чтобы пользователю не приходилось выбирать его повторно
     if switch_data is None:
         if session.get('language') is None:
-            session['language'] = "rus"
+            session['language'] = "RU"
             target_language = session.get('language')
         else:
             target_language = session.get('language')
@@ -36,41 +36,52 @@ def switch_language(switch_data):
 
 def user_data():
     if session.get('user_id') is None:
-        return ("false","false","false")
+        return (False,None,None)
     else:
-        return ("true",session['user_id'],session['user_name'])
+        return (True,session['user_id'],session['user_name'])
         #Возвращаем данные пользователя (Состояние авторизации, ID, имя)
 
+
+
+@app.route("/pass_to_mail/", methods=['POST'])
+def pass_to_mail():
+    if request.method == 'POST':
+        mail = request.form.get('pass')
+#Вызываем функцию поиска пользователя по email и далее отправляем новый пароль по email. в msg отправляем сообщение, что все ок или выводим ошибку, что пользователя с таким email нет
+    msg = ""
+    return redirect(f"/?answer={msg}")
 
 @app.route("/upload_photo/", methods=['POST'])
 def upload_photo():
     if request.method == 'POST':
-        file = request.form.get('file')
+        file = request.files
         lang = request.form.get('lang')
         find_orientation = request.form.get('find_orientation')
         process_2_sides = request.form.get('process_2_sides')
         has_public_confirm = request.form.get('has_public_confirm')
-        if file != "" and lang != "" and find_orientation != "" and process_2_sides != "" and has_public_confirm != "" :
+        if file != "" and lang != "" and find_orientation != "" and process_2_sides != "" and has_public_confirm != "":
             userID = None
             if session.get('user_id') is not None:
                 userID = session['user_id']
 
+            #print(file)
             login = AngelinaSolver()
             user = login.process(userID, file, lang, find_orientation, process_2_sides, has_public_confirm)
+            print()
             if user == False:
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Ошибка загрузки фото"
                 else:
                     msg = "Login error"
             else:
                 return redirect(f"/result/{user}/")
         else:
-            if session.get('language') == "rus":
+            if session.get('language') == "RU":
                 msg = "Ошибка загрузки фото"
             else:
                 msg = "Login error"
     else:
-        if session.get('language') == "rus":
+        if session.get('language') == "RU":
             msg = "Ошибка загрузки фото"
         else:
             msg = "Login error"
@@ -85,25 +96,25 @@ def new_pass():
         new_password = request.form.get('new_pass')
         if new_password != "" and password !="":
             login = AngelinaSolver()
-            user = login.find_user("","",username)
+            user = login.find_user("","",id)
             if user.check_password(password) == True:
                 user.set_password(new_password)
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Пароль обновлен"
                 else:
                     msg = "Password updated"
             else:
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Ошибка ввода пароля"
                 else:
                     msg = "Error"
         else:
-            if session.get('language') == "rus":
+            if session.get('language') == "RU":
                 msg = "Ошибка смены пароля"
             else:
                 msg = "Error"
     else:
-        if session.get('language') == "rus":
+        if session.get('language') == "RU":
             msg = "Ошибка смены пароля"
         else:
             msg = "Error"
@@ -129,22 +140,22 @@ def login():
                     session['user_name'] = user.name
                     return redirect("/")
                 else:
-                    if session.get('language') == "rus":
+                    if session.get('language') == "RU":
                         msg = "Ошибка ввода пароля"
                     else:
                         msg = "Login error"
             else:
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Пользователя с данные email не обнаружено"
                 else:
                     msg = "User with email data not detected"
         else:
-            if session.get('language') == "rus":
+            if session.get('language') == "RU":
                 msg = "Ошибка авторизации"
             else:
                 msg = "Login error"
     else:
-        if session.get('language') == "rus":
+        if session.get('language') == "RU":
             msg = "Ошибка авторизации"
         else:
             msg = "Login error"
@@ -168,19 +179,20 @@ def registration():
                 user = product_list.register_user(name,email,password,network_name,network_id)
                 session['user_id'] = user.id
                 session['user_name'] = user.name
+                session['user_mail'] = user.email
                 return redirect("/")
             else:
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Пользователь с таким email уже существует"
                 else:
                     msg = "A user with this email already exists"
         else:
-            if session.get('language') == "rus":
+            if session.get('language') == "RU":
                 msg = "Ошибка регистрации"
             else:
                 msg = "Login error"
     else:
-        if session.get('language') == "rus":
+        if session.get('language') == "RU":
             msg = "Ошибка регистрации"
         else:
             msg = "Login error"
@@ -194,23 +206,53 @@ def send_data():
         mail = request.form.get('mail')  # запрос к данным формы
         item_id = request.form.get('item_id')
 
+
+        image = request.form.get('image')
+        if image == 'on':
+            image = True
+        else:
+            image = False
+
+        text = request.form.get('text')
+        if text == 'on':
+            text = True
+        else:
+            text = False
+
+        braille = request.form.get('braille')
+        if braille == 'on':
+            braille = True
+        else:
+            braille = False
+
+        razRab = request.form.get('razRab')
+        if razRab == 'on':
+            razRab = True
+        else:
+            razRab = False
+
+        koment = request.form.get('koment')
+
         if mail != "" and item_id !="":
             mail = mail
             item_id = item_id
             product_list = AngelinaSolver()
-            items_id = product_list.send_results_to_mail(mail,item_id)
+
+            dop_data = {'image': image,'text': text,'braille': braille,'razRab': razRab,'koment': koment}
+            #print(dop_data)
+            items_id = product_list.send_results_to_mail(mail,item_id, dop_data)
             if items_id == True:
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Данные отправлены"
                 else:
                     msg = "Data sent"
             else:
-                if session.get('language') == "rus":
+                if session.get('language') == "RU":
                     msg = "Ошибка отправки"
                 else:
                     msg = "Login error"
         else:
-            if session.get('language') == "rus":
+            if session.get('language') == "RU":
                 msg = "Ошибка отправки"
             else:
                 msg = "Login error"
@@ -228,8 +270,8 @@ def result_list():
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
-    if(status == "false"):
-        if session.get('language') == "rus":
+    if(status == False):
+        if session.get('language') == "RU":
             msg = "Ошибка авторизации"
         else:
             msg = "Login error"
@@ -239,7 +281,7 @@ def result_list():
 
 
     product_list = AngelinaSolver()
-    my_list_item = product_list.get_tasks_list(id, 2)
+    my_list_item = product_list.get_tasks_list(id, 0)
     return render_template('result_list.html',item_list=my_list_item, language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
 
@@ -267,7 +309,7 @@ def index():
         del session['user_name']
         return redirect("/")
 
-    count = 0
+    count = 5
     product_list = AngelinaSolver()
     items_id = product_list.get_tasks_list(id, count)
 
@@ -283,36 +325,37 @@ def result(item_id):
     target_language = switch_language(get_language)
 
     product_list = AngelinaSolver()
-    items_id = product_list.get_results(item_id)
 
+    is_completed_test = product_list.is_completed(item_id)
 
-    page = request.args.get('page')
-    countitem = len(items_id["item_data"])
-    countitem -= 1
-    prev = countitem
-    next_page = 0
+    if is_completed_test is not False:
 
-    if page is None or page=="none":
-        prev = 0
-        page = 0
-        next_page = 0
+        items_id = product_list.get_results(item_id)
 
-    if int(page) >= 1:
-        prev = int(page) - 1
-    if int(page) < countitem:
-        next_page = int(page) + 1
+        decode_dict = []
+        for item in items_id['item_data']:
 
+            user_mails =  product_list.get_user_emails(id)
 
-    file = open(items_id["item_data"][int(page)][1], "r", encoding='utf-8')
-    file_text = file.read()
-    file_text = "<TT>"+file_text.replace('\r\n','</br>').replace('\n','</br>').replace(' ',' ')+"</TT>"  # простой пробел в неразрывный (&nbsp)
+            file = open(item[1], "r", encoding='utf-8')
+            file_text = file.read()
+            file_text = "<TT>" + file_text.replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
 
-    file = open(items_id["item_data"][int(page)][2], "r", encoding='utf-8')
-    filt_cod = file.read()
-    filt_cod = filt_cod.replace('\r\n','</br>').replace('\n','</br>').replace(' ','\u2800')  # простой пробел в брайлевский
+            file = open(item[2], "r", encoding='utf-8')
+            file_text_br = file.read()
+            file_text_br = "<TT>" + file_text_br.replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
 
-    return render_template('result.html',item_id=item_id,next_page=next_page, prev_page=prev, product_name=items_id["name"], item_data=items_id["item_data"][int(page)][0], item_text=file_text, item_desc=filt_cod, create_date=items_id["create_date"], language=target_language, status=status, id=id, name=user_name)
+            decode_dict.append([item[0],file_text,file_text_br])
 
+        if session.get('user_mail') is not None:
+            user_mail = session['user_mail']
+        else:
+            user_mail = ""
+
+        #, product_name = items_id["name"], item_data = items_id["item_data"][int(page)][0], item_text = file_text, item_desc = filt_cod, create_date = \items_id["create_date"]
+        return render_template('result.html',user_mails=user_mails, user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
+    else:
+        return render_template('result.html',completed=False,  language=target_language, status=status, id=id, name=user_name)
 
 @app.route("/help/")
 def help():

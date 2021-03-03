@@ -169,7 +169,7 @@ class AngelinaSolver:
 
     help_articles = ["test_about", "test_photo"]
     help_contents = {
-        "rus": {
+        "RU": {
             "test_about": {"title": "О программе",
                            "announce": 'Это очень крутая программа!<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 30px; height: auto "> <b>Не пожалеете</b>! <a href="http://angelina-reader.ru/">angelina-reader</a>.Просто нажмите кнопку',
                            "text": '"Ну что вам еще надо.<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 300px; height: auto ">  <b>Вы не верите</b>?'},
@@ -177,7 +177,7 @@ class AngelinaSolver:
                            "announce": "Чтобы сделать фото нужен фотоаппарат",
                            "text": "Просто нажмите кнопку!"}
         },
-        "eng": {
+        "EN": {
             "test_about": {"title": "About",
                            "announce": "It a stunning program! <b>Dont miss it</b>! Just press the button",
                            "text": "Why don't you believe! What do you need <b>more</b>!"},
@@ -299,7 +299,10 @@ class AngelinaSolver:
         В тестововм варианте по очереди выдается то 1 документ, то 2.
         """
         prefix = AngelinaSolver.PREFIX
-        return {"name":task_id,
+        return {
+                "prev_slag":"text",
+                "next_slag":None,
+                "name":task_id,
                 "create_date": datetime.strptime('2011-11-04 00:05:23', "%Y-%m-%d %H:%M:%S"), #"20200104 200001",
                 "item_data":
         [
@@ -319,7 +322,7 @@ class AngelinaSolver:
         более реалистично: пример выдается как не готовый 2 сек после запуска распознавания
         Публичный -приватный - через одного
         """
-        if not user_id or user_id == "false":
+        if not user_id:
             return []
 
         lst = [
@@ -366,6 +369,6 @@ class AngelinaSolver:
         :param user_id: string
         :return: list of e-mails
         """
-        if not user_id or user_id == "false":
+        if not user_id:
             return []
         return ["angelina-reader@ovdv.ru", "il@ovdv.ru", "iovodov@gmail.com"]

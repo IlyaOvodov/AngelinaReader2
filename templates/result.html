@@ -1,85 +1,95 @@
 {% extends 'base.html' %}
 {% block content %}
 
-
-          {% if false==false  %}
-
-              <div class="top-panel">
-                <div class="container ">
-                  {% if language == 'rus' %}
-                  <p>Отправить результат себе и/или сообщить разработчикам об ошибках распознавания, чтобы программа стала лучше.</p>
-                  {% else %}
-                  <p>Send the result to yourself and / or report recognition errors to the developers to make the program better.</p>
-                  {% endif %}
-                  <div class="top-panel__cont">
+{% if completed != False %}
+    {% if false==false  %}
+        <div class="top-panel">
+            <div class="container">
+                {% if language == 'RU' %}
+                    <p>Отправить результат себе и/или сообщить разработчикам об ошибках распознавания, чтобы программа стала лучше.</p>
+                {% else %}
+                    <p>Send the result to yourself and / or report recognition errors to the developers to make the program better.</p>
+                {% endif %}
+                <div class="top-panel__cont">
                     <div class="top-panel__col">
-                      <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'rus' %}Отправить На E-mail{% else %}Send To E-mail{% endif %}</a>
+                        <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'RU' %}Отправить На E-mail{% else %}Send To E-mail{% endif %}</a>
                     </div>
                     <div class="top-panel__col">
-                      <div class="image-nav">
-                                <a href="?page={{prev_page}}">
-                                  <div class="image-nav__btn image-nav__btn_prev"></div>
+                        <div class="image-nav">
+                            {% if prev_slag != None %}
+                                <a href="/result/{{prev_slag}}/">
+                                    <div class="image-nav__btn image-nav__btn_prev"></div>
                                 </a>
-                        <div class="image-nav__info">
-                          <span class="image-nav__date">{{product_name}}</span>
-                          <span class="image-nav__img">{{create_date}}</span>
-                        </div>
-                                <a href="?page={{next_page}}">
-                                  <div class="image-nav__btn image-nav__btn_next"></div>
+                            {% else %}
+                                <a href="/result/{{prev_slag}}/">
+                                    <div class="image-nav__btn image-nav__btn_prev" style="background: #bfcdd5;"></div>
                                 </a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="site-content site-content_result container ">
-                <div class="site-content__col">
-                  <div class="site-block result-mediabox">
-                    <img  class="item_rezBlock" src="{{item_data}}" alt="">
-                  </div>
-                </div>
-                <div class="site-content__col ">
-                  <div class="site-block reads">
-                    <div class="read-card">
-                      <div class="read-card__inner">
-                        <div class="read-card__text">
-                            {{item_text|safe}}
+                            {% endif %}
+                            <div class="image-nav__info">
+                                <span class="image-nav__date">{{item_name}}</span>
+                                <span class="image-nav__img">{{item_date}}</span>
+                            </div>
+                            {% if next_slag != None %}
+                                <a href="/result/{{next_slag}}/">
+                                    <div class="image-nav__btn image-nav__btn_next"></div>
+                                </a>
+                            {% else %}
+                                <a href="#">
+                                    <div class="image-nav__btn image-nav__btn_next" style="background: #bfcdd5;"></div>
+                                </a>
+                            {% endif %}
                         </div>
-                      </div>
                     </div>
-                    <div class="read-card">
-                      <div class="read-card__inner">
-                        <div class="read-card__text">
-                            {{item_desc|safe}}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
                 </div>
-              </div>
-              <div class="about-section gray-bg">
-                <div class="container">
-                 {% if language == 'rus' %}
+            </div>
+        </div>
+        {% for item in items_data %}
+            <div class="site-content site-content_result_1and2 container " style="margin-bottom: -20px; padding-bottom: 0px;">
+                <div class="site-content__col site-content__col_fline">
+                    <div class="site-block result-mediabox">
+                        <img  class="item_rezBlock" src="{{item[0]}}" alt="">
+                    </div>
+                </div>
+                <div class="site-content__col site-content__col_tline">
+                    <div class="site-block reads">
+                        <div class="read-card">
+                            <div class="read-card__inner">
+                                <div class="read-card__text">
+                                    {{item[1]|safe}}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="read-card">
+                            <div class="read-card__inner">
+                                <div class="read-card__text">
+                                    {{item[2]|safe}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        <div class="about-section gray-bg" style="margin-top: 50px;">
+            <div class="container">
+                {% if language == 'RU' %}
                     <h2 class="about-section__title">О проекте</h2>
                     <p>Сайт рыбатекст поможет дизайнеру, верстальщику, вебмастеру сгенерировать несколько абзацев более менее осмысленного текста рыбы на русском языке, а начинающему оратору отточить навык публичных выступлений в домашних условиях. При создании генератора мы использовали небезизвестный универсальный код речей. Текст генерируется абзацами случайным образом от двух до десяти предложений в абзаце, что позволяет сделать текст более привлекательным и живым для визуально-слухового восприятия.</p>
-                 {%else%}
+                {%else%}
                     <h2 class="about-section__title">About the project</h2>
                     <p>The rybatext website will help a designer, a webmaster, or a webmaster to generate several paragraphs of more or less meaningful fish text in Russian, and a novice speaker to hone the skill of public speaking at home. When creating the generator, we used a well-known universal speech code. The text is generated by paragraphs randomly from two to ten sentences per paragraph, which allows you to make the text more attractive and lively for visual and auditory perception.</p>
-                 {%endif%}
-                </div>
-              </div>
-              <div class="container separtor"></div>
+                {%endif%}
             </div>
-          {% else %}
+        </div>
+        <div class="container separtor"></div>
+    {% else %}
+        <div class="container" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
             <h1>Нет доступа к файлу</h1>
-          {% endif %}
-
-
-
-
-
-
-
-
-
+        </div>
+    {% endif %}
+{% else %}
+    <div class="container" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
+        <h1>Файл в процессе распознавания</h1>
+    </div>
+{% endif %}
 {% endblock %}

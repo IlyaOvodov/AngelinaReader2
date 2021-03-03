@@ -3,7 +3,7 @@
 
       <div class="site-content  container ">
           <main class="site-main ">
-              {% if language == 'rus' %}
+              {% if language == 'RU' %}
                     <h1>Результаты распознавания</h1>
               {% else %}
                     <h1>Recognition results</h1>
@@ -27,8 +27,8 @@
                                     <div class="documents-card__mediabox mediabox">
                                         <img src="{{item.img_url}}" alt="">
                                     </div>
-                                    {% if item.sost == "false" %}
-                                        <div class="documents-card__body">{% if language == 'rus' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
+                                    {% if item.sost == False %}
+                                        <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
                                     {% else %}
                                         <div class="documents-card__body">{{item.desc|safe}}...</div>
                                     {% endif %}
