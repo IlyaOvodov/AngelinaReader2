@@ -171,7 +171,7 @@ class AngelinaSolver:
     help_contents = {
         "RU": {
             "test_about": {"title": "О программе",
-                           "announce": 'Это очень крутая программа!<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 30px; height: auto "> <b>Не пожалеете</b>! <a href="http://angelina-reader.ru/">angelina-reader</a>.Просто нажмите кнопку',
+                           "announce": 'Это очень крутая программа!<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 200px; height: auto "> <b>Не пожалеете</b>! <a href="http://angelina-reader.ru/">angelina-reader</a>.Просто нажмите кнопку',
                            "text": '"Ну что вам еще надо.<img src="/static/images/br_text.jpg" alt="alt_img" style="width: 300px; height: auto ">  <b>Вы не верите</b>?'},
             "test_photo": {"title": "Как сделать фото",
                            "announce": "Чтобы сделать фото нужен фотоаппарат",
@@ -262,6 +262,11 @@ class AngelinaSolver:
         После успешной загрузки возвращаем id материалов в системе распознавания или False если в процессе обработки 
         запроса возникла ошибка. Далее по данному id мы переходим на страницу просмотра результатов данного распознавнаия
         """
+        img_fn = img_paths['file'].filename
+        task_id = uuid.uuid4().hex
+        os.makedirs('static/data/raw', exist_ok=True)
+        img_paths['file'].save('static/data/raw' + "/" + img_fn)
+
         if timeout and timeout > 0:
             time.sleep(timeout)
 
