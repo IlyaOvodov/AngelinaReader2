@@ -248,7 +248,7 @@ class AngelinaSolver:
     TMP_RECOG_DELAY = 2  # sec.
 
     # собственно распознавание
-    def process(self, user_id, img_paths, lang, find_orientation, process_2_sides, has_public_confirm, timeout=0):
+    def process(self, user_id, img_paths, lang, find_orientation, process_2_sides, has_public_confirm):
         """
         user: User ID or None для анонимного доступа
         img_paths: полный пусть к загруженному изображению, pdf или zip или список (list) полных путей к изображению
@@ -267,20 +267,20 @@ class AngelinaSolver:
         os.makedirs('static/data/raw', exist_ok=True)
         img_paths['file'].save('static/data/raw' + "/" + img_fn)
 
-        if timeout and timeout > 0:
-            time.sleep(timeout)
-
         AngelinaSolver.TMP_RESULT_SELECTOR = 1 - AngelinaSolver.TMP_RESULT_SELECTOR
         AngelinaSolver.TMP_TASK_POST_TIMES[AngelinaSolver.TMP_RESILTS[AngelinaSolver.TMP_RESULT_SELECTOR]] = timeit.default_timer()
         return AngelinaSolver.TMP_RESILTS[AngelinaSolver.TMP_RESULT_SELECTOR]
         
-    def is_completed(self, task_id):
+    def is_completed(self, task_id, timeout=0):
         """
         Проверяет, завершена ли задача с заданным id
         """
         """
         В тестовом варианте отображется как не готовый в течение 2 с после загрузки
         """
+        if timeout and timeout > 0:
+            time.sleep(timeout)
+
         assert task_id in AngelinaSolver.TMP_RESILTS
         if task_id in AngelinaSolver.TMP_TASK_POST_TIMES.keys():
             return timeit.default_timer() - AngelinaSolver.TMP_TASK_POST_TIMES[task_id] > AngelinaSolver.TMP_RECOG_DELAY

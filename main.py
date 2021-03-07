@@ -326,7 +326,10 @@ def result(item_id):
 
     product_list = AngelinaSolver()
 
-    is_completed_test = product_list.is_completed(item_id)
+    while True:
+        is_completed_test = product_list.is_completed(item_id, timeout=1)
+        if is_completed_test:
+            break
 
     if is_completed_test is not False:
 
