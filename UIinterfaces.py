@@ -305,7 +305,7 @@ class AngelinaSolver:
         """
         prefix = AngelinaSolver.PREFIX
         return {
-                "prev_slag":"text",
+                "prev_slag":None,
                 "next_slag":None,
                 "name":task_id,
                 "create_date": datetime.strptime('2011-11-04 00:05:23', "%Y-%m-%d %H:%M:%S"), #"20200104 200001",

@@ -96,7 +96,7 @@ def new_pass():
         new_password = request.form.get('new_pass')
         if new_password != "" and password !="":
             login = AngelinaSolver()
-            user = login.find_user("","",id)
+            user = login.find_user("","","",id)
             if user.check_password(password) == True:
                 user.set_password(new_password)
                 if session.get('language') == "RU":
@@ -206,7 +206,6 @@ def send_data():
         mail = request.form.get('mail')  # запрос к данным формы
         item_id = request.form.get('item_id')
 
-
         image = request.form.get('image')
         if image == 'on':
             image = True
@@ -233,7 +232,7 @@ def send_data():
 
         koment = request.form.get('koment')
 
-        if mail != "" and item_id !="":
+        if item_id !="":
             mail = mail
             item_id = item_id
             product_list = AngelinaSolver()
@@ -326,10 +325,7 @@ def result(item_id):
 
     product_list = AngelinaSolver()
 
-    while True:
-        is_completed_test = product_list.is_completed(item_id, timeout=1)
-        if is_completed_test:
-            break
+    is_completed_test = product_list.is_completed(item_id)
 
     if is_completed_test is not False:
 

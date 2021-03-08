@@ -4,14 +4,26 @@
 cursor: pointer;
 }
 .modal_images{
+top: 0;
+left: 0;
 display: none;
+margin: 0px;
+padding: 0px;
 position: fixed;
-height: 100vh;
-width: 100%;
+height: calc(100vh + 20px);
+width: calc(100% + 20px);
 z-index: 999999;
 background: rgba(0,0,0,0.55);
 overflow: scroll;
 text-align: center;
+}
+.post_body img{
+max-width: 100%;
+
+}
+
+#ms_form textarea{
+min-height: 125px;
 }
 
 .modal_images>img{
@@ -134,4 +146,24 @@ padding-bottom: 5px;
     height: 45px;
     border-radius: 5px;
     border-color: rgba(0,0,0,0.15);
+}
+
+@media(max-width: 960px){
+    .site-content_result_1and2{
+        display: block;
+    }
+    .site-content_result_1and2>div{
+        width: 100%;
+    }
+
+    .site-content_result_1and2>div>div.reads{
+        margin-bottom: 25px;
+        margin-top: -10px;
+    }
+}
+
+@media(min-width: 1200px){
+.not_autor{
+margin-top: 80px;
+}
 }
