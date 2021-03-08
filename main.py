@@ -1,7 +1,8 @@
 import sqlite3
 import os
 from flask import Flask, render_template, g, session, request, redirect
-from UIinterfaces import AngelinaSolver, User
+import sys
+from UIinterfaces import AngelinaSolver
 
 DEBUG = True
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
@@ -389,6 +390,13 @@ def showItem(slug):
 
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+    import sys  # TODO
+    port = 5000
+    real_mode = '--real' in sys.argv[1:]
+    if real_mode:
+        sys.path.insert(1,'../MyCode')
+        from web_app.angelina_reader_core import AngelinaSolver
+        port = 5001
+    app.run(host='0.0.0.0', port=port)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/
