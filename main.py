@@ -202,7 +202,7 @@ def registration():
 
 @app.route("/send_data/", methods=['POST'])
 def send_data():
-
+    referrer = request.referrer
     if request.method == 'POST':
         mail = request.form.get('mail')  # запрос к данным формы
         item_id = request.form.get('item_id')
@@ -237,8 +237,9 @@ def send_data():
             mail = mail
             item_id = item_id
             product_list = AngelinaSolver()
+            mail_title = request.form.get('mail_title')
 
-            dop_data = {'image': image,'text': text,'braille': braille,'razRab': razRab,'koment': koment}
+            dop_data = {'title': mail_title, 'image': image,'text': text,'braille': braille,'razRab': razRab,'comment': koment}
             #print(dop_data)
             items_id = product_list.send_results_to_mail(mail,item_id, dop_data)
             if items_id == True:
@@ -257,7 +258,7 @@ def send_data():
             else:
                 msg = "Login error"
 
-    return redirect(f"/?answer={msg}")
+    return redirect(f"{referrer}/?answer={msg}")
 
 
 
@@ -282,6 +283,13 @@ def result_list():
 
     product_list = AngelinaSolver()
     my_list_item = product_list.get_tasks_list(id, 0)
+
+
+    i = 0
+    for items_id2 in my_list_item:
+        my_list_item[i]["desc"] = "<TT>" + my_list_item[i]["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
+        i += 1
+
     return render_template('result_list.html',item_list=my_list_item, language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
 
@@ -312,6 +320,10 @@ def index():
     count = 5
     product_list = AngelinaSolver()
     items_id = product_list.get_tasks_list(id, count)
+    i = 0
+    for items_id2 in items_id:
+        items_id[i]["desc"] = "<TT>" + items_id[i]["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
+        i += 1
 
     return render_template('base.html',my_list_item=items_id,   language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
@@ -320,6 +332,8 @@ def index():
 def result(item_id):
     #Вывод стр результата распознавания
     status, id, user_name = user_data()
+
+    msg = request.args.get('answer')
 
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
@@ -353,9 +367,9 @@ def result(item_id):
             user_mail = ""
 
         #, product_name = items_id["name"], item_data = items_id["item_data"][int(page)][0], item_text = file_text, item_desc = filt_cod, create_date = \items_id["create_date"]
-        return render_template('result.html',user_mails=user_mails, user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html',msg=msg, user_mails=user_mails, user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
     else:
-        return render_template('result.html',completed=False,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html',msg=msg, completed=False,  language=target_language, status=status, id=id, name=user_name)
 
 @app.route("/help/")
 def help():

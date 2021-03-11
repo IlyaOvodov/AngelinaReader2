@@ -23,6 +23,12 @@
                                     <div class="documents-card__date">{{item.date}}</div>
                                     <div class="documents-card__img">{{item.name}}</div>
                                 </div>
+                                {% if item.public == 1 %}
+                                    <div class="public_text">{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}</div>
+                                {% else %}
+                                    <div class="public_text">{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}</div>
+                                {% endif %}
+
                                 <div class="documents-card__bottom" style="width: 100%; margin-bottom: 25px;">
                                     <div class="documents-card__mediabox mediabox">
                                         <img src="{{item.img_url}}" alt="">

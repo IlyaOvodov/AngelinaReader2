@@ -11,8 +11,13 @@
                     <div class="documents-card">
                       <div class="documents-card__top">
                         <div class="documents-card__date">{{item.date}}</div>
-                        <div class="documents-card__img">{{item.name}}</div>
+                        <div class="documents-card__img">{{item.name|safe}}</div>
                       </div>
+                                {% if item.public == 1 %}
+                                    <div class="public_text">{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}</div>
+                                {% else %}
+                                    <div class="public_text">{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}</div>
+                                {% endif %}
                       <div class="documents-card__bottom">
                         <div class="documents-card__mediabox mediabox">
                           <img src="{{item.img_url}}" alt="">
@@ -20,7 +25,7 @@
                         {% if item.sost == False %}
                             <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
                         {% else %}
-                            <div class="documents-card__body">{{item.desc}}...</div>
+                            <div class="documents-card__body">{{item.desc|safe}}...</div>
                         {% endif %}
                       </div>
                     </div>
@@ -34,7 +39,7 @@
 
               
             </div>
-            <div class="documents__footer"><a href="/result_list/" class="readmore ">{% if language == 'rus' %}Показать все{% else %}Show all{% endif %}</a></div>
+            <div class="documents__footer"><a href="/result_list/" class="readmore a_hover">{% if language == 'RU' %}Показать все{% else %}Show all{% endif %}</a></div>
           </div>
 
 

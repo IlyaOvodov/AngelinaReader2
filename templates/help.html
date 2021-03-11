@@ -9,12 +9,15 @@
                   <input type="submit" value=" " >
               </form>
               {% for item in item_list %}
-                <a href="/help/{{item.slug}}/" class="help_item">
-                  <div >
-                      <div class="item_title">{{item.title|safe}}</div>
-                      <div class="item_text">{{item.announce|safe}}</div>
+                  <div class="help_item">
+                      <div>
+                          <div class="item_title">{{item.title|safe}}</div>
+                          <div class="item_text">{{item.announce|safe}}</div>
+                          <p class="more_btn">
+                            <a href="/help/{{item.slug}}/" class=" "> Подробнее</a>
+                          </p>
+                      </div>
                   </div>
-                </a>
               {% endfor %}
 
           </main>
