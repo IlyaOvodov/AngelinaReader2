@@ -75,9 +75,13 @@ display: inline-block;
 color: white;
 border-radius: 10px;
 }
-
+.error_window{
+color: red !important;
+}
 .public_text{
- margin-bottom: 15px;
+
+    display: inline-block !important;
+ margin-bottom: 0px;
  background:  #EAEFF2;
  padding: 5px 10px;
  font-size: 12px;

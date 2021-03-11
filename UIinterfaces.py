@@ -305,9 +305,9 @@ class AngelinaSolver:
         """
         prefix = AngelinaSolver.PREFIX
         return {
-                "prev_slag":None,
-                "next_slag":None,
-                "public": i%2 ==0,
+                "prev_slag": None if task_id == AngelinaSolver.TMP_RESILTS[0] else AngelinaSolver.TMP_RESILTS[0],
+                "next_slag": None if task_id == AngelinaSolver.TMP_RESILTS[1] else AngelinaSolver.TMP_RESILTS[1],
+                "public": True, #i%2 ==0,
                 "name":task_id,
                 "create_date": datetime.strptime('2011-11-04 00:05:23', "%Y-%m-%d %H:%M:%S"), #"20200104 200001",
                 "item_data":
