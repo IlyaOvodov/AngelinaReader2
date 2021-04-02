@@ -1,0 +1,20 @@
+#/home/freemark/public_html/angelina_reader_real.service
+[Service]
+Type=simple
+Restart=always
+ExecStart=/usr/bin/python3 /home/freemark/public_html/main.py --real
+StartLimitInterval=0
+User=freemark
+WorkingDirectory=/home/freemark/public_html/
+[Unit]
+StartLimitIntervalSec=0
+[Install]
+WantedBy=multi-user.target
+#activate autostart by:
+#sudo systemctl enable /home/freemark/public_html/angelina_reader_real.service
+#restart by:
+#sudo systemctl stop angelina_reader_real.service; sudo systemctl start angelina_reader_real.service
+#view stdout by:
+#sudo journalctl --unit=angelina_reader_real
+#view only errors:
+#sudo systemctl status angelina_reader_real.service -n1000000 | grep -v '] "GET /\|] "POST /'

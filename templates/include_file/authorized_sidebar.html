@@ -1,6 +1,6 @@
 
         <aside class="site-sidebar">
-          <h3>{% if language == 'RU' %}Ваши документы{% else %}Your documents{% endif %}</h3>
+          <h3>{% if language == 'RU' %}История{% else %}History{% endif %}</h3>
           <div class="site-block documents">
             <div class="documents-list">
 
@@ -13,13 +13,15 @@
                         <div class="documents-card__date">{{item.date}}</div>
                         <div class="documents-card__img">{{item.name|safe}}</div>
                       </div>
-                                {% if item.public == 1 %}
-                                    <div class="public_text">{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}</div>
-                                {% else %}
-                                    <div class="public_text">{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}</div>
-                                {% endif %}
+                      <div style="width: 100%; margin-bottom: 20px;">
+                      </div>
+
                       <div class="documents-card__bottom">
                         <div class="documents-card__mediabox mediabox">
+
+                                {% if item.public != 1 %}<div class="lock_item"><img src="{{ url_for('static', filename='images/lock_item.png') }}"></div>{% endif %}
+
+
                           <img src="{{item.img_url}}" alt="">
                         </div>
                         {% if item.sost == False %}

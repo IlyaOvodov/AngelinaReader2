@@ -1,4 +1,6 @@
 .ipynb_checkpoints/
 .idea/
 *.pyc
-web_app/static/data/
+static/data/
+venv/
+weights/

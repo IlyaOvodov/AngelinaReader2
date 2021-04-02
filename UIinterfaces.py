@@ -79,6 +79,12 @@ class User:
         """
         raise NotImplementedError
         pass
+    def send_new_pass_to_mail(self):
+        """
+        Генерируем новый пароль и отправляем его на почту
+        Возвращаем True или False в зависимости от результата работы функции
+        """
+        return True
        
 
 class UserManager:

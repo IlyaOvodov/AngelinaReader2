@@ -48,8 +48,22 @@ def user_data():
 def pass_to_mail():
     if request.method == 'POST':
         mail = request.form.get('pass')
-#Вызываем функцию поиска пользователя по email и далее отправляем новый пароль по email. в msg отправляем сообщение, что все ок или выводим ошибку, что пользователя с таким email нет
-    msg = ""
+        if mail != "":
+            msg = "-_-2"
+            login = AngelinaSolver()
+            user = login.find_user("","",mail,"")
+            if user is not None:
+                sendMail = user.send_new_pass_to_mail();
+                msg = sendMail
+                if msg is True:
+                    msg = f"Инструкция по восстановлению пароля отправлена на e-mail {mail}"
+                    return redirect(f"/?answer={msg}&color=green")
+                else:
+                    msg = "Пользователь с таким e-mail не зарегистрирован"
+            else:
+                msg = "Пользователь с таким e-mail не зарегистрирован"
+        else:
+            msg = "Не все поля заполнены"
     return redirect(f"/?answer={msg}")
 
 @app.route("/upload_photo/", methods=['POST'])
@@ -65,10 +79,10 @@ def upload_photo():
             if session.get('user_id') is not None:
                 userID = session['user_id']
 
-            #print(file)
+            # print(file)
             login = AngelinaSolver()
             user = login.process(userID, file, lang, find_orientation, process_2_sides, has_public_confirm)
-            print()
+            #print()
             if user == False:
                 if session.get('language') == "RU":
                     msg = "Ошибка загрузки фото"
@@ -86,8 +100,9 @@ def upload_photo():
             msg = "Ошибка загрузки фото"
         else:
             msg = "Login error"
-
     return redirect(f"/?answer={msg}")
+
+
 
 @app.route("/new_pass/", methods=['POST'])
 def new_pass():
@@ -247,6 +262,8 @@ def send_data():
                     msg = "Данные отправлены"
                 else:
                     msg = "Data sent"
+
+                return redirect(f"{referrer}/?answer_modal={msg}")
             else:
                 if session.get('language') == "RU":
                     msg = "Ошибка отправки"
@@ -308,6 +325,7 @@ def index():
     #Данные пользователя
     status, id, user_name = user_data()
     msg_log = request.args.get('answer')
+    color = request.args.get('color')
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
@@ -325,7 +343,7 @@ def index():
         items_id[i]["desc"] = "<TT>" + items_id[i]["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
         i += 1
 
-    return render_template('base.html',my_list_item=items_id,   language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
+    return render_template('base.html', color=color, my_list_item=items_id,   language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
 
 @app.route("/result/<string:item_id>/")
@@ -334,6 +352,7 @@ def result(item_id):
     status, id, user_name = user_data()
 
     msg = request.args.get('answer')
+    answer_modal = request.args.get('answer_modal')
 
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
@@ -367,9 +386,9 @@ def result(item_id):
             user_mail = ""
 
         #, product_name = items_id["name"], item_data = items_id["item_data"][int(page)][0], item_text = file_text, item_desc = filt_cod, create_date = \items_id["create_date"]
-        return render_template('result.html',msg=msg, user_mails=user_mails, user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html',msg=msg, answer_modal=answer_modal, user_mails=user_mails, user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
     else:
-        return render_template('result.html',msg=msg, completed=False,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html',msg=msg, answer_modal=answer_modal, completed=False,  language=target_language, status=status, id=id, name=user_name)
 
 @app.route("/help/")
 def help():

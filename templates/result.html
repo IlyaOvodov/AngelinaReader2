@@ -54,19 +54,18 @@
                 </div>
             {% endif %}
 
-                            {% if public == 1 %}
-                                <div class="public_text-item container "><div>{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}</div></div>
-                            {% else %}
-                                <div class="public_text-item container "><div>{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}</div></div>
-                            {% endif %}
 
 
 
-        {% for item in items_data %}
+    {% for item in items_data %}
             <div class="site-content site-content_result_1and2 container " style="margin-bottom: -20px; padding-bottom: 0px;">
                 <div class="site-content__col site-content__col_fline">
-                    <div class="site-block result-mediabox">
+                    <div class="site-block result-mediabox" style="position: relative;">
                         <img  class="item_rezBlock" src="{{item[0]}}" alt="">
+
+                        {% if public != 1 %}
+                         <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></div>
+            {% endif %}
                     </div>
                 </div>
                 <div class="site-content__col site-content__col_tline">
