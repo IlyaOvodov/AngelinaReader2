@@ -94,7 +94,6 @@ class User:
         if self.params:
             params = json.loads(self.params)
             if params.get('tmp_password') == password_hash:
-                #self.set_new_tmp_password(None)
                 return True
         return False
 
@@ -119,8 +118,9 @@ class User:
         assert password
         password_hash = self.hash_password(password)
         self.password_hash = password_hash
-        con = self.solver._users_sql_conn()
-        exec_sqlite(con, "update users set password_hash = ? where id = ?", (self.password_hash, self.id))
+        with self.solver._users_sql_conn() as con:
+            exec_sqlite(con, "update users set password_hash = ? where id = ?", (self.password_hash, self.id))
+        self.set_new_tmp_password(None)
 
     def get_param_default(self, param_name):
         """
@@ -137,17 +137,17 @@ class User:
         pass
 
     def set_new_tmp_password(self, new_tmp_password_hash):
-        con = self.solver._users_sql_conn()
-        res = exec_sqlite(con, "select params from users where id = ?", (self.id,))
-        assert len(res) == 1, (self.id)
-        params = res[0][0]
-        if params:
-            params = json.loads(params)
-        else:
-            params = dict()
-        params["tmp_password"] = new_tmp_password_hash
-        self.params = json.dumps(params)
-        exec_sqlite(con, "update users set params=? where id = ?", (self.params, self.id))
+        with self.solver._users_sql_conn() as con:
+            res = exec_sqlite(con, "select params from users where id = ?", (self.id,))
+            assert len(res) == 1, (self.id)
+            params = res[0][0]
+            if params:
+                params = json.loads(params)
+            else:
+                params = dict()
+            params["tmp_password"] = new_tmp_password_hash
+            self.params = json.dumps(params)
+            exec_sqlite(con, "update users set params=? where id = ?", (self.params, self.id))
 
     def send_new_pass_to_mail(self):
         """
@@ -380,6 +380,14 @@ class AngelinaSolver:
         После успешной загрузки возвращаем id материалов в системе распознавания или False если в процессе обработки 
         запроса возникла ошибка. Далее по данному id мы переходим на страницу просмотра результатов данного распознавнаия
         """
+        # GVNC для совместимости с V2. Переделать (убрать отдельные парметры, оставить только обязательный params_dict)
+        if param_dict is None:
+            find_orientation = find_orientation and find_orientation != 'False'
+            process_2_sides = process_2_sides and process_2_sides != 'False'
+            has_public_confirm = has_public_confirm and has_public_confirm != 'False'
+            param_dict = {"lang": lang, "find_orientation": find_orientation,
+                          "process_2_sides": process_2_sides, "has_public_confirm": has_public_confirm}
+
         doc_id = uuid.uuid4().hex
         if type(file_storage) == werkzeug.datastructures.ImmutableMultiDict:
             file_storage = file_storage['file']
@@ -392,12 +400,12 @@ class AngelinaSolver:
             "create_date": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
             "name": task_name,
             "user_id": user_id,
-            "params": None,
+            "params": json.dumps(param_dict),
             "raw_paths": None,
             "state": TaskState.CREATED.value,
             "results": None,
             "thumbnail": "",
-            "is_public": 0,
+            "is_public": int(param_dict["has_public_confirm"]),
             "thumbnail_desc": "",
             "is_deleted": 0
         }
