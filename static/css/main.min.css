@@ -568,3 +568,56 @@ width: 100%;
 text-decoration: none;
 font-size: 17px;
 }
+
+@media(max-width: 760px){
+    .mob_stnt>div{
+        display: block;
+    width: 100%;
+    }
+    .mob_stnt{
+        height: auto;
+        display: block;
+    }
+    .mob_stnt img{
+        width: 300px;
+
+    }
+    .mob_stnt .curious__body{
+        min-height: 270px;
+    }
+    .mob_stnt .curious__mediabox {
+    text-align: center;
+    }
+}
+
+.site-header__btn-panel>div,
+.site-header__btn-panel>a{
+    line-height: 2.7;
+    height: 35px;
+    width: 35px;
+    min-width: 37px;
+    margin-top: 8px;
+}
+
+.more_photo{
+    margin-bottom: -20px;
+    display: inline-block;
+    margin-top: 20px;
+}
+.more_photo a{
+    width: 283px;
+    height: 45px;
+    border-radius: 5px;
+    background-color: #08730d;
+    color: #fff;
+    display: block;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    line-height: 45px;
+    text-decoration: none;
+    border: none;
+    margin-bottom: 10px;
+}

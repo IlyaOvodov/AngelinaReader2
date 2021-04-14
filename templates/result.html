@@ -10,6 +10,9 @@
                 {% else %}
                     <p>Send the result to yourself and / or report recognition errors to the developers to make the program better.</p>
                 {% endif %}
+
+
+
                 <div class="top-panel__cont">
                     <div class="top-panel__col">
                         <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'RU' %}Отправить На E-mail{% else %}Send To E-mail{% endif %}</a>
@@ -41,6 +44,7 @@
                             {% endif %}
                         </div>
                     </div>
+
                 </div>
             </div>
 
@@ -55,6 +59,11 @@
             {% endif %}
 
 
+
+
+            <div class="container">
+                    <div class="more_photo"><a href="/">загрузить следующий файл</a></div>
+                </div>
 
 
     {% for item in items_data %}
