@@ -362,7 +362,7 @@ class AngelinaSolver:
     TMP_RESILTS = ['IMG_20210104_093412', 'IMG_20210104_093217']
     PREFIX = "/static/data/results/"
     TMP_TASK_POST_TIMES = {}
-    TMP_RECOG_DELAY = 2  # sec.
+    TMP_RECOG_DELAY = 0.2  # sec.
 
     # собственно распознавание
     def process(self, user_id, file_storage, lang=None, find_orientation=None, process_2_sides=None, has_public_confirm=None, param_dict=None):
@@ -434,12 +434,17 @@ class AngelinaSolver:
         """
         В тестовом варианте отображется как не готовый в течение 2 с после загрузки
         """
-        if timeout and timeout > 0:
-            time.sleep(timeout)
         user_id, doc_id = task_id.split("_",1)
         assert doc_id in AngelinaSolver.TMP_RESILTS
         if doc_id in AngelinaSolver.TMP_TASK_POST_TIMES.keys():
-            return timeit.default_timer() - AngelinaSolver.TMP_TASK_POST_TIMES[doc_id] > AngelinaSolver.TMP_RECOG_DELAY
+            time_remain = AngelinaSolver.TMP_RECOG_DELAY - (timeit.default_timer() - AngelinaSolver.TMP_TASK_POST_TIMES[doc_id])
+            if timeout and timeout > 0 and time_remain > 0:
+                print('is_completed: sleep', timeout, time_remain, timeit.default_timer())
+                time.sleep(min(timeout, time_remain))
+                print('is_completed: return', timeout, time_remain, timeit.default_timer(), time_remain <= timeout)
+                return time_remain <= timeout
+            print('is_completed: return', timeout, time_remain, timeit.default_timer(), time_remain <= 0)
+            return time_remain <= 0
         else:
             return False
 
@@ -582,7 +587,7 @@ class AngelinaSolver:
                 mail += ',Angelina Reader<angelina-reader@ovdv.ru>'
             else:
                 mail = 'Angelina Reader<angelina-reader@ovdv.ru>'
-        subject = parameters.get('subject') or "Распознанный Брайль " + Path(result[0]).with_suffix('').with_suffix('').name.lower()
+        subject = parameters.get('subject') or parameters.get('title') or "Распознанный Брайль " + Path(result[0]).with_suffix('').with_suffix('').name.lower()
         comment = (parameters.get('comment') or parameters.get('koment') or '') + "\nLetter from: {}<{}>".format(user_name, user_email)
         self.send_mail(mail, subject, comment, json.loads(result[1]))
         return True
