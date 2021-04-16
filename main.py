@@ -104,6 +104,7 @@ def upload_photo():
 
 
 
+
 @app.route("/new_pass/", methods=['POST'])
 def new_pass():
     if request.method == 'POST':
@@ -320,6 +321,9 @@ def polit():
     return render_template('polit.html', language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
 
 
+
+
+
 @app.route("/")
 def index():
     #Данные пользователя
@@ -344,6 +348,20 @@ def index():
         i += 1
 
     return render_template('base.html', color=color, my_list_item=items_id,   language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
+
+#Проверка готовности
+@app.route("/result_test/<string:item_id>/")
+def result_test(item_id):
+    #user
+    status, id, user_name = user_data()
+
+    product_list = AngelinaSolver()
+    is_completed_test = product_list.is_completed(item_id,1)
+
+    if is_completed_test == False:
+        return "False"
+    else:
+        return "True"
 
 
 @app.route("/result/<string:item_id>/")
@@ -386,9 +404,9 @@ def result(item_id):
             user_mail = ""
 
         #, product_name = items_id["name"], item_data = items_id["item_data"][int(page)][0], item_text = file_text, item_desc = filt_cod, create_date = \items_id["create_date"]
-        return render_template('result.html',msg=msg, answer_modal=answer_modal, user_mails=user_mails, user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html',msg=msg, answer_modal=answer_modal, user_mails=user_mails, public_sost=items_id["public"], user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
     else:
-        return render_template('result.html',msg=msg, answer_modal=answer_modal, completed=False,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html',msg=msg, item_id=item_id, answer_modal=answer_modal, completed=False,  language=target_language, status=status, id=id, name=user_name)
 
 @app.route("/help/")
 def help():

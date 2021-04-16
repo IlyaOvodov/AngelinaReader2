@@ -596,3 +596,6 @@ class AngelinaSolver:
         if not user_id:
             return []
         return ["angelina-reader@ovdv.ru", "il@ovdv.ru", "iovodov@gmail.com"]  # TODO
+
+    def set_public_acceess(self, task_id, is_public):
+        pass

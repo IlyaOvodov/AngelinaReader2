@@ -514,18 +514,16 @@
 	<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
 
 
-    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp" required placeholder="Тема письма" value="">
+
+
 
 
     <div class="rg-form__group">
-        <div class="mail_list">
-            {% if user_mail != "" %}
-                <div class='item'>{{user_mail}}<span>x</span></div>
-            {% endif %}
-        </div>
-    	<input type="text" name="" class="rg-form__inp" id="mail_dopp" placeholder="Введите email для отправки результатов" value="">
+
+        <p style="margin-bottom: 5px;">Укажите email для отправки материалов<br><span class="more_tes">или несколько через ;</span></p>
 
 
+        <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style="" required placeholder="Введите email для отправки результатов" value="{{user_mail}}">
 
         <select class="mail_select">
             <option style="display: none;">Ранее используемые email адреса</option>
@@ -533,8 +531,15 @@
                 <option>{{item}}</option>
             {% endfor %}
         </select>
-        <input type="text" name="mail" id="iten_bl" style="display: none;">
+
     	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
+
+
+
+
+
+    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="Тема письма" value="" style="margin-top: 15px;">
+
 
         <p>Что отправить?</p>
 
@@ -576,24 +581,25 @@
 		<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
 
 
-    <input type="text" name="mail_title" class="rg-form__inp" required id="mail_dopp" placeholder="Email subject" value="">
+ <p style="margin-bottom: 5px;">Specify the email address to send the materials to<br><span class="more_tes">or several through ;</span></p>
 
-    <div class="rg-form__group">
-        <div class="mail_list">
-            {% if user_mail != "" %}
-                <div class='item'>{{user_mail}}<span>x</span></div>
-            {% endif %}
-        </div>
-    	<input type="text" name="" class="rg-form__inp" id="mail_dopp" placeholder="Enter your email address to send the results" value="">
+
+        <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style="" required placeholder="Enter your email address to send the results" value="{{user_mail}}">
+
         <select class="mail_select">
             <option style="display: none;">Previously used email addresses</option>
             {% for item in user_mails %}
                 <option>{{item}}</option>
             {% endfor %}
         </select>
-        <input type="text" name="mail" id="iten_bl" style="display: none;">
+
     	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
 
+
+
+
+
+    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="Тема письма" value="" style="margin-top: 15px;">
         <p>What to send?</p>
 
         <div class="choice-box" style="padding: 10px;">
@@ -722,6 +728,26 @@
 
 $( document ).ready(function() {
 $("#file_id").attr("value","{{item_id}}");
+
+if(flag_proc == "True"){
+    function tick() {
+        $.ajax({
+            url: "/result_test/{{item_id}}/",
+            success: function(data){
+               if(data == "True"){
+                    clearInterval(t);
+                    location.reload();
+               }
+            }
+        });
+    }
+
+  var t = setInterval(tick, 2000);
+
+}
+
+
+
 });
 </script>
 

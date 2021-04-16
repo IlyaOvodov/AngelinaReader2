@@ -65,16 +65,17 @@
                     <div class="more_photo"><a href="/">загрузить следующий файл</a></div>
                 </div>
 
-
-    {% for item in items_data %}
+        {% for item in items_data %}
             <div class="site-content site-content_result_1and2 container " style="margin-bottom: -20px; padding-bottom: 0px;">
                 <div class="site-content__col site-content__col_fline">
                     <div class="site-block result-mediabox" style="position: relative;">
                         <img  class="item_rezBlock" src="{{item[0]}}" alt="">
 
-                        {% if public != 1 %}
-                         <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></div>
-            {% endif %}
+                        {% if public_sost == False %}
+                         <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
+                             <a href="/unpublic/"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                         </div>
+                        {% endif %}
                     </div>
                 </div>
                 <div class="site-content__col site-content__col_tline">
@@ -104,8 +105,14 @@
         </div>
     {% endif %}
 {% else %}
-    <div class="container" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
+    <div class="container load_blockitem" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
         <h1>Файл в процессе распознавания</h1>
+        <!-- , Вы можете дождаться окончания рапознования либо просмотреть результат позже в Вашей истории распознований -->
+        <img src="{{ url_for('static', filename='images/load_ci.gif') }}" />
     </div>
+
+    <script>
+        var flag_proc = "True";
+    </script>
 {% endif %}
 {% endblock %}
