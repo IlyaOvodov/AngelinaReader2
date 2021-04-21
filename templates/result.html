@@ -14,10 +14,7 @@
 
 
                 <div class="top-panel__cont">
-                    <div class="top-panel__col">
-                        <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'RU' %}Отправить На E-mail{% else %}Send To E-mail{% endif %}</a>
-                    </div>
-                    <div class="top-panel__col">
+                    <div class="top-panel__col" style="order: 1">
                         <div class="image-nav">
                             {% if prev_slag != None %}
                                 <a href="/result/{{prev_slag}}/">
@@ -43,6 +40,9 @@
                                 </a>
                             {% endif %}
                         </div>
+                    </div>
+                    <div class="top-panel__col" style="order: 2">
+                        <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'RU' %}Отправить На E-mail{% else %}Send To E-mail{% endif %}</a>
                     </div>
 
                 </div>
@@ -71,11 +71,24 @@
                     <div class="site-block result-mediabox" style="position: relative;">
                         <img  class="item_rezBlock" src="{{item[0]}}" alt="">
 
+
+
+
+
                         {% if public_sost == False %}
                          <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
-                             <a href="/unpublic/"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                             <a href="/unpublic/{{item_id}}/True/"  hline="/unpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                         </div>
+                        {% else %}
+                         <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
+                             <a href="/unpublic/{{item_id}}/False/"  hline="/unpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}"></a>
                          </div>
                         {% endif %}
+
+
+
+
+
                     </div>
                 </div>
                 <div class="site-content__col site-content__col_tline">

@@ -144,11 +144,11 @@
                    <p>Do you agree that the uploaded image should be included in the publicly available dataset (<a href="#">read more</a>)?</p>
               {% endif %}
             <div class="load-block__agree">
-              <div class="check-group">
+              <div class="check-group target_intput" tabindex="0">
                 <input name="agree" type="radio" class="check-group__check" id="radio1" />
                 <label class="check-group__label" for="radio1" style="cursor: pointer;">{% if language == 'RU' %}Я согласен{% else %}I agree{% endif %}</label>
               </div>
-              <div class="check-group">
+              <div class="check-group target_intput" tabindex="0">
                 <input name="agree" type="radio" class="check-group__check" id="radio2" />
                 <label class="check-group__label" id="radio2_target" for="radio2" style="cursor: pointer;">{% if language == 'RU' %}Возражаю{% else %}Mind{% endif %}</label>
               </div>
@@ -166,11 +166,11 @@
                 </select>
                 <label class="check-group__label check-group__label_lang">{% if language == 'RU' %}Язык текста{% else %}Text language{% endif %}</label>
               </div>
-              <div class="check-group">
+              <div class="check-group target_intput" tabindex="0">
                 <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1" />
                 <label class="check-group__label" for="checkbox1" style="cursor: pointer;">{% if language == 'RU' %}Автоориентация{% else %}Auto-orientation{% endif %}</label>
               </div>
-              <div class="check-group">
+              <div class="check-group target_intput" tabindex="0">
                 <input type="checkbox" name="process_2_sides" class="check-group__check" id="checkbox2" />
                 <label class="check-group__label" for="checkbox2" style="cursor: pointer;">{% if language == 'RU' %}Обе стороны{% else %}Both sides{% endif %}</label>
               </div>
@@ -179,7 +179,7 @@
           
           <div class="photo-card pc-vis">
             <div class="photo-card__mediabox ">
-              <div class="mediabox"><img src="{{ url_for('static', filename='images/photo.jpg') }}" alt=""></div>
+              <div class="mediabox"><img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="Как правильно сделать фото"></div>
             </div>
             <div class="photo-card__body">
                {% if language == 'RU' %}
@@ -302,11 +302,11 @@
 		<div class="rg-form__text">Для регистрации подтвердите следующие условия:</div>
 		<div class="rg-form__check-cont">
 
-        <div class="check-group">
+        <div class="check-group target_intput" tabindex="0">
             <input type="checkbox"  class="check-group__check"  id="checkbox11" />
             <label class="check-group__label" for="checkbox11" style="cursor: pointer;">Ознакомлен с <a class="check-group__link" href="/help/">инструкцией пользователя</a></label>
         </div>
-        <div class="check-group">
+        <div class="check-group target_intput" tabindex="0">
             <input type="checkbox" class="check-group__check"  id="checkbox12" />
             <label class="check-group__label" for="checkbox12" style="cursor: pointer;">Согласен с условиями <a class="check-group__link" href="/polit/">пользовательского соглашения</a></label>
         </div>
@@ -345,11 +345,11 @@
 	<form action="/registration/" method="post" class="rg-form__form" id="log_form">
 		<div class="rg-form__text">To register, confirm the following conditions:</div>
 		<div class="rg-form__check-cont">
-      <div class="check-group">
+      <div class="check-group target_intput" tabindex="0">
         <input type="checkbox" class="check-group__check" id="checkbox11"  />
         <label class="check-group__label" for="checkbox11" style="cursor: pointer;">I am familiar with <a class="check-group__link" href="/help/">user manual</a></label>
       </div>
-      <div class="check-group">
+      <div class="check-group target_intput" tabindex="0">
         <input type="checkbox" class="check-group__check" id="checkbox12"  />
         <label class="check-group__label" for="checkbox12" style="cursor: pointer;">I agree to the terms and conditions <a class="check-group__link" href="/polit/">user agreement</a></label>
       </div>
@@ -430,41 +430,119 @@
 
 
   {% if language == 'RU' %}
-  <div id="data_modal" class="modalbox">
+<div id="data_modal" class="set_form modalbox">
     <div class="rg-form">
-                        <p><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></p>
-	<h3 class="rg-form__title">Обновить пароль</h3>
-	<form action="/new_pass/" method="post" class="rg-form__form">
+        <p><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></p>
+        <h3 class="rg-form__title">Обновить пароль</h3>
+        <form action="/new_pass/" method="post" class="rg-form__form pass_switch">
+            <div class="rg-form__group">
+                <input type="password" class="rg-form__inp" name="pass" required placeholder="Введите старый (временный) пароль">
+                <input type="password" class="rg-form__inp" name="new_pass" required placeholder="Введите новый пароль">
+            </div>
+            <div class="rg-form__btn-cont">
+                <button type="submit" class="rg-form__button btn">Обновить</button>
+            </div>
+        </form>
 
-    <div class="rg-form__group">
-        <input type="password" class="rg-form__inp" name="pass" required placeholder="Введите старый (временный) пароль">
-        <input type="password" class="rg-form__inp" name="new_pass" required placeholder="Введите новый пароль">
+        <h3 class="rg-form__title">Настройки</h3>
+        <form action="/setting/" method="post" class="rg-form__form block_setting">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <select>
+                <option value="var1">Вариант 1</option>
+                <option value="var1">Вариант 1</option>
+                <option value="var1">Вариант 1</option>
+                <option value="var1">Вариант 1</option>
+            </select>
+            <input type="date" class="rg-form__inp">
+            <div class="choice-box" style="padding: 10px;">
+                <div class="check-group target_intput" tabindex="0" >
+                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" checked>
+                    <label  class="check-group__label" for="radio_21" style="cursor: pointer;">Изображение</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" checked>
+                    <label class="check-group__label" for="radio_22" style="cursor: pointer;">Текст</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" checked>
+                    <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
+                </div>
+            </div>
+            <input type="file" class="rg-form__inp" />
+            <div class="load-block__agree choice-box"  style="padding: 10px;">
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio5">
+                    <label class="check-group__label" for="radio5" style="cursor: pointer;">Я согласен</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio6">
+                    <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
+                </div>
+            </div>
+            <div class="rg-form__btn-cont">
+                <button type="submit" class="rg-form__button btn">Обновить</button>
+            </div>
+        </form>
     </div>
-    <div class="rg-form__btn-cont">
-    	<button type="submit" class="rg-form__button btn">Обновить</button>
-    </div>
-
-	</form>
 </div>
-  </div>
   {% else %}
-  <div id="data_modal" class="modalbox">
+ <div id="data_modal" class="set_form modalbox">
     <div class="rg-form">
-                        <p><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></p>
-	<h3 class="rg-form__title">Update the password</h3>
-	<form action="/new_pass/" method="post"  class="rg-form__form">
+        <p><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></p>
+        <h3 class="rg-form__title">Update Password</h3>
+        <form action="/new_pass/" method="post" class="rg-form__form pass_switch">
+            <div class="rg-form__group">
+                <input type="password" class="rg-form__inp" name="pass" required placeholder="Enter your old (temporary) password">
+                <input type="password" class="rg-form__inp" name="new_pass" required placeholder="Enter your new password">
+            </div>
+            <div class="rg-form__btn-cont">
+                <button type="submit" class="rg-form__button btn">Update</button>
+            </div>
+        </form>
 
-    <div class="rg-form__group">
-        <input type="password" class="rg-form__inp" name="pass" required placeholder="Password">
-        <input type="password" class="rg-form__inp" name="new_pass" required placeholder="New password">
+        <h3 class="rg-form__title">Settings</h3>
+        <form action="/setting/" method="post" class="rg-form__form block_setting">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <select>
+                <option value="var1">Вариант 1</option>
+                <option value="var1">Вариант 1</option>
+                <option value="var1">Вариант 1</option>
+                <option value="var1">Вариант 1</option>
+            </select>
+            <input type="date" class="rg-form__inp">
+            <div class="choice-box" style="padding: 10px;">
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" checked>
+                    <label tabindex="0" class="check-group__label" for="radio_21" style="cursor: pointer;">Изображение</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" checked>
+                    <label class="check-group__label" for="radio_22" style="cursor: pointer;">Текст</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" checked>
+                    <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
+                </div>
+            </div>
+            <input type="file" class="rg-form__inp" />
+            <div class="load-block__agree choice-box"  style="padding: 10px;">
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio5">
+                    <label class="check-group__label" for="radio5" style="cursor: pointer;">Я согласен</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio6">
+                    <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
+                </div>
+            </div>
+            <div class="rg-form__btn-cont">
+                <button type="submit" class="rg-form__button btn">Update</button>
+            </div>
+        </form>
     </div>
-    <div class="rg-form__btn-cont">
-    	<button type="submit" class="rg-form__button btn">Update</button>
-    </div>
-
-	</form>
 </div>
-  </div>
   {% endif %}
 
 
@@ -522,15 +600,19 @@
 
         <p style="margin-bottom: 5px;">Укажите email для отправки материалов<br><span class="more_tes">или несколько через ;</span></p>
 
+        <div class="mail_blockl">
 
-        <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style="" required placeholder="Введите email для отправки результатов" value="{{user_mail}}">
+            <div class="mail_li">
+                <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style=""  placeholder="Введите email для отправки результатов" value="{{user_mail}}"><button class="more_btn"></button>
+            </div>
+            <div class="form_error_itemail hkl_item" style="display: none;"><div>!</div>Укажите email</div>
 
-        <select class="mail_select">
-            <option style="display: none;">Ранее используемые email адреса</option>
-            {% for item in user_mails %}
-                <option>{{item}}</option>
-            {% endfor %}
-        </select>
+            <div class="option_list">
+                {% for item in user_mails %}
+                    <div><a href="" name="{{item}}">{{item}}</a></div>
+                {% endfor %}
+            </div>
+        </div>
 
     	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
 
@@ -557,6 +639,7 @@
                 <label class="check-group__label" for="radio3" style="cursor: pointer;">Текст Брайля</label>
             </div>
         </div>
+        <div class="form_error_item hkl_item" style="display: none;"><div>!</div>Укажите тип отправляемого файла</div>
 
         <div class="check-group rabComent">
             <input name="razRab" type="checkbox" class="check-group__check" id="radio_rab">
@@ -565,7 +648,8 @@
 
         <p>Комментарий</p>
         <textarea name="koment" id="item_koment"></textarea>
-        <p class="form_error_item"></p>
+        <div class="form_error_itemcom hkl_item" style="display: none;"><div>!</div>Укажите комментарий</div>
+
     </div>
     <div class="rg-form__btn-cont">
     	<button type="submit" class="rg-form__button btn">Отправить</button>
@@ -575,23 +659,33 @@
 </div>
   </div>
   {% else %}
-    <div id="emailmodal" class="modalbox">
+      <div id="emailmodal" class="modalbox">
     <div class="rg-form">
 	<h3 class="rg-form__title">Send To E-mail</h3>
-		<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
+	<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
 
 
- <p style="margin-bottom: 5px;">Specify the email address to send the materials to<br><span class="more_tes">or several through ;</span></p>
 
 
-        <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style="" required placeholder="Enter your email address to send the results" value="{{user_mail}}">
 
-        <select class="mail_select">
-            <option style="display: none;">Previously used email addresses</option>
-            {% for item in user_mails %}
-                <option>{{item}}</option>
-            {% endfor %}
-        </select>
+
+    <div class="rg-form__group">
+
+        <p style="margin-bottom: 5px;">Specify an email address for sending materials<br><span class="more_tes">or several via ;</span></p>
+
+        <div class="mail_blockl">
+
+            <div class="mail_li">
+                <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style=""  placeholder="Enter your email address to send the results" value="{{user_mail}}"><button class="more_btn"></button>
+            </div>
+            <div class="form_error_itemail hkl_item" style="display: none;"><div>!</div>Enter your email address</div>
+
+            <div class="option_list">
+                {% for item in user_mails %}
+                    <div><a href="" name="{{item}}">{{item}}</a></div>
+                {% endfor %}
+            </div>
+        </div>
 
     	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
 
@@ -599,7 +693,9 @@
 
 
 
-    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="Тема письма" value="" style="margin-top: 15px;">
+    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="Email subject" value="" style="margin-top: 15px;">
+
+
         <p>What to send?</p>
 
         <div class="choice-box" style="padding: 10px;">
@@ -613,9 +709,10 @@
             </div>
             <div class="check-group">
                 <input name="braille" type="checkbox" class="check-group__check" id="radio3" checked>
-                <label class="check-group__label" for="radio3" style="cursor: pointer;">The Braille Text</label>
+                <label class="check-group__label" for="radio3" style="cursor: pointer;">Braille Text</label>
             </div>
         </div>
+        <div class="form_error_item hkl_item" style="display: none;"><div>!</div>Specify the type of file</div>
 
         <div class="check-group rabComent">
             <input name="razRab" type="checkbox" class="check-group__check" id="radio_rab">
@@ -624,7 +721,8 @@
 
         <p>Comment</p>
         <textarea name="koment" id="item_koment"></textarea>
-        <p class="form_error_item"></p>
+        <div class="form_error_itemcom hkl_item" style="display: none;"><div>!</div>Enter a comment</div>
+
     </div>
     <div class="rg-form__btn-cont">
     	<button type="submit" class="rg-form__button btn">Send</button>
@@ -727,26 +825,25 @@
 <script>
 
 $( document ).ready(function() {
-$("#file_id").attr("value","{{item_id}}");
+    $("#file_id").attr("value","{{item_id}}");
 
-if(flag_proc == "True"){
+    if(flag_proc == "True"){
+               tick();
+    }
+
     function tick() {
         $.ajax({
             url: "/result_test/{{item_id}}/",
             success: function(data){
+                console.log(data);
                if(data == "True"){
-                    clearInterval(t);
                     location.reload();
+               }else{
+                    tick();
                }
             }
         });
     }
-
-  var t = setInterval(tick, 2000);
-
-}
-
-
 
 });
 </script>

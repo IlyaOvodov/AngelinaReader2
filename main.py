@@ -44,6 +44,19 @@ def user_data():
 
 
 
+
+@app.route("/setting/", methods=['POST'])
+def setting():
+    referrer = request.referrer
+
+    if session.get('language') == "RU":
+        msg = "Настройки успешно обновлены"
+    else:
+        msg = "Settings updated successfully"
+
+    return redirect(f"{referrer}/?answer={msg}&color=true")
+
+
 @app.route("/pass_to_mail/", methods=['POST'])
 def pass_to_mail():
     if request.method == 'POST':
@@ -155,6 +168,7 @@ def login():
                 if user.check_password(password) == True:
                     session['user_id'] = user.id
                     session['user_name'] = user.name
+                    session['user_mail'] = user.email
                     return redirect("/")
                 else:
                     if session.get('language') == "RU":
@@ -277,6 +291,20 @@ def send_data():
                 msg = "Login error"
 
     return redirect(f"{referrer}/?answer={msg}")
+
+
+
+
+@app.route("/unpublic/<string:item_id>/<string:sost>/")
+def unpublic(item_id,sost):
+    referrer = request.referrer
+
+    product_list = AngelinaSolver()
+    if sost == 'False':
+        new_sost = product_list.set_public_acceess(item_id, False)
+    else:
+        new_sost = product_list.set_public_acceess(item_id, True)
+    return f"{new_sost}"
 
 
 

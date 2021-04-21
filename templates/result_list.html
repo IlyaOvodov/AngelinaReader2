@@ -1,71 +1,57 @@
 {% extends 'base.html' %}
 {% block content %}
-
-      <div class="site-content  container ">
-          <main class="site-main ">
-              {% if language == 'RU' %}
-                    <h1>Результаты распознавания</h1>
-              {% else %}
-                    <h1>Recognition results</h1>
-              {% endif %}
-
-
-
-              <div class="site-block documents">
+    <div class="site-content  container ">
+        <main class="site-main ">
+            {% if language == 'RU' %}
+                <h1>Результаты распознавания</h1>
+            {% else %}
+                <h1>Recognition results</h1>
+            {% endif %}
+            <div class="site-block documents">
                 <div class="documents-list rez_items">
-
                     {% for item in item_list %}
+                            <div class="documents-list__item">
+                                <div class="documents-card">
 
-                    <a href="/result/{{item.id}}/" style="color: black; text-decoration: none;">
-                        <div class="documents-list__item">
-                            <div class="documents-card">
-                                <div class="documents-card__top">
-                                    <div class="documents-card__date">{{item.date}}</div>
-                                    <div class="documents-card__img">{{item.name}}</div>
-                                </div>
-
-                      <div style="width: 100%; margin-bottom: 20px;">
-</div>
-                                <div class="documents-card__bottom" style="width: 100%; margin-bottom: 25px;">
-                                    <div class="documents-card__mediabox mediabox">
-
-                                                {% if item.public != 1 %}<div class="lock_item"><img src="{{ url_for('static', filename='images/lock_item.png') }}"></div>{% endif %}
-
-
-                                        <img src="{{item.img_url}}" alt="">
+                        <a href="/result/{{item.id}}/" style="color: black; text-decoration: none;">
+                                    <div class="documents-card__top">
+                                        <div class="documents-card__date">{{item.date}}</div>
+                                        <div class="documents-card__img">{{item.name}}</div>
                                     </div>
-                                    {% if item.sost == False %}
-                                        <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
-                                    {% else %}
-                                        <div class="documents-card__body">{{item.desc|safe}}...</div>
-                                    {% endif %}
+                                    <div style="width: 100%; margin-bottom: 20px;">
+                                    </div>
+                        </a>
+                                    <div class="documents-card__bottom" style="width: 100%; margin-bottom: 25px;">
+                                        <div class="documents-card__mediabox mediabox">
+                                            {% if item.public == False %}
+                                                <div class="lock_item" >
+                                                    <a href="/unpublic/{{item.id}}/True/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                                                </div>
+                                            {% else %}
+                                                <div class="lock_item" >
+                                                    <a href="/unpublic/{{item.id}}/False/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}"></a>
+                                                </div>
+                                            {% endif %}
+
+                        <a href="/result/{{item.id}}/" tabindex="-1" style="color: black; text-decoration: none;">
+                                            <img src="{{item.img_url}}" alt="">
+                        </a>
+                                        </div>
+
+                        <a href="/result/{{item.id}}/" tabindex="-1" style="color: black; text-decoration: none;">
+                                        {% if item.sost == False %}
+                                            <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
+                                        {% else %}
+                                            <div class="documents-card__body">{{item.desc|safe}}...</div>
+                                        {% endif %}
+                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </a>
-
+                        </a>
                     {% endfor %}
-
-
-
-
-
                 </div>
-              </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-          </main>
-      </div>
-
+            </div>
+        </main>
+    </div>
 {% endblock %}

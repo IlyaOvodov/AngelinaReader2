@@ -1,49 +1,44 @@
-
-        <aside class="site-sidebar">
-          <h3>{% if language == 'RU' %}История{% else %}History{% endif %}</h3>
-          <div class="site-block documents">
-            <div class="documents-list">
-
-
-              {% for item in my_list_item %}
+<aside class="site-sidebar">
+    <h3>{% if language == 'RU' %}История{% else %}History{% endif %}</h3>
+    <div class="site-block documents">
+        <div class="documents-list">
+            {% for item in my_list_item %}
                 <div class="documents-list__item">
-                  <a href="/result/{{item.id}}/" style="color: black;text-decoration: none;">
                     <div class="documents-card">
-                      <div class="documents-card__top">
-                        <div class="documents-card__date">{{item.date}}</div>
-                        <div class="documents-card__img">{{item.name|safe}}</div>
-                      </div>
-                      <div style="width: 100%; margin-bottom: 20px;">
-                      </div>
-
-                      <div class="documents-card__bottom">
-                        <div class="documents-card__mediabox mediabox">
-
-                                {% if item.public != 1 %}<div class="lock_item"><img src="{{ url_for('static', filename='images/lock_item.png') }}"></div>{% endif %}
-
-
-                          <img src="{{item.img_url}}" alt="">
+                        <a href="/result/{{item.id}}/" style="color: black;text-decoration: none;">
+                            <div class="documents-card__top">
+                                <div class="documents-card__date">{{item.date}}</div>
+                                <div class="documents-card__img">{{item.name|safe}}</div>
+                            </div>
+                            <div style="width: 100%; margin-bottom: 20px;"></div>
+                        </a>
+                        <div class="documents-card__bottom">
+                            <div class="documents-card__mediabox mediabox">
+                                {% if item.public == False %}
+                                    <div class="lock_item">
+                                        <a href="/unpublic/{{item.id}}/True/" tabindex="-1" hline="/unpublic/{{item.id}}/"><img alt="Документ приватен" src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                                    </div>
+                                {% else %}
+                                    <div class="lock_item" >
+                                        <a href="/unpublic/{{item.id}}/False/" tabindex="-1" hline="/unpublic/{{item.id}}/"><img alt="Документ публичен" src="{{ url_for('static', filename='images/unlock_item.png') }}"></a>
+                                    </div>
+                                {% endif %}
+                                <a href="/result/{{item.id}}/" tabindex="-1" style="color: black;text-decoration: none;">
+                                    <img src="{{item.img_url}}" alt="{{item.name}}" >
+                                </a>
+                            </div>
+                            <a href="/result/{{item.id}}/" tabindex="-1" style="color: black;text-decoration: none;">
+                                {% if item.sost == False %}
+                                    <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
+                                {% else %}
+                                    <div class="documents-card__body">{{item.desc|safe}}...</div>
+                                {% endif %}
+                            </a>
                         </div>
-                        {% if item.sost == False %}
-                            <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}During the recognition process{% endif %}...</div>
-                        {% else %}
-                            <div class="documents-card__body">{{item.desc|safe}}...</div>
-                        {% endif %}
-                      </div>
                     </div>
-                  </a>
                 </div>
-              {% endfor %}
-
-
-
-
-
-              
-            </div>
-            <div class="documents__footer"><a href="/result_list/" class="readmore a_hover">{% if language == 'RU' %}Показать все{% else %}Show all{% endif %}</a></div>
-          </div>
-
-
-              </div>
-        </aside><!-- eof site-content -->
+            {% endfor %}
+        </div>
+        <div class="documents__footer"><a href="/result_list/" class="readmore a_hover">{% if language == 'RU' %}Показать все{% else %}Show all{% endif %}</a></div>
+    </div>
+</aside><!-- eof site-content -->

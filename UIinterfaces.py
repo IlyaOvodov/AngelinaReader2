@@ -603,4 +603,12 @@ class AngelinaSolver:
         return ["angelina-reader@ovdv.ru", "il@ovdv.ru", "iovodov@gmail.com"]  # TODO
 
     def set_public_acceess(self, task_id, is_public):
-        pass
+        """
+            Состояние публичности выставляем в соответствии с переданным is_public
+            True - Публичный (Замок открыт)
+        """
+        print('set_public_access', task_id, is_public)
+        if is_public is False:
+            return True
+        else:
+            return False
