@@ -48,6 +48,8 @@ def user_data():
 @app.route("/setting/", methods=['POST'])
 def setting():
     referrer = request.referrer
+    referrer = referrer.split('?', 1)
+    referrer = referrer[0]
 
     if session.get('language') == "RU":
         msg = "Настройки успешно обновлены"
@@ -84,9 +86,9 @@ def upload_photo():
     if request.method == 'POST':
         file = request.files
         lang = request.form.get('lang')
-        find_orientation = request.form.get('find_orientation')
-        process_2_sides = request.form.get('process_2_sides')
-        has_public_confirm = request.form.get('has_public_confirm')
+        find_orientation = False if request.form.get('find_orientation') is "False" else True
+        process_2_sides = False if request.form.get('process_2_sides') is "False" else True
+        has_public_confirm = False if request.form.get('has_public_confirm') is "False" else True
         if file != "" and lang != "" and find_orientation != "" and process_2_sides != "" and has_public_confirm != "":
             userID = None
             if session.get('user_id') is not None:
@@ -233,6 +235,8 @@ def registration():
 @app.route("/send_data/", methods=['POST'])
 def send_data():
     referrer = request.referrer
+    referrer = referrer.split('?', 1)
+    referrer = referrer[0]
     if request.method == 'POST':
         mail = request.form.get('mail')  # запрос к данным формы
         item_id = request.form.get('item_id')
@@ -298,6 +302,8 @@ def send_data():
 @app.route("/unpublic/<string:item_id>/<string:sost>/")
 def unpublic(item_id,sost):
     referrer = request.referrer
+    referrer = referrer.split('?', 1)
+    referrer = referrer[0]
 
     product_list = AngelinaSolver()
     if sost == 'False':

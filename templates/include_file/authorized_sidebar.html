@@ -16,15 +16,15 @@
                             <div class="documents-card__mediabox mediabox">
                                 {% if item.public == False %}
                                     <div class="lock_item">
-                                        <a href="/unpublic/{{item.id}}/True/" tabindex="-1" hline="/unpublic/{{item.id}}/"><img alt="Документ приватен" src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                                        <a href="/unpublic/{{item.id}}/True/" tabindex="-1" hline="/unpublic/{{item.id}}/"><img alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}" src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
                                     </div>
                                 {% else %}
                                     <div class="lock_item" >
-                                        <a href="/unpublic/{{item.id}}/False/" tabindex="-1" hline="/unpublic/{{item.id}}/"><img alt="Документ публичен" src="{{ url_for('static', filename='images/unlock_item.png') }}"></a>
+                                        <a href="/unpublic/{{item.id}}/False/" tabindex="-1" hline="/unpublic/{{item.id}}/"><img alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}" src="{{ url_for('static', filename='images/unlock_item.png') }}"></a>
                                     </div>
                                 {% endif %}
                                 <a href="/result/{{item.id}}/" tabindex="-1" style="color: black;text-decoration: none;">
-                                    <img src="{{item.img_url}}" alt="{{item.name}}" >
+                                    <img src="{{item.img_url}}" alt="{% if language == 'RU' %}Результат распознавания{% else %}Recognition result{% endif %}" >
                                 </a>
                             </div>
                             <a href="/result/{{item.id}}/" tabindex="-1" style="color: black;text-decoration: none;">

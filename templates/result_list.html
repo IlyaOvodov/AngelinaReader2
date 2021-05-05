@@ -25,16 +25,16 @@
                                         <div class="documents-card__mediabox mediabox">
                                             {% if item.public == False %}
                                                 <div class="lock_item" >
-                                                    <a href="/unpublic/{{item.id}}/True/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/lock_item.png') }}"></a>
+                                                    <a href="/unpublic/{{item.id}}/True/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/lock_item.png') }}" alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
                                                 </div>
                                             {% else %}
                                                 <div class="lock_item" >
-                                                    <a href="/unpublic/{{item.id}}/False/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}"></a>
+                                                    <a href="/unpublic/{{item.id}}/False/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
                                                 </div>
                                             {% endif %}
 
                         <a href="/result/{{item.id}}/" tabindex="-1" style="color: black; text-decoration: none;">
-                                            <img src="{{item.img_url}}" alt="">
+                                            <img src="{{item.img_url}}" alt="{% if language == 'RU' %}Результат распознавания{% else %}Recognition result{% endif %}">
                         </a>
                                         </div>
 

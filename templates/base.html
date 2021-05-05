@@ -26,12 +26,12 @@
                     {% if status == True %}
                         <li><a href="/result_list/" role="menuitem">{% if language == 'RU' %}История{% else %}History{% endif %}</a></li>
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
-                        <li><a href="#data_modal" role="menuitem">{% if language == 'RU' %}Настройки{% else %}Settings{% endif %}</a></li>
+                        <li><a href="#data_modal" data-fancybox role="menuitem">{% if language == 'RU' %}Настройки{% else %}Settings{% endif %}</a></li>
                         <li><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></li>
                     {% else %}
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
                         <li><a data-fancybox href="#regmodal" role="menuitem" class="close_buurger">{% if language == 'RU' %}Регистрация{% else %}Registration{% endif %}</a></li>
-                        <li><a data-fancybox href="#loginmodal" role="menuitem" class="close_buurger">{% if language == 'RU' %}Вход{% else %}Login{% endif %}</a></li>
+                        <li><a data-fancybox href="#loginmodal" role="menuitem" class="close_buurger login">{% if language == 'RU' %}Вход{% else %}Login{% endif %}</a></li>
                     {% endif %}
       </ul>
   </nav>
@@ -45,8 +45,8 @@
         <div class="row head_block">
             <div class="col-4 col-lg-2 site-logo_bloctextk" >
                 <a href="/" class="site-logo_block">
-                    <img class="img_pc" src="{{ url_for('static', filename='images/logo_head.png') }}" />
-                    <img class="img_mb" src="{{ url_for('static', filename='images/logo_head_mob.png') }}" />
+                    <img class="img_pc" src="{{ url_for('static', filename='images/logo_head.png') }}" alt="{% if language == 'RU' %}Логотип{% else %}Logo{% endif %}" />
+                    <img class="img_mb" src="{{ url_for('static', filename='images/logo_head_mob.png') }}" alt="{% if language == 'RU' %}Логотип{% else %}Logo{% endif %}" />
 		        </a>
             </div>
             <div class="col-md-6 col-lg-6 hide990">
@@ -55,7 +55,7 @@
                         <li><a href="/result_list/" role="menuitem">{% if language == 'RU' %}История{% else %}History{% endif %}</a></li>
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
 
-                        <li><a href="#data_modal" role="menuitem">{% if language == 'RU' %}Настройки{% else %}Settings{% endif %}</a></li>
+                        <li><a href="#data_modal" data-fancybox role="menuitem">{% if language == 'RU' %}Настройки{% else %}Settings{% endif %}</a></li>
                         <li><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></li>
                     {% else %}
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
@@ -74,13 +74,13 @@
                     <div class="col-7">
                         <div class="site-header__btn-panel">
                             {% if status == True %}
-                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk" href="#data_modal"><img src="{{ url_for('static', filename='images/lk.png') }}" alt=""><span style="line-height: 1;">{{name}}</span></a>
+                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk" href="#data_modal"><img src="{{ url_for('static', filename='images/lk.png') }}" alt="{% if language == 'RU' %}Аккаунт{% else %}Account{% endif %}"><span style="line-height: 1;">{{name}}</span></a>
                             {% else %}
-                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk" href="#loginmodal"><img src="{{ url_for('static', filename='images/lk_login.png') }}" alt=""><span>Войти</span></a>
+                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk login" href="#loginmodal"><img src="{{ url_for('static', filename='images/lk_login.png') }}" alt="{% if language == 'RU' %}Вход{% else %}Entrance{% endif %}"><span>{% if language == 'RU' %}Вход{% else %}Entrance{% endif %}</span></a>
                             {% endif %}
 
-                            <a class="site-header__btn gr-btn gr-btn_question" href="/help/"><img src="{{ url_for('static', filename='images/question.png') }}" alt=""></a>
-                            <div class="gr-btn site-header__burger menu-button js-menu-button" ><img src="{{ url_for('static', filename='images/menu_icon1.png') }}" alt=""></div>
+                            <a class="site-header__btn gr-btn gr-btn_question" href="/help/"><img src="{{ url_for('static', filename='images/question.png') }}" alt="{% if language == 'RU' %}Помощь{% else %}Help{% endif %}"></a>
+                            <div class="gr-btn site-header__burger menu-button js-menu-button left_menu" ><img src="{{ url_for('static', filename='images/menu_icon1.png') }}" alt="{% if language == 'RU' %}Меню{% else %}Menu{% endif %}"></div>
                         </div>
                     </div>
                 </div>
@@ -93,13 +93,17 @@
 	</div>
 </header>
         {% if msg_log %}
+
+        <script>
+            history.replaceState(null, '', window.location.pathname);
+        </script>
             <div class="msg_window" {% if color %} style="background: green;"{% endif %}>
                 <p>{{msg_log}}</p>
             </div>
         {% endif %}
 
 
-{% block content -%}
+{% block content %}
       <div class="site-content site-content_home container ">
         <main class="site-main ">
              {% if language == 'RU' %}
@@ -114,15 +118,15 @@
               {% else %}
                           <div class="load-block__sm-text">Upload a photo of the text in Braille: image (jpg, png, etc.), pdf or zip</span></div>
               {% endif %}
-            <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}" alt=""> <span>{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}</span></a>
+            <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}" alt="{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}"> <span>{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}</span></a>
 
 
             <div class="load-block__btn-cont mob_btn">
               <a data-fancybox href="#upload_photo" class="load-block__btn load-block__btn_photo load-btn">
-                <img src="{{ url_for('static', filename='images/camera-art-png-12.png') }}" alt=""><span>{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}</span>
+                <img src="{{ url_for('static', filename='images/camera-art-png-12.png') }}" alt="{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}</span>
               </a>
               <a data-fancybox href="#upload_photo" class="load-block__btn load-btn btn_file">
-                <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt=""><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
+                <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt="{% if language == 'RU' %}Загрузить файл{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
               </a>
             </div>
 
@@ -179,7 +183,7 @@
           
           <div class="photo-card pc-vis">
             <div class="photo-card__mediabox ">
-              <div class="mediabox"><img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="Как правильно сделать фото"></div>
+              <div class="mediabox"><img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="{% if language == 'RU' %}Как правильно сделать фото{% else %}How to take a photo correctly{% endif %}"></div>
             </div>
             <div class="photo-card__body">
                {% if language == 'RU' %}
@@ -390,7 +394,7 @@
   <div id="upload_photo" class="modalbox">
     <div class="rg-form">
 	<h3 class="rg-form__title">Загрузить файл</h3>
-	<form action="/upload_photo/" method="post" class="rg-form__form" enctype="multipart/form-data">
+	<form action="/upload_photo/" method="post" class="rg-form__form" enctype="multipart/form-data" id="form_SendPhoto">
 
     <div class="rg-form__group">
         <input type="file" name="file" class="rg-form__inp" required placeholder="Выбор документа" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
@@ -410,7 +414,7 @@
   <div id="upload_photo" class="modalbox">
     <div class="rg-form">
 	<h3 class="rg-form__title">Upload a file</h3>
-	<form action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
+	<form action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data" id="form_SendPhoto">
 
     <div class="rg-form__group">
         <input type="file" name="file" class="rg-form__inp" required placeholder="Upload photo" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
@@ -455,6 +459,18 @@
                 <option value="var1">Вариант 1</option>
             </select>
             <input type="date" class="rg-form__inp">
+
+
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
             <div class="choice-box" style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0" >
                     <input name="image" type="checkbox" class="check-group__check" id="radio_21" checked>
@@ -512,6 +528,7 @@
                 <option value="var1">Вариант 1</option>
             </select>
             <input type="date" class="rg-form__inp">
+
             <div class="choice-box" style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0">
                     <input name="image" type="checkbox" class="check-group__check" id="radio_21" checked>
@@ -802,10 +819,14 @@
   {% endif %}
 
     {% if answer_modal %}
+
+        <script>
+            history.replaceState(null, '', window.location.pathname);
+        </script>
           <div class="modal_msg">
               <div>
                   <div>
-                      <img src="{{ url_for('static', filename='images/icon_sendmsg.png') }}">
+                      <img src="{{ url_for('static', filename='images/icon_sendmsg.png') }}" alt="{% if language == 'RU' %}Отправка фото{% else %}Sending a photo{% endif %}">
                         {% if language == 'RU' %}
                             <p>Данные успешно отправлены</p>
                             <button class="btn">Закрыть</button>
@@ -816,6 +837,7 @@
                   </div>
               </div>
           </div>
+
     {% endif %}
 
 
