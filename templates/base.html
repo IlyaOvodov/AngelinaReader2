@@ -104,9 +104,11 @@
 
 
 {% block content %}
+
       <div class="site-content site-content_home container ">
         <main class="site-main ">
-             {% if language == 'RU' %}
+
+            {% if language == 'RU' %}
                 <h1 class="main-title">Распознавание текста шрифтом Брайля на изображении</h1>
              {% else %}
                 <h1 class="main-title">Braille text recognition on an image.</h1>
@@ -121,19 +123,54 @@
             <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}" alt="{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}"> <span>{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}</span></a>
 
 
+
+
             <div class="load-block__btn-cont mob_btn">
-              <a data-fancybox href="#upload_photo" class="load-block__btn load-block__btn_photo load-btn">
-                <img src="{{ url_for('static', filename='images/camera-art-png-12.png') }}" alt="{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}</span>
-              </a>
-              <a data-fancybox href="#upload_photo" class="load-block__btn load-btn btn_file">
-                <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt="{% if language == 'RU' %}Загрузить файл{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
-              </a>
+              <div  class=" load-block__btn_photo load-btn">
+                  <form id="image_mkphoto" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
+                      <label for="file-input">
+                        <img  src="{{ url_for('static', filename='images/camera-art-png-12.png') }}" alt="{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}</span>
+                      </label>
+                      <input id="file-input" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" capture="camera">
+
+                      <input type="text" name="lang" id="input_lang" style="display: none;">
+                      <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
+                      <input type="text" name="process_2_sides" id="process_2_sides" style="display: none;">
+                      <input type="text" name="has_public_confirm" id="has_public_confirm" style="display: none;">
+                  </form>
+              </div>
+              <div  class=" load-block__btn_photo load-btn">
+                  <form id="image_loadphoto" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
+                      <label for="file-input_load">
+                        <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt="{% if language == 'RU' %}Загрузить файл{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
+                      </label>
+                      <input id="file-input_load" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" >
+
+                      <input type="text" name="lang" id="input_lang" style="display: none;">
+                      <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
+                      <input type="text" name="process_2_sides" id="process_2_sides" style="display: none;">
+                      <input type="text" name="has_public_confirm" id="has_public_confirm" style="display: none;">
+                  </form>
+              </div>
             </div>
 
+
+
             <div class="pc_btn" style="display: none; ">
-              <a data-fancybox href="#upload_photo" class="load-block__btn load-btn btn_file btn" style="margin: 0px auto;">
-                <span style="color: white;">{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
-              </a>
+                <form id="image_loadphoto_pc" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
+                      <label for="file-input_loadpc">
+                        <div class="load-block__btn load-btn btn_file btn lbtn" style="margin: 0px auto;">
+                            <span style="color: white;">{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
+                        </div>
+                      </label>
+                      <input id="file-input_loadpc" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" >
+
+                      <input type="text" name="lang" id="input_lang" style="display: none;">
+                      <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
+                      <input type="text" name="process_2_sides" id="process_2_sides" style="display: none;">
+                      <input type="text" name="has_public_confirm" id="has_public_confirm" style="display: none;">
+                  </form>
+
             </div>
 
               {% if language == 'RU' %}

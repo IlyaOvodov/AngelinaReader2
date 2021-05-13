@@ -303,7 +303,7 @@ class AngelinaSolver:
     ##########################################
 
 
-    def __init__(self, data_root_path="static/data"):
+    def __init__(self, data_root_path="/var/www/FlaskApache/static/data"):  # GVNC
         self.data_root = Path(data_root_path)
         self.tasks_dir = Path('tasks')
         self.raw_images_dir = Path('raw')
@@ -474,8 +474,8 @@ class AngelinaSolver:
                 "create_date": datetime.strptime('2011-11-04 00:05:23', "%Y-%m-%d %H:%M:%S"), #"20200104 200001",
                 "item_data":
         [
-        (prefix + doc_id + ".marked.jpg", prefix[1:] + doc_id + ".marked.txt", prefix[1:] + doc_id + ".marked.brl",),
-        (prefix + doc_id + ".marked.jpg", prefix[1:] + doc_id + ".marked-2.txt", prefix[1:] + doc_id + ".marked.brl",),
+        (prefix + doc_id + ".marked.jpg", str(self.data_root / self.results_dir) + "/" + doc_id + ".marked.txt",   str(self.data_root / self.results_dir) + "/" + doc_id + ".marked.brl",),
+        (prefix + doc_id + ".marked.jpg", str(self.data_root / self.results_dir) + "/" + doc_id + ".marked-2.txt", str(self.data_root / self.results_dir) + "/" + doc_id + ".marked.brl",),
         ][:(AngelinaSolver.TMP_RESULT_SELECTOR+1)],  # возвращает 1 или 2 результаты попеременно
         "protocol": prefix + doc_id + ".protocol.txt"}
 
@@ -564,8 +564,8 @@ class AngelinaSolver:
         result = [
             (doc_id, json.dumps([[
                 r[0][len(AngelinaSolver.PREFIX):],
-                r[1][len(AngelinaSolver.PREFIX) - 1:],
-                r[2][len(AngelinaSolver.PREFIX) - 1:],
+                r[1][len(str(self.data_root)):],
+                r[2][len(str(self.data_root)):],
             ] for r in results["item_data"]]), TaskState.PROCESSING_DONE.value)
         ]
 

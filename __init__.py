@@ -1,17 +1,22 @@
-import sqlite3
+# Call vendor to add the dependencies to the classpath
+# -*- coding: UTF-8 -*-
+
+import vendor
+#vendor.add('lib')
+
 import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
 from UIinterfaces import AngelinaSolver
 
-DEBUG = True
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
 
+DEBUG = True
 
+# Import the Flask Framework
 app = Flask(__name__)
-app.config.from_object(__name__)
 
-app.config.update(dict(DATABASE=os.path.join(app.root_path,'flsite.db')))
+app.config.from_object(__name__)
 
 
 @app.teardown_appcontext
@@ -56,7 +61,7 @@ def setting():
     else:
         msg = "Settings updated successfully"
 
-    return redirect(f"{referrer}/?answer={msg}&color=true")
+    return redirect(""+referrer+"/?answer="+msg+"&color=true")
 
 
 @app.route("/pass_to_mail/", methods=['POST'])
@@ -71,15 +76,15 @@ def pass_to_mail():
                 sendMail = user.send_new_pass_to_mail();
                 msg = sendMail
                 if msg is True:
-                    msg = f"Инструкция по восстановлению пароля отправлена на e-mail {mail}"
-                    return redirect(f"/?answer={msg}&color=green")
+                    msg = "Инструкция по восстановлению пароля отправлена на e-mail "+mail
+                    return redirect("/?answer=+"+msg+"&color=green")
                 else:
                     msg = "Пользователь с таким e-mail не зарегистрирован"
             else:
                 msg = "Пользователь с таким e-mail не зарегистрирован"
         else:
             msg = "Не все поля заполнены"
-    return redirect(f"/?answer={msg}")
+    return redirect("/?answer="+msg)
 
 @app.route("/upload_photo/", methods=['POST'])
 def upload_photo():
@@ -104,7 +109,7 @@ def upload_photo():
                 else:
                     msg = "Login error"
             else:
-                return redirect(f"/result/{user}/")
+                return redirect("/result/"+user+"/")
         else:
             if session.get('language') == "RU":
                 msg = "Ошибка загрузки фото"
@@ -115,7 +120,7 @@ def upload_photo():
             msg = "Ошибка загрузки фото"
         else:
             msg = "Login error"
-    return redirect(f"/?answer={msg}")
+    return redirect("/?answer="+msg)
 
 
 
@@ -150,7 +155,7 @@ def new_pass():
             msg = "Ошибка смены пароля"
         else:
             msg = "Error"
-    return redirect(f"/?answer={msg}")
+    return redirect("/?answer="+msg)
 
 
 
@@ -193,7 +198,7 @@ def login():
         else:
             msg = "Login error"
 
-    return redirect(f"/?answer={msg}")
+    return redirect("/?answer="+msg)
 
 @app.route("/registration/", methods=['POST'])
 def registration():
@@ -230,7 +235,7 @@ def registration():
         else:
             msg = "Login error"
 
-    return redirect(f"/?answer={msg}")
+    return redirect("/?answer="+msg)
 
 @app.route("/send_data/", methods=['POST'])
 def send_data():
@@ -282,7 +287,7 @@ def send_data():
                 else:
                     msg = "Data sent"
 
-                return redirect(f"{referrer}/?answer_modal={msg}")
+                return redirect(referrer+"/?answer_modal="+msg)
             else:
                 if session.get('language') == "RU":
                     msg = "Ошибка отправки"
@@ -294,7 +299,7 @@ def send_data():
             else:
                 msg = "Login error"
 
-    return redirect(f"{referrer}/?answer={msg}")
+    return redirect(referrer+"/?answer="+msg)
 
 
 
@@ -310,7 +315,7 @@ def unpublic(item_id,sost):
         new_sost = product_list.set_public_acceess(item_id, False)
     else:
         new_sost = product_list.set_public_acceess(item_id, True)
-    return f"{new_sost}"
+    return new_sost+""
 
 
 
@@ -328,7 +333,7 @@ def result_list():
             msg = "Ошибка авторизации"
         else:
             msg = "Login error"
-        return redirect(f"/?answer={msg}")
+        return redirect("/?answer="+msg)
 
 
 
@@ -414,10 +419,10 @@ def result(item_id):
     is_completed_test = product_list.is_completed(item_id)
 
     if is_completed_test is not False:
-
         items_id = product_list.get_results(item_id)
 
         decode_dict = []
+        #return "test"
         for item in items_id['item_data']:
 
             user_mails =  product_list.get_user_emails(id)
@@ -474,14 +479,15 @@ def showItem(slug):
     return  render_template('post.html', itemData=item, language=target_language, status=status, id=id, name=user_name)
 
 
-if __name__ == '__main__':
-    import sys  # TODO
-    port = 5000
-    real_mode = '--real' in sys.argv[1:]
-    if real_mode:
-        sys.path.insert(1,'../MyCode')
-        from web_app.angelina_reader_core import AngelinaSolver
-        port = 5001
-    app.run(host='0.0.0.0', port=port)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == '__main__':
+    #import sys  # TODO
+    #port = 5000
+    #real_mode = '--real' in sys.argv[1:]
+    #if real_mode:
+    #    sys.path.insert(1,'../MyCode')
+    #    from web_app.angelina_reader_core import AngelinaSolver
+    #    port = 5001
+    #app.run(host='0.0.0.0', port=port)
+    app.run()
+
