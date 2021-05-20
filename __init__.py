@@ -481,12 +481,12 @@ def showItem(slug):
 
 
 if __name__ == '__main__':
-    #import sys  # TODO
+    import sys  # TODO
     #port = 5000
-    #real_mode = '--real' in sys.argv[1:]
-    #if real_mode:
-    #    sys.path.insert(1,'../MyCode')
-    #    from web_app.angelina_reader_core import AngelinaSolver
+    real_mode = True  #'--real' in sys.argv[1:]
+    if real_mode:
+        sys.path.insert(1,'/home/freemark/MyCode')
+        from web_app.angelina_reader_core import AngelinaSolver
     #    port = 5001
     #app.run(host='0.0.0.0', port=port)
     app.run()
