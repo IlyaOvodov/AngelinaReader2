@@ -791,3 +791,18 @@ margin-bottom: 35px;
     margin-top: 15px;
     margin-bottom: 10px;
 }
+
+
+.check-group__check{
+height: 28px;
+    width: 33px;
+    margin: 0px !important;
+
+    display: block !important;
+    position: absolute;
+}
+
+.check-group__label:before{
+background: url(../images/input_bg.png);
+
+}

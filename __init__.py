@@ -7,7 +7,9 @@ import vendor
 import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
-from UIinterfaces import AngelinaSolver
+sys.path.insert(1,'/var/www/FlaskApache/MyCode')
+#from UIinterfaces import AngelinaSolver
+from web_app.angelina_reader_core import AngelinaSolver
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
 
@@ -61,7 +63,7 @@ def setting():
     else:
         msg = "Settings updated successfully"
 
-    return redirect(""+referrer+"/?answer="+msg+"&color=true")
+    return redirect(f"{referrer}/?answer={msg}&color=true")
 
 
 @app.route("/pass_to_mail/", methods=['POST'])
@@ -77,24 +79,25 @@ def pass_to_mail():
                 msg = sendMail
                 if msg is True:
                     msg = "Инструкция по восстановлению пароля отправлена на e-mail "+mail
-                    return redirect("/?answer=+"+msg+"&color=green")
+                    return redirect(f"/?answer={msg}&color=green")
                 else:
                     msg = "Пользователь с таким e-mail не зарегистрирован"
             else:
                 msg = "Пользователь с таким e-mail не зарегистрирован"
         else:
             msg = "Не все поля заполнены"
-    return redirect("/?answer="+msg)
+    return redirect(f"/?answer={msg}")
 
 @app.route("/upload_photo/", methods=['POST'])
 def upload_photo():
     if request.method == 'POST':
         file = request.files
+
         lang = request.form.get('lang')
-        find_orientation = False if request.form.get('find_orientation') is "False" else True
-        process_2_sides = False if request.form.get('process_2_sides') is "False" else True
-        has_public_confirm = False if request.form.get('has_public_confirm') is "False" else True
-        if file != "" and lang != "" and find_orientation != "" and process_2_sides != "" and has_public_confirm != "":
+        find_orientation = True if request.form.get('find_orientation') != 'False' else False
+        process_2_sides = True if request.form.get('process_2_sides') != 'False' else False
+        has_public_confirm = True if request.form.get('has_public_confirm') != 'False' else False
+        if file != "":
             userID = None
             if session.get('user_id') is not None:
                 userID = session['user_id']
@@ -109,7 +112,7 @@ def upload_photo():
                 else:
                     msg = "Login error"
             else:
-                return redirect("/result/"+user+"/")
+                return redirect(f"/result/{user}/")
         else:
             if session.get('language') == "RU":
                 msg = "Ошибка загрузки фото"
@@ -120,7 +123,7 @@ def upload_photo():
             msg = "Ошибка загрузки фото"
         else:
             msg = "Login error"
-    return redirect("/?answer="+msg)
+    return redirect(f"/?answer={msg}")
 
 
 
@@ -155,7 +158,7 @@ def new_pass():
             msg = "Ошибка смены пароля"
         else:
             msg = "Error"
-    return redirect("/?answer="+msg)
+    return redirect(f"/?answer={msg}")
 
 
 
@@ -198,7 +201,7 @@ def login():
         else:
             msg = "Login error"
 
-    return redirect("/?answer="+msg)
+    return redirect(f"/?answer={msg}")
 
 @app.route("/registration/", methods=['POST'])
 def registration():
@@ -235,7 +238,7 @@ def registration():
         else:
             msg = "Login error"
 
-    return redirect("/?answer="+msg)
+    return redirect(f"/?answer={msg}")
 
 @app.route("/send_data/", methods=['POST'])
 def send_data():
@@ -287,7 +290,7 @@ def send_data():
                 else:
                     msg = "Data sent"
 
-                return redirect(referrer+"/?answer_modal="+msg)
+                return redirect(f"{referrer}/?answer_modal={msg}")
             else:
                 if session.get('language') == "RU":
                     msg = "Ошибка отправки"
@@ -299,7 +302,7 @@ def send_data():
             else:
                 msg = "Login error"
 
-    return redirect(referrer+"/?answer="+msg)
+    return redirect(f"{referrer}/?answer={msg}")
 
 
 
@@ -333,7 +336,7 @@ def result_list():
             msg = "Ошибка авторизации"
         else:
             msg = "Login error"
-        return redirect("/?answer="+msg)
+        return redirect(f"/?answer={msg}")
 
 
 
@@ -479,15 +482,15 @@ def showItem(slug):
     return  render_template('post.html', itemData=item, language=target_language, status=status, id=id, name=user_name)
 
 
-
 if __name__ == '__main__':
     import sys  # TODO
-    #port = 5000
-    real_mode = True  #'--real' in sys.argv[1:]
+    port = 5001
+    real_mode = False  #'--real' in sys.argv[1:]
     if real_mode:
-        sys.path.insert(1,'/home/freemark/MyCode')
+        #sys.path.insert(1,'/home/freemark/MyCode')
         from web_app.angelina_reader_core import AngelinaSolver
+        print('real mode is ON')
     #    port = 5001
-    #app.run(host='0.0.0.0', port=port)
-    app.run()
+    app.run(host='0.0.0.0', port=port)
+    #app.run()
 

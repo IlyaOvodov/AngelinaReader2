@@ -128,10 +128,12 @@
             <div class="load-block__btn-cont mob_btn">
               <div  class=" load-block__btn_photo load-btn">
                   <form id="image_mkphoto" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
+
+
                       <label for="file-input">
                         <img  src="{{ url_for('static', filename='images/camera-art-png-12.png') }}" alt="{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Сделать фото{% else %}Take a photo{% endif %}</span>
                       </label>
-                      <input id="file-input" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" capture="camera">
+                      <input accept="image/*" capture="camera" id="file-input" name="file" style="display:none;" type="file">
 
                       <input type="text" name="lang" id="input_lang" style="display: none;">
                       <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
@@ -159,11 +161,11 @@
             <div class="pc_btn" style="display: none; ">
                 <form id="image_loadphoto_pc" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
                       <label for="file-input_loadpc">
-                        <div class="load-block__btn load-btn btn_file btn lbtn" style="margin: 0px auto;">
+                        <div class="load-block__btn load-btn btn_file btn lbtn" tabindex="0" style="margin: 0px auto;">
                             <span style="color: white;">{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
                         </div>
                       </label>
-                      <input id="file-input_loadpc" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" >
+                      <input id="file-input_loadpc" class="blocktest" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
 
                       <input type="text" name="lang" id="input_lang" style="display: none;">
                       <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
@@ -186,11 +188,11 @@
               {% endif %}
             <div class="load-block__agree">
               <div class="check-group target_intput" tabindex="0">
-                <input name="agree" type="radio" class="check-group__check" id="radio1" />
+                <input name="agree" type="radio" class="check-group__check" id="radio1"  tabindex="-1"/>
                 <label class="check-group__label" for="radio1" style="cursor: pointer;">{% if language == 'RU' %}Я согласен{% else %}I agree{% endif %}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input name="agree" type="radio" class="check-group__check" id="radio2" />
+                <input name="agree" type="radio" class="check-group__check" id="radio2"  tabindex="-1"/>
                 <label class="check-group__label" id="radio2_target" for="radio2" style="cursor: pointer;">{% if language == 'RU' %}Возражаю{% else %}Mind{% endif %}</label>
               </div>
             </div>
@@ -208,11 +210,11 @@
                 <label class="check-group__label check-group__label_lang">{% if language == 'RU' %}Язык текста{% else %}Text language{% endif %}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1" />
+                <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1" tabindex="-1"/>
                 <label class="check-group__label" for="checkbox1" style="cursor: pointer;">{% if language == 'RU' %}Автоориентация{% else %}Auto-orientation{% endif %}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input type="checkbox" name="process_2_sides" class="check-group__check" id="checkbox2" />
+                <input type="checkbox" name="process_2_sides" class="check-group__check" id="checkbox2" tabindex="-1"/>
                 <label class="check-group__label" for="checkbox2" style="cursor: pointer;">{% if language == 'RU' %}Обе стороны{% else %}Both sides{% endif %}</label>
               </div>
             </div>
@@ -344,11 +346,11 @@
 		<div class="rg-form__check-cont">
 
         <div class="check-group target_intput" tabindex="0">
-            <input type="checkbox"  class="check-group__check"  id="checkbox11" />
+            <input type="checkbox"  class="check-group__check"  id="checkbox11" tabindex="-1" />
             <label class="check-group__label" for="checkbox11" style="cursor: pointer;">Ознакомлен с <a class="check-group__link" href="/help/">инструкцией пользователя</a></label>
         </div>
         <div class="check-group target_intput" tabindex="0">
-            <input type="checkbox" class="check-group__check"  id="checkbox12" />
+            <input type="checkbox" class="check-group__check"  id="checkbox12" tabindex="-1" />
             <label class="check-group__label" for="checkbox12" style="cursor: pointer;">Согласен с условиями <a class="check-group__link" href="/polit/">пользовательского соглашения</a></label>
         </div>
     </div>
@@ -387,11 +389,11 @@
 		<div class="rg-form__text">To register, confirm the following conditions:</div>
 		<div class="rg-form__check-cont">
       <div class="check-group target_intput" tabindex="0">
-        <input type="checkbox" class="check-group__check" id="checkbox11"  />
+        <input type="checkbox" class="check-group__check" id="checkbox11" tabindex="-1" />
         <label class="check-group__label" for="checkbox11" style="cursor: pointer;">I am familiar with <a class="check-group__link" href="/help/">user manual</a></label>
       </div>
       <div class="check-group target_intput" tabindex="0">
-        <input type="checkbox" class="check-group__check" id="checkbox12"  />
+        <input type="checkbox" class="check-group__check" id="checkbox12" tabindex="-1" />
         <label class="check-group__label" for="checkbox12" style="cursor: pointer;">I agree to the terms and conditions <a class="check-group__link" href="/polit/">user agreement</a></label>
       </div>
     </div>
@@ -510,26 +512,26 @@
             <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
             <div class="choice-box" style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0" >
-                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" checked>
+                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" tabindex="-1" checked>
                     <label  class="check-group__label" for="radio_21" style="cursor: pointer;">Изображение</label>
                 </div>
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" checked>
+                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" tabindex="-1" checked>
                     <label class="check-group__label" for="radio_22" style="cursor: pointer;">Текст</label>
                 </div>
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" checked>
+                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" tabindex="-1" checked>
                     <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
                 </div>
             </div>
             <input type="file" class="rg-form__inp" />
             <div class="load-block__agree choice-box"  style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio5">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio5" tabindex="-1">
                     <label class="check-group__label" for="radio5" style="cursor: pointer;">Я согласен</label>
                 </div>
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio6">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio6" tabindex="-1">
                     <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
                 </div>
             </div>
@@ -568,26 +570,26 @@
 
             <div class="choice-box" style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" checked>
+                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" tabindex="-1" checked>
                     <label tabindex="0" class="check-group__label" for="radio_21" style="cursor: pointer;">Изображение</label>
                 </div>
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" checked>
+                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" tabindex="-1" checked>
                     <label class="check-group__label" for="radio_22" style="cursor: pointer;">Текст</label>
                 </div>
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" checked>
+                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" tabindex="-1" checked>
                     <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
                 </div>
             </div>
             <input type="file" class="rg-form__inp" />
             <div class="load-block__agree choice-box"  style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio5">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio5" tabindex="-1">
                     <label class="check-group__label" for="radio5" style="cursor: pointer;">Я согласен</label>
                 </div>
                 <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio6">
+                    <input name="item_agree" type="radio" class="check-group__check" id="radio6" tabindex="-1">
                     <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
                 </div>
             </div>
@@ -681,22 +683,22 @@
 
         <div class="choice-box" style="padding: 10px;">
             <div class="check-group">
-                <input name="image" type="checkbox" class="check-group__check" id="radio1" checked>
+                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="-1" checked>
                 <label class="check-group__label" for="radio1" style="cursor: pointer;">Изображение</label>
             </div>
             <div class="check-group">
-                <input name="text" type="checkbox" class="check-group__check" id="radio2" checked>
+                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="-1" checked>
                 <label class="check-group__label" for="radio2" style="cursor: pointer;">Текст</label>
             </div>
             <div class="check-group">
-                <input name="braille" type="checkbox" class="check-group__check" id="radio3" checked>
+                <input name="braille" type="checkbox" class="check-group__check" id="radio3" tabindex="-1" checked>
                 <label class="check-group__label" for="radio3" style="cursor: pointer;">Текст Брайля</label>
             </div>
         </div>
         <div class="form_error_item hkl_item" style="display: none;"><div>!</div>Укажите тип отправляемого файла</div>
 
         <div class="check-group rabComent">
-            <input name="razRab" type="checkbox" class="check-group__check" id="radio_rab">
+            <input name="razRab" type="checkbox" class="check-group__check" tabindex="-1" id="radio_rab">
             <label class="check-group__label" for="radio_rab" style="cursor: pointer;">Отправить разработчику</label>
         </div>
 
@@ -754,22 +756,22 @@
 
         <div class="choice-box" style="padding: 10px;">
             <div class="check-group">
-                <input name="image" type="checkbox" class="check-group__check" id="radio1" checked>
+                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="-1" checked>
                 <label class="check-group__label" for="radio1" style="cursor: pointer;">Image</label>
             </div>
             <div class="check-group">
-                <input name="text" type="checkbox" class="check-group__check" id="radio2" checked>
+                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="-1" checked>
                 <label class="check-group__label" for="radio2" style="cursor: pointer;">Text</label>
             </div>
             <div class="check-group">
-                <input name="braille" type="checkbox" class="check-group__check" id="radio3" checked>
+                <input name="braille" type="checkbox" class="check-group__check" id="radio3" tabindex="-1" checked>
                 <label class="check-group__label" for="radio3" style="cursor: pointer;">Braille Text</label>
             </div>
         </div>
         <div class="form_error_item hkl_item" style="display: none;"><div>!</div>Specify the type of file</div>
 
         <div class="check-group rabComent">
-            <input name="razRab" type="checkbox" class="check-group__check" id="radio_rab">
+            <input name="razRab" type="checkbox" class="check-group__check" id="radio_rab" tabindex="-1">
             <label class="check-group__label" for="radio_rab" style="cursor: pointer;">Send to developer</label>
         </div>
 
@@ -878,6 +880,7 @@
     {% endif %}
 
 
+    <script src="{{ url_for('static', filename='js/ImgAPI.js') }}"></script>
  <script src="{{ url_for('static', filename='js/libs.min.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.min.js') }}"></script>
 
