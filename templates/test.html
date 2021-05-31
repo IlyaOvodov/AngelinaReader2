@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Flask App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, user-
+scalable=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+    <script src="{{ url_for('static', filename='js/resize.js') }}"></script>
+ </head>
+ <body>
+  <h1 class="logo">Upload Picture</h1>
+  <div id="upload_form_div">
+   <form id="upload_form" method="POST" enctype="multipart/form-data" action="/upload_photo/">
+    <input type="file" name="file" capture="camera" id="file_select"/>
+
+                      <input type="text" name="lang" id="input_lang" value="RU" style="display: none;">
+                      <input type="text" name="find_orientation" id="find_orientation" value="False" style="display: none;">
+                      <input type="text" name="process_2_sides" id="process_2_sides"  value="False" style="display: none;">
+                      <input type="text" name="has_public_confirm" id="has_public_confirm" value="False"  style="display: none;">
+
+   </form>
+  </div>
+<canvas id="canvas"></canvas>
+  <div id="loading" style="display:none;">
+     Uploading your picture...
+  </div>
+<input type="file" id="select">
+<img id="preview">
+<script>
+
+
+document.getElementById('select').onchange = function(evt) {
+    ImageTools.resize(this.files[0], {
+        width: 200, // maximum width
+        height: 200 // maximum height
+    }, function(blob, didItResize) {
+        document.getElementById('preview').src = window.URL.createObjectURL(blob);
+
+
+        var formData = new FormData();
+
+        var canvas = document.createElement('canvas');  // Dynamically Create a Canvas Element
+        canvas.width  = 200;  // Set the width of the Canvas
+        canvas.height = 200;  // Set the height of the Canvas
+        var ctx = canvas.getContext("2d");  // Get the "context" of the canvas
+        var img = document.getElementById("preview");  // The id of your image container
+        ctx.drawImage(img,0,0,200,200);  // Draw your image to the canvas
+        var jpegFile = canvas.toDataURL();
+		formData.append('file', jpegFile);
+        formData.append("lang", "RU");
+        formData.append("find_orientation", "False");
+        formData.append("process_2_sides", "False");
+        formData.append("has_public_confirm", "False");
+
+		$.ajax({
+			type: "POST",
+			url: '/upload_photo/',
+			cache: false,
+			contentType: false,
+			processData: false,
+			data: formData,
+			dataType : 'json',
+			success: function(msg){
+				if (msg.error == '') {
+					$("#js-file").hide();
+					$('#result').html(msg.success);
+				} else {
+					$('#result').html(msg.error);
+				}
+			}
+		});
+
+
+    });
+};
+</script>
+ </body>
+</html>
+

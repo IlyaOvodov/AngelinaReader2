@@ -7,6 +7,8 @@ import vendor
 import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
+import json
+import requests
 sys.path.insert(1,'/var/www/FlaskApache/MyCode')
 #from UIinterfaces import AngelinaSolver
 from web_app.angelina_reader_core import AngelinaSolver
@@ -88,11 +90,87 @@ def pass_to_mail():
             msg = "Не все поля заполнены"
     return redirect(f"/?answer={msg}")
 
+
+
+@app.route("/soc_login/", methods=['POST'])
+def user_register():
+    # if request.method == 'POST':
+    token = request.form.get("token")
+    HTTP_HOST = "v2.angelina-reader.ru"
+    response = requests.get(f'http://ulogin.ru/token.php?token={token}&host={HTTP_HOST}')
+    todos = json.loads(response.text)
+
+    name = f"{todos['first_name']} {todos['last_name']}"
+    network_name = f"{todos['network']}"
+    network_id = f"{todos['uid']}"
+    email = None
+    password = None
+
+    product_list = AngelinaSolver()
+
+    # Проверка регистрации
+    user = product_list.find_user(network_name, network_id, None, None)
+    # return redirect(f"/?id={user}")
+
+    if user is None:
+        if session.get('language') == "RU":
+            msg = "Пользователь не обнаружен"
+        else:
+            msg = "User not detected"
+        return redirect(f"/?answer={msg}")
+    else:
+        session['user_id'] = user.id
+        session['user_name'] = user.name
+        session['user_mail'] = user.email
+        return redirect(f"/")
+
+
+
+@app.route("/soc_register/", methods=['POST'])
+def user_login():
+    #if request.method == 'POST':
+    token = request.form.get("token")
+    HTTP_HOST = "v2.angelina-reader.ru"
+    response = requests.get(f'http://ulogin.ru/token.php?token={token}&host={HTTP_HOST}')
+    todos = json.loads(response.text)
+
+    name = f"{todos['first_name']} {todos['last_name']}"
+    network_name = f"{todos['network']}"
+    network_id = f"{todos['uid']}"
+    email = None
+    password = None
+
+    product_list = AngelinaSolver()
+
+    #Проверка регистрации
+    user = product_list.find_user(network_name,network_id,None,None)
+    #return redirect(f"/?id={user}")
+
+    if user is None:
+        user = product_list.register_user(name, email, password, network_name, network_id)
+        session['user_id'] = user.id
+        session['user_name'] = user.name
+        session['user_mail'] = user.email
+        return redirect(f"/")
+
+    session['user_id'] = user.id
+    session['user_name'] = user.name
+    session['user_mail'] = user.email
+    return redirect(f"/")
+
+    #return f'{user.id}'
+
+
+
+@app.route("/test/")
+def test():
+    return render_template('test.html')
+
 @app.route("/upload_photo/", methods=['POST'])
 def upload_photo():
     if request.method == 'POST':
-        file = request.files
-
+        #file = request.files
+        file = request.files['file']
         lang = request.form.get('lang')
         find_orientation = True if request.form.get('find_orientation') != 'False' else False
         process_2_sides = True if request.form.get('process_2_sides') != 'False' else False
@@ -354,6 +432,7 @@ def result_list():
 
 
 
+
 @app.route("/polit/")
 def polit():
     status, id, user_name = user_data()
@@ -364,6 +443,10 @@ def polit():
 
 
 
+
+@app.route('/service-worker.js')
+def sw():
+    return app.send_static_file('service-worker.js'), 200, {'Content-Type': 'text/javascript'}
 
 
 @app.route("/")

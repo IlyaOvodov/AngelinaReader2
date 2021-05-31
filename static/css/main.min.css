@@ -791,7 +791,15 @@ margin-bottom: 35px;
     margin-top: 15px;
     margin-bottom: 10px;
 }
+#uLogin, #uLogin2{
+text-align: center;
+}
 
+.block_socfake{
+cursor: pointer;
+text-align: center;
+margin-right: 10px;
+}
 
 .check-group__check{
 height: 28px;
@@ -805,4 +813,17 @@ height: 28px;
 .check-group__label:before{
 background: url(../images/input_bg.png);
 
+}
+
+#installButton{
+position: fixed;
+    right: 20px;
+    bottom: 15px;
+    background: #08730D;
+    border: none;
+    padding: 10px 30px;
+    border-radius: 5px;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
 }

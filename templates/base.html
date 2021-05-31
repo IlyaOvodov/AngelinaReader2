@@ -2,6 +2,8 @@
 <html class="no-js" lang="">
 <head>
   <meta charset="utf-8">
+
+
   <title></title>
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -10,6 +12,7 @@
   <meta property="og:type" content="">
   <meta property="og:url" content="">
   <meta property="og:image" content="">
+<meta name="theme-color" content="#ffffff">
 
   <link rel="preconnect" href="https://fonts.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -17,6 +20,33 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-grid.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/libs.min.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/main.min.css') }}">
+
+
+    <script>
+        if ('serviceWorker' in navigator) {
+    navigator.serviceWorker
+    .register('./service-worker.js')
+    .then(function(registration) {
+        console.log('Service Worker Registered!');
+        return registration;
+    })
+    .catch(function(err) {
+        console.error('Unable to register service worker.', err);
+    });
+}
+    </script>
+
+    <!-- iOS -->
+  <link rel="apple-touch-icon"                       href="{{ url_for('static', filename='json/512x512.png') }}">
+  <meta name="apple-mobile-web-app-capable"          content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection"                      content="telephone=no">
+
+  <!-- Web app manifest -->
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+
+
+    <script src="//ulogin.ru/js/ulogin.js"></script>
 </head>
 
 <body class="body">
@@ -121,7 +151,6 @@
                           <div class="load-block__sm-text">Upload a photo of the text in Braille: image (jpg, png, etc.), pdf or zip</span></div>
               {% endif %}
             <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}" alt="{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}"> <span>{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}</span></a>
-
 
 
 
@@ -262,6 +291,8 @@
 
 {% endblock -%}
 
+
+
 <div class="about-section gray-bg">
         <div class="container">
           {% if language == 'RU' %}
@@ -355,15 +386,14 @@
         </div>
     </div>
     <div class="rg-form__text">C помощью социальных сетей:</div>
-    <div class="rg-form__sotial sotial">
-    	<a href="#" class="sotial__item sotial__item_fb"></a>
-    	<a href="#" class="sotial__item sotial__item_vk"></a>
-    	<a href="#" class="sotial__item sotial__item_tw"></a>
-    	<a href="#" class="sotial__item sotial__item_ok"></a>
-    	<a href="#" class="sotial__item sotial__item_ml"></a>
-    	<a href="#" class="sotial__item sotial__item_ya"></a>
-    	<a href="#" class="sotial__item sotial__item_ms"></a>
+
+<div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
+<div content="nd_error">
+    <div class="block_socfake">
+        <img src="{{ url_for('static', filename='images/soc_block.PNG') }}" alt="Cоц. сети" />
     </div>
+</div>
+
     <div class="rg-form__text">Или используйте E-mail и пароль:</div>
     <div class="rg-form__group">
     	<input type="text" class="rg-form__inp" required placeholder="Ваше имя" name="name">
@@ -398,15 +428,14 @@
       </div>
     </div>
     <div class="rg-form__text">Using social networks:</div>
-    <div class="rg-form__sotial sotial">
-    	<a href="#" class="sotial__item sotial__item_fb"></a>
-    	<a href="#" class="sotial__item sotial__item_vk"></a>
-    	<a href="#" class="sotial__item sotial__item_tw"></a>
-    	<a href="#" class="sotial__item sotial__item_ok"></a>
-    	<a href="#" class="sotial__item sotial__item_ml"></a>
-    	<a href="#" class="sotial__item sotial__item_ya"></a>
-    	<a href="#" class="sotial__item sotial__item_ms"></a>
+
+<div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
+<div content="nd_error">
+    <div class="block_socfake">
+        <img src="{{ url_for('static', filename='images/soc_block.PNG') }}" />
     </div>
+</div>
+
     <div class="rg-form__text">Or use your E-mail and password:</div>
     <div class="rg-form__group">
     	<input type="text" class="rg-form__inp" required placeholder="Your name" name="name">
@@ -802,15 +831,8 @@
 			<input type="password" name="pass" class="rg-form__inp" required  placeholder="Пароль">
 
     <div class="rg-form__text">C помощью социальных сетей:</div>
-    <div class="rg-form__sotial sotial">
-    	<a href="#" class="sotial__item sotial__item_fb"></a>
-    	<a href="#" class="sotial__item sotial__item_vk"></a>
-    	<a href="#" class="sotial__item sotial__item_tw"></a>
-    	<a href="#" class="sotial__item sotial__item_ok"></a>
-    	<a href="#" class="sotial__item sotial__item_ml"></a>
-    	<a href="#" class="sotial__item sotial__item_ya"></a>
-    	<a href="#" class="sotial__item sotial__item_ms"></a>
-    </div>
+        <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_login/;mobilebuttons=0;"></div>
+
     </div>
         <p>
             <a data-fancybox href="#regmodal" style="color: #3C3C3C; margin-right: 20px;">Регистрация</a>
@@ -834,15 +856,9 @@
 			<input type="password" name="pass" class="rg-form__inp" required placeholder="Password">
 
     <div class="rg-form__text">Using social networks:</div>
-    <div class="rg-form__sotial sotial">
-    	<a href="#" class="sotial__item sotial__item_fb"></a>
-    	<a href="#" class="sotial__item sotial__item_vk"></a>
-    	<a href="#" class="sotial__item sotial__item_tw"></a>
-    	<a href="#" class="sotial__item sotial__item_ok"></a>
-    	<a href="#" class="sotial__item sotial__item_ml"></a>
-    	<a href="#" class="sotial__item sotial__item_ya"></a>
-    	<a href="#" class="sotial__item sotial__item_ms"></a>
-    </div>
+
+    <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_login/;mobilebuttons=0;"></div>
+
     </div>
         <p>
             <a data-fancybox href="#regmodal" style="color: #3C3C3C; margin-right: 20px;">Registration</a>
@@ -879,9 +895,11 @@
 
     {% endif %}
 
+      <button href="#" id="installButton" hidden>Установить</button>
 
     <script src="{{ url_for('static', filename='js/ImgAPI.js') }}"></script>
  <script src="{{ url_for('static', filename='js/libs.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/install.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.min.js') }}"></script>
 
 <script>
