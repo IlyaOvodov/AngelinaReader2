@@ -65,7 +65,7 @@
 
 
             <div class="container">
-                    <div class="more_photo"><a href="/">загрузить следующий файл</a></div>
+                    <div class="more_photo"><a href="/">{% if language == 'RU' %}Загрузить следующий файл{%else%}Upload the following file{%endif%}</a></div>
                 </div>
 
         {% for item in items_data %}

@@ -177,11 +177,13 @@
                       </label>
                       <input id="file-input_load" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" >
 
+
                       <input type="text" name="lang" id="input_lang" style="display: none;">
                       <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
                       <input type="text" name="process_2_sides" id="process_2_sides" style="display: none;">
                       <input type="text" name="has_public_confirm" id="has_public_confirm" style="display: none;">
                   </form>
+
               </div>
             </div>
 
@@ -192,9 +194,11 @@
                       <label for="file-input_loadpc">
                         <div class="load-block__btn load-btn btn_file btn lbtn" tabindex="0" style="margin: 0px auto;">
                             <span style="color: white;">{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
+                            <img src="{{ url_for('static', filename='images/load_ci.gif') }}" class="" style="display: none;"  />
                         </div>
                       </label>
                       <input id="file-input_loadpc" class="blocktest" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
+
 
                       <input type="text" name="lang" id="input_lang" style="display: none;">
                       <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
@@ -834,7 +838,7 @@
         <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_login/;mobilebuttons=0;"></div>
 
     </div>
-        <p>
+        <p class="moibile_t">
             <a data-fancybox href="#regmodal" style="color: #3C3C3C; margin-right: 20px;">Регистрация</a>
             <a data-fancybox href="#sw_passsf" style="color: #3C3C3C;">Забыли пароль</a>
         </p>
@@ -860,7 +864,7 @@
     <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_login/;mobilebuttons=0;"></div>
 
     </div>
-        <p>
+        <p class="moibile_t">
             <a data-fancybox href="#regmodal" style="color: #3C3C3C; margin-right: 20px;">Registration</a>
             <a data-fancybox href="#sw_passsf" style="color: #3C3C3C;">Forgot your password</a>
         </p>
@@ -895,7 +899,7 @@
 
     {% endif %}
 
-      <button href="#" id="installButton" hidden>Установить</button>
+      <button href="#" id="installButton" hidden>{% if language == 'RU' %}Установить{%else%}Install{%endif%}</button>
 
     <script src="{{ url_for('static', filename='js/ImgAPI.js') }}"></script>
  <script src="{{ url_for('static', filename='js/libs.min.js') }}"></script>

@@ -21,7 +21,27 @@ text-align: center;
 max-width: 100%;
 
 }
+@media(max-width: 760px){
+.moibile_t a{
+display: block;
+margin-bottom: 14px;
+}
+}
 
+.btn_file.active{
+background: #EAEFF2 !important;
+color: black;
+}
+.btn_file.active span{
+display: none !important;
+}
+.btn_file.active img{
+max-height: 51px !important;
+display: block !important;
+}
+.c_load{
+border-radius: 50%;
+}
 #ms_form textarea{
 min-height: 125px;
 }

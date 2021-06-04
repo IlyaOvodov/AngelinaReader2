@@ -14,7 +14,7 @@
                           <div class="item_title">{{item.title|safe}}</div>
                           <div class="item_text">{{item.announce|safe}}</div>
                           <p class="more_btn">
-                            <a href="/help/{{item.slug}}/" class=" "> Подробнее</a>
+                            <a href="/help/{{item.slug}}/" class=" ">{% if language == 'RU' %}Подробнее{%else%}More{%endif%} </a>
                           </p>
                       </div>
                   </div>
