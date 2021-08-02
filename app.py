@@ -182,7 +182,13 @@ def upload_photo():
 
             # print(file)
             login = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-            user = login.process(userID, file, lang, find_orientation, process_2_sides, has_public_confirm)
+
+            user = login.process(user_id=userID,
+                                 file_storage=file,
+                                 param_dict={"lang": lang,
+                                             "find_orientation": find_orientation,
+                                             "process_2_sides": process_2_sides,
+                                             "has_public_confirm": has_public_confirm})
             #print()
             if user == False:
                 if session.get('language') == "RU":
@@ -345,13 +351,13 @@ def send_data():
         else:
             braille = False
 
-        razRab = request.form.get('razRab')
-        if razRab == 'on':
-            razRab = True
+        to_developers = request.form.get('to_developers')
+        if to_developers == 'on':
+            to_developers = True
         else:
-            razRab = False
+            to_developers = False
 
-        koment = request.form.get('koment')
+        comment = request.form.get('comment')
 
         if item_id !="":
             mail = mail
@@ -359,7 +365,7 @@ def send_data():
             product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             mail_title = request.form.get('mail_title')
 
-            dop_data = {'title': mail_title, 'image': image,'text': text,'braille': braille,'razRab': razRab,'comment': koment}
+            dop_data = {'title': mail_title, 'image': image,'text': text,'braille': braille,'to_developers': to_developers,'comment': comment}
             #print(dop_data)
             items_id = product_list.send_results_to_mail(mail,item_id, dop_data)
             if items_id == True:
