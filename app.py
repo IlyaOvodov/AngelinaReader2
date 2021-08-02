@@ -8,9 +8,9 @@ import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
 import json
+from pathlib import Path
 import requests
-sys.path.insert(1,'/var/www/FlaskApache/MyCode')
-#from UIinterfaces import AngelinaSolver
+sys.path.insert(1,str(Path(__file__).parent.parent/'MyCode'))
 from web_app.angelina_reader_core import AngelinaSolver
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
@@ -21,7 +21,7 @@ DEBUG = True
 app = Flask(__name__)
 
 app.config.from_object(__name__)
-
+DATA_ROOT_PATH = Path(__file__).parent/"static"/"data"
 
 @app.teardown_appcontext
 def close_db(error):
@@ -74,7 +74,7 @@ def pass_to_mail():
         mail = request.form.get('pass')
         if mail != "":
             msg = "-_-2"
-            login = AngelinaSolver()
+            login = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = login.find_user("","",mail,"")
             if user is not None:
                 sendMail = user.send_new_pass_to_mail();
@@ -106,7 +106,7 @@ def user_register():
     email = None
     password = None
 
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
 
     # Проверка регистрации
     user = product_list.find_user(network_name, network_id, None, None)
@@ -140,7 +140,7 @@ def user_login():
     email = None
     password = None
 
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
 
     #Проверка регистрации
     user = product_list.find_user(network_name,network_id,None,None)
@@ -181,7 +181,7 @@ def upload_photo():
                 userID = session['user_id']
 
             # print(file)
-            login = AngelinaSolver()
+            login = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = login.process(userID, file, lang, find_orientation, process_2_sides, has_public_confirm)
             #print()
             if user == False:
@@ -213,7 +213,7 @@ def new_pass():
         password = request.form.get('pass')  # запрос к данным формы
         new_password = request.form.get('new_pass')
         if new_password != "" and password !="":
-            login = AngelinaSolver()
+            login = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = login.find_user("","","",id)
             if user.check_password(password) == True:
                 user.set_password(new_password)
@@ -250,7 +250,7 @@ def login():
         username = request.form.get('mail')  # запрос к данным формы
         password = request.form.get('pass')
         if username != "" and password !="":
-            login = AngelinaSolver()
+            login = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = login.find_user("","",username)
             if user is not None:
                 if user.check_password(password) == True:
@@ -292,7 +292,7 @@ def registration():
         network_id = ""
         if name != "" and password !="" and email !="":
 
-            product_list = AngelinaSolver()
+            product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             items_id = product_list.find_users_by_email(email)
             if not items_id:
                 user = product_list.register_user(name,email,password,network_name,network_id)
@@ -356,7 +356,7 @@ def send_data():
         if item_id !="":
             mail = mail
             item_id = item_id
-            product_list = AngelinaSolver()
+            product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             mail_title = request.form.get('mail_title')
 
             dop_data = {'title': mail_title, 'image': image,'text': text,'braille': braille,'razRab': razRab,'comment': koment}
@@ -391,7 +391,7 @@ def unpublic(item_id,sost):
     referrer = referrer.split('?', 1)
     referrer = referrer[0]
 
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     if sost == 'False':
         new_sost = product_list.set_public_acceess(item_id, False)
     else:
@@ -419,7 +419,7 @@ def result_list():
 
 
 
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     my_list_item = product_list.get_tasks_list(id, 0)
 
 
@@ -465,7 +465,7 @@ def index():
         return redirect("/")
 
     count = 5
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     items_id = product_list.get_tasks_list(id, count)
     i = 0
     for items_id2 in items_id:
@@ -480,7 +480,7 @@ def result_test(item_id):
     #user
     status, id, user_name = user_data()
 
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     is_completed_test = product_list.is_completed(item_id,1)
 
     if is_completed_test == False:
@@ -500,7 +500,7 @@ def result(item_id):
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
-    product_list = AngelinaSolver()
+    product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
 
     is_completed_test = product_list.is_completed(item_id)
 
@@ -545,7 +545,7 @@ def help():
     if search_qry is None:
         search_qry = ""
 
-    help_list = AngelinaSolver()
+    help_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     items = help_list.help_list(target_language, search_qry)
 
     return render_template('help.html', item_list=items, s=search_qry, language=target_language, status=status, id=id, name=user_name)
@@ -559,21 +559,17 @@ def showItem(slug):
     target_language = switch_language(get_language)
 
 
-    help_item = AngelinaSolver()
+    help_item = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     item = help_item.help_item(target_language, slug)
 
     return  render_template('post.html', itemData=item, language=target_language, status=status, id=id, name=user_name)
 
 
 if __name__ == '__main__':
-    import sys  # TODO
     port = 5001
-    real_mode = False  #'--real' in sys.argv[1:]
+    real_mode = True  #'--real' in sys.argv[1:]
     if real_mode:
-        #sys.path.insert(1,'/home/freemark/MyCode')
         from web_app.angelina_reader_core import AngelinaSolver
         print('real mode is ON')
-    #    port = 5001
     app.run(host='0.0.0.0', port=port)
-    #app.run()
 
