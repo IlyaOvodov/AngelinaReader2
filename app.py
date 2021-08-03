@@ -312,9 +312,9 @@ def send_data():
         if item_id !="":
             product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             parameters = {'subject': request.form.get('mail_title'),
-                          'image':   request.form.get('image')  == 'on',
-                          'text':    request.form.get('text')   == 'on',
-                          'braille': request.form.get('braille') == 'on',
+                          'send_image':   request.form.get('image')  == 'on',
+                          'send_text':    request.form.get('text')   == 'on',
+                          'send_braille': request.form.get('braille') == 'on',
                           'to_developers': request.form.get('to_developers') == 'on',
                           'comment': request.form.get('comment')}
             send_result = product_list.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
