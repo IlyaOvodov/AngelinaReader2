@@ -61,7 +61,7 @@
                     {% else %}
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
                         <li><a data-fancybox href="#regmodal" role="menuitem" class="close_buurger">{% if language == 'RU' %}Регистрация{% else %}Registration{% endif %}</a></li>
-                        <li><a data-fancybox href="#loginmodal" role="menuitem" class="close_buurger login">{% if language == 'RU' %}Вход{% else %}Login{% endif %}</a></li>
+                        <li><a data-fancybox href="#loginmodal" role="menuitem" class="close_buurger login">{% if language == 'RU' %}Вход{% else %}Sign&nbspin{% endif %}</a></li>
                     {% endif %}
       </ul>
   </nav>
@@ -106,7 +106,7 @@
                             {% if status == True %}
                             <a data-fancybox class="site-header__btn gr-btn gr-btn_lk" href="#data_modal"><img src="{{ url_for('static', filename='images/lk.png') }}" alt="{% if language == 'RU' %}Аккаунт{% else %}Account{% endif %}"><span style="line-height: 1;">{{name}}</span></a>
                             {% else %}
-                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk login" href="#loginmodal"><img src="{{ url_for('static', filename='images/lk_login.png') }}" alt="{% if language == 'RU' %}Вход{% else %}Entrance{% endif %}"><span>{% if language == 'RU' %}Вход{% else %}Entrance{% endif %}</span></a>
+                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk login" href="#loginmodal"><img src="{{ url_for('static', filename='images/lk_login.png') }}" alt="{% if language == 'RU' %}Вход{% else %}Sign&nbspin{% endif %}"><span>{% if language == 'RU' %}Вход{% else %}Sign&nbspin{% endif %}</span></a>
                             {% endif %}
 
                             <a class="site-header__btn gr-btn gr-btn_question" href="/help/"><img src="{{ url_for('static', filename='images/question.png') }}" alt="{% if language == 'RU' %}Помощь{% else %}Help{% endif %}"></a>
@@ -173,7 +173,7 @@
               <div  class=" load-block__btn_photo load-btn">
                   <form id="image_loadphoto" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
                       <label for="file-input_load">
-                        <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt="{% if language == 'RU' %}Загрузить файл{% else %}Take a photo{% endif %}"><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
+                        <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt="{% if language == 'RU' %}Загрузить файл{% else %}Upload file{% endif %}"><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload file{% endif %}</span>
                       </label>
                       <input id="file-input_load" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" >
 
@@ -193,7 +193,7 @@
                 <form id="image_loadphoto_pc" action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data">
                       <label for="file-input_loadpc">
                         <div class="load-block__btn load-btn btn_file btn lbtn" tabindex="0" style="margin: 0px auto;">
-                            <span style="color: white;">{% if language == 'RU' %}Загрузить файл{% else %}Upload a file{% endif %}</span>
+                            <span style="color: white;">{% if language == 'RU' %}Загрузить файл{% else %}Upload file{% endif %}</span>
                             <img src="{{ url_for('static', filename='images/load_ci.gif') }}" class="" style="display: none;"  />
                         </div>
                       </label>
@@ -209,9 +209,9 @@
             </div>
 
               {% if language == 'RU' %}
-                    <p class="error_window" style="display: none;">Укажите тип доступа к файлу</p>
+                    <p class="error_window" style="display: none;">Укажите, можно ли использовать файл для совершенствования алгоритмов распознавания Брайля</p>
               {% else %}
-                    <p class="error_window" style="display: none;">Specify the file's publicity parameters</p>
+                    <p class="error_window" style="display: none;">Specify if the file can be used to improve Braille recognition algorithms</p>
               {% endif %}
 
               {% if language == 'RU' %}
@@ -226,13 +226,13 @@
               </div>
               <div class="check-group target_intput" tabindex="0">
                 <input name="agree" type="radio" class="check-group__check" id="radio2"  tabindex="-1"/>
-                <label class="check-group__label" id="radio2_target" for="radio2" style="cursor: pointer;">{% if language == 'RU' %}Возражаю{% else %}Mind{% endif %}</label>
+                <label class="check-group__label" id="radio2_target" for="radio2" style="cursor: pointer;">{% if language == 'RU' %}Возражаю{% else %}Reject{% endif %}</label>
               </div>
             </div>
             {% if language == 'RU' %}
                 <h3>Настройки распознавания <a href="#" style="color: black;">(подробнее)</a></h3>
             {% else %}
-                <h3>Speech Recognition Settings <a href="#" style="color: black;" >(more detailed)</a></h3>
+                <h3>Recognition Settings <a href="#" style="color: black;" >(more details)</a></h3>
             {% endif %}
             <div class="choice-box">
               <div class="check-group">
@@ -243,7 +243,7 @@
                 <label class="check-group__label check-group__label_lang">{% if language == 'RU' %}Язык текста{% else %}Text language{% endif %}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1" tabindex="-1"/>
+                <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1"  checked="checked" tabindex="-1"/>
                 <label class="check-group__label" for="checkbox1" style="cursor: pointer;">{% if language == 'RU' %}Автоориентация{% else %}Auto-orientation{% endif %}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
@@ -304,7 +304,7 @@
                 <p>Проект «Angelina Braille Reader» - некоммерческая разработка, призванная упростить чтение текстов на Брайле зрячими людьми: преподавателями, близкими, друзьями незрячих людей. Чтобы прочитать текст на Брайле, достаточно его сфотографировать и загрузить в программу. Проект разрабатывается как бесплатное ПО с открытым исходным кодом. Если Вы программист и хотите помочь проекту — <a href="https://github.com/IlyaOvodov/AngelinaReader/issues" target="_blank" style="color: white;">присоединяйтесь</a></p>
           {%else%}
                 <h2 class="about-section__title">About the project</h2>
-                <p>The Angelina Braille Reader project is a non-profit development designed to simplify the reading of Braille texts by sighted people: teachers, relatives, friends of blind people. To read the text in Braille, just take a picture of it and upload it to the program. The project is being developed as free and open source software. If you are a programmer and want to help the project — <a href="https://github.com/IlyaOvodov/AngelinaReader/issues" target="_blank" style="color: white;">join us</a></p>
+                <p>The "Angelina Braille Reader" project is a non-profit development designed to simplify the reading of Braille texts by sighted people: teachers, relatives, friends of blind people. To read the text in Braille, just take a picture of it and upload it to the program. The project is being developed as free and open source software. If you are a programmer and want to help the project — <a href="https://github.com/IlyaOvodov/AngelinaReader/issues" target="_blank" style="color: white;">join us</a></p>
           {%endif%}
         </div>
       </div>
@@ -377,16 +377,16 @@
     <div class="rg-form">
 	<h3 class="rg-form__title">Регистрация нового пользователя</h3>
 	<form action="/registration/" method="post"  class="rg-form__form" id="log_form">
-		<div class="rg-form__text">Для регистрации подтвердите следующие условия:</div>
+		<div class="rg-form__text">Для регистрации подтвердите, что Вы:</div>
 		<div class="rg-form__check-cont">
 
         <div class="check-group target_intput" tabindex="0">
             <input type="checkbox"  class="check-group__check"  id="checkbox11" tabindex="-1" />
-            <label class="check-group__label" for="checkbox11" style="cursor: pointer;">Ознакомлен с <a class="check-group__link" href="/help/">инструкцией пользователя</a></label>
+            <label class="check-group__label" for="checkbox11" style="cursor: pointer;">посмотрели <a class="check-group__link" href="/help/">как правильно делать фото</a></label>
         </div>
         <div class="check-group target_intput" tabindex="0">
             <input type="checkbox" class="check-group__check"  id="checkbox12" tabindex="-1" />
-            <label class="check-group__label" for="checkbox12" style="cursor: pointer;">Согласен с условиями <a class="check-group__link" href="/polit/">пользовательского соглашения</a></label>
+            <label class="check-group__label" for="checkbox12" style="cursor: pointer;">согласны с условиями <a class="check-group__link" href="/polit/">соглашения о конфиденциальности</a></label>
         </div>
     </div>
     <div class="rg-form__text">C помощью социальных сетей:</div>
@@ -405,7 +405,7 @@
 			<input type="password" class="rg-form__inp" required placeholder="Пароль" name="pass">
 
     </div>
-        <p class="er_line" style="display: none;">Необходимо ознакомится с инструкцией и подтвердить пользовательское соглашение </p>
+        <p class="er_line" style="display: none;">Необходимо подтвердить, что Вы прочитали, как делать фото, чтобы программа работала, и согласны с политикой конфиденциальности </p>
     <div class="rg-form__btn-cont">
     	<button type="submit" class="rg-form__button btn">Зарегистрироваться</button>
     </div>
@@ -420,15 +420,15 @@
     <div class="rg-form">
 	<h3 class="rg-form__title">Registering a new user</h3>
 	<form action="/registration/" method="post" class="rg-form__form" id="log_form">
-		<div class="rg-form__text">To register, confirm the following conditions:</div>
+		<div class="rg-form__text">To register, confirm that:</div>
 		<div class="rg-form__check-cont">
       <div class="check-group target_intput" tabindex="0">
         <input type="checkbox" class="check-group__check" id="checkbox11" tabindex="-1" />
-        <label class="check-group__label" for="checkbox11" style="cursor: pointer;">I am familiar with <a class="check-group__link" href="/help/">user manual</a></label>
+        <label class="check-group__label" for="checkbox11" style="cursor: pointer;">you've got acquainted with <a class="check-group__link" href="/help/">how to take a photo in the correct way</a></label>
       </div>
       <div class="check-group target_intput" tabindex="0">
         <input type="checkbox" class="check-group__check" id="checkbox12" tabindex="-1" />
-        <label class="check-group__label" for="checkbox12" style="cursor: pointer;">I agree to the terms and conditions <a class="check-group__link" href="/polit/">user agreement</a></label>
+        <label class="check-group__label" for="checkbox12" style="cursor: pointer;">you agree to the terms and conditions of <a class="check-group__link" href="/polit/">privacy agreement</a></label>
       </div>
     </div>
     <div class="rg-form__text">Using social networks:</div>
@@ -447,7 +447,7 @@
 			<input type="password" class="rg-form__inp" required placeholder="Password" name="pass">
 
     </div>
-        <p class="er_line" style="dispaly: none;">You must read the instructions and confirm the user agreement</p>
+        <p class="er_line" style="dispaly: none;">You must confirm that you have read how to take a photo for the program to work, and agree to the privacy policy </p>
     <div class="rg-form__btn-cont">
     	<button type="submit" class="rg-form__button btn">Register</button>
     </div>
@@ -677,7 +677,7 @@
   {% if language == 'RU' %}
     <div id="emailmodal" class="modalbox">
     <div class="rg-form">
-	<h3 class="rg-form__title">Отправить На E-mail</h3>
+	<h3 class="rg-form__title">Отправить на e-mail</h3>
 	<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
 
 
@@ -885,12 +885,12 @@
           <div class="modal_msg">
               <div>
                   <div>
-                      <img src="{{ url_for('static', filename='images/icon_sendmsg.png') }}" alt="{% if language == 'RU' %}Отправка фото{% else %}Sending a photo{% endif %}">
+                      <img src="{{ url_for('static', filename='images/icon_sendmsg.png') }}" alt="{% if language == 'RU' %}Отправка данных{% else %}Sending data{% endif %}">
                         {% if language == 'RU' %}
                             <p>Данные успешно отправлены</p>
                             <button class="btn">Закрыть</button>
                         {% else %}
-                            <p>Data sent successfully</p>
+                            <p>Data were sent successfully</p>
                             <button class="btn">Сlose</button>
                         {% endif %}
                   </div>

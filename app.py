@@ -22,6 +22,12 @@ app = Flask(__name__)
 app.config.from_object(__name__)
 DATA_ROOT_PATH = Path(__file__).parent/"static"/"data"
 
+def Message(msg_ru, msg_en):
+    if session.get('language') == "RU":
+        return msg_ru
+    return msg_en
+
+
 @app.teardown_appcontext
 def close_db(error):
     if hasattr(g, 'link_db'):
@@ -55,12 +61,8 @@ def setting():
     referrer = request.referrer
     referrer = referrer.split('?', 1)
     referrer = referrer[0]
-
-    if session.get('language') == "RU":
-        msg = "Настройки успешно обновлены"
-    else:
-        msg = "Settings updated successfully"
-
+    msg = Message("Настройки успешно обновлены",
+                  "Settings updated successfully")
     return redirect(f"{referrer}/?answer={msg}&color=true")
 
 
@@ -69,20 +71,19 @@ def pass_to_mail():
     if request.method == 'POST':
         mail = request.form.get('pass')
         if mail != "":
-            msg = "-_-2"
             solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = solver.find_user("","",mail,"")
             if user is not None:
-                send_result = user.send_new_pass_to_mail();
-                if send_result is True:
-                    msg = "Инструкция по восстановлению пароля отправлена на e-mail "+mail
-                    return redirect(f"/?answer={msg}&color=green")
-                else:
-                    msg = "Пользователь с таким e-mail не зарегистрирован"
+                user.send_new_pass_to_mail();
+                msg = Message("Инструкция по восстановлению пароля отправлена на e-mail ",
+                              "Password recovery instructions have been sent to e-mail ") + mail
+                return redirect(f"/?answer={msg}&color=green")
             else:
-                msg = "Пользователь с таким e-mail не зарегистрирован"
+                msg = Message("Нет пользователя с таким e-mail",
+                              "No user with this e-mail")
         else:
-            msg = "Не все поля заполнены"
+            msg = Message("Не указан e-mail",
+                          "E-mail is required")
     return redirect(f"/?answer={msg}")
 
 
@@ -103,10 +104,8 @@ def user_register():
     # Проверка регистрации
     user = solver.find_user(network_name, network_id, None, None)
     if user is None:
-        if session.get('language') == "RU":
-            msg = "Пользователь не обнаружен"
-        else:
-            msg = "User not detected"
+        msg = Message("Пользователь не найден",
+                      "User not found")
         return redirect(f"/?answer={msg}")
     else:
         session['user_id'] = user.id
@@ -172,22 +171,16 @@ def upload_photo():
                                              "process_2_sides": process_2_sides,
                                              "has_public_confirm": has_public_confirm})
             if not task_id:
-                if session.get('language') == "RU":
-                    msg = "Ошибка загрузки фото"
-                else:
-                    msg = "Login error"
+                msg = Message("Ошибка загрузки фото",
+                              "Image upload error")
             else:
                 return redirect(f"/result/{task_id}/")
         else:
-            if session.get('language') == "RU":
-                msg = "Ошибка загрузки фото"
-            else:
-                msg = "Upload error"
+            msg = Message("Ошибка загрузки фото",
+                          "Image upload error")
     else:
-        if session.get('language') == "RU":
-            msg = "Ошибка загрузки фото"
-        else:
-            msg = "Upload error"
+        msg = Message("Ошибка загрузки фото",
+                      "Image upload error")
     return redirect(f"/?answer={msg}")
 
 
@@ -200,27 +193,19 @@ def new_pass():
         if new_password != "" and password !="":
             solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = solver.find_user("","","",id)
-            if user.check_password(password) == True:
+            if user.check_password(password):
                 user.set_password(new_password)
-                if session.get('language') == "RU":
-                    msg = "Пароль обновлен"
-                else:
-                    msg = "Password updated"
+                msg = Message("Пароль успешно обновлен",
+                              "Password was changed")
             else:
-                if session.get('language') == "RU":
-                    msg = "Ошибка ввода пароля"
-                else:
-                    msg = "Error"
+                msg = Message("Неверный пароль",
+                              "Incorrect password")
         else:
-            if session.get('language') == "RU":
-                msg = "Ошибка смены пароля"
-            else:
-                msg = "Error"
+            msg = Message("Пустой пароль не допустим",
+                          "Empty password is not allowed")
     else:
-        if session.get('language') == "RU":
-            msg = "Ошибка смены пароля"
-        else:
-            msg = "Error"
+        msg = Message("Ошибка смены пароля",
+                      "Password change error")
     return redirect(f"/?answer={msg}")
 
 
@@ -234,32 +219,23 @@ def login():
             solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
             user = solver.find_user("","",username)
             if user is not None:
-                if user.check_password(password) == True:
+                if user.check_password(password):
                     session['user_id'] = user.id
                     session['user_name'] = user.name
                     session['user_mail'] = user.email
                     return redirect("/")
                 else:
-                    if session.get('language') == "RU":
-                        msg = "Ошибка ввода пароля"
-                    else:
-                        msg = "Login error"
+                    msg = Message("Неверный пароль",
+                                  "Incorrect password")
             else:
-                if session.get('language') == "RU":
-                    msg = "Пользователя с данные email не обнаружено"
-                else:
-                    msg = "User with email data not detected"
+                msg = Message("Нет пользователя с таким e-mail",
+                              "No user with this email")
         else:
-            if session.get('language') == "RU":
-                msg = "Ошибка авторизации"
-            else:
-                msg = "Login error"
+            msg = Message("Не указан e-mail или пароль",
+                          "Fill e-mail and password")
     else:
-        if session.get('language') == "RU":
-            msg = "Ошибка авторизации"
-        else:
-            msg = "Login error"
-
+        msg = Message("Ошибка авторизации",
+                      "Login error")
     return redirect(f"/?answer={msg}")
 
 @app.route("/registration/", methods=['POST'])
@@ -281,21 +257,14 @@ def registration():
                 session['user_mail'] = user.email
                 return redirect("/")
             else:
-                if session.get('language') == "RU":
-                    msg = "Пользователь с таким email уже существует"
-                else:
-                    msg = "A user with this email already exists"
+                msg = Message("Пользователь с таким email уже есть",
+                              "User with this email already exists")
         else:
-            if session.get('language') == "RU":
-                msg = "Ошибка регистрации"
-            else:
-                msg = "Login error"
+            msg = Message("Не все обязательные поля заполнены",
+                          "Not all required fields are filled")
     else:
-        if session.get('language') == "RU":
-            msg = "Ошибка регистрации"
-        else:
-            msg = "Login error"
-
+        msg = Message("Ошибка регистрации",
+                      "Registration error")
     return redirect(f"/?answer={msg}")
 
 
@@ -317,23 +286,13 @@ def send_data():
                           'send_braille': request.form.get('braille') == 'on',
                           'to_developers': request.form.get('to_developers') == 'on',
                           'comment': request.form.get('comment')}
-            send_result = product_list.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
-            if send_result:
-                if session.get('language') == "RU":
-                    msg = "Данные отправлены"
-                else:
-                    msg = "Data sent"
-                return redirect(f"{referrer}/?answer_modal={msg}")
-            else:
-                if session.get('language') == "RU":
-                    msg = "Ошибка отправки"
-                else:
-                    msg = "Login error"
+            product_list.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
+            msg = Message("Данные отправлены",
+                          "Data were sent")
+            return redirect(f"{referrer}/?answer_modal={msg}")
         else:
-            if session.get('language') == "RU":
-                msg = "Ошибка отправки"
-            else:
-                msg = "Login error"
+            msg = Message("Данные не найдены",
+                          "Data not found")
     return redirect(f"{referrer}/?answer={msg}")
 
 
@@ -357,11 +316,9 @@ def result_list():
     msg_log = request.args.get('answer')
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
-    if(status == False):
-        if session.get('language') == "RU":
-            msg = "Ошибка авторизации"
-        else:
-            msg = "Login error"
+    if status == False:
+        msg = Message("Ошибка авторизации",
+                      "Login error")
         return redirect(f"/?answer={msg}")
 
     solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
