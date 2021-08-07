@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 import requests
 sys.path.insert(1,str(Path(__file__).parent.parent/'MyCode'))
-from web_app.angelina_reader_core import AngelinaSolver
+from web_app.angelina_reader_core import AngelinaSolver, User
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
 
@@ -20,12 +20,32 @@ DEBUG = True
 app = Flask(__name__)
 
 app.config.from_object(__name__)
+
 DATA_ROOT_PATH = Path(__file__).parent/"static"/"data"
+DEFAULT_LANGUAGE = "RU"
+HTTP_HOST = "v2.angelina-reader.ru"
+LANG_LIST=[
+              ('RU', 'Русский')
+            , ('EN', 'English')
+            , ('LV', 'Latviešu')
+            , ('UZ', 'Ўзбек')
+            , ('UZL', "O'zbekcha")
+            , ('GR', 'Ελληνικά')
+           ]
+
 
 def Message(msg_ru, msg_en):
-    if session.get('language') == "RU":
+    if session.get('language', DEFAULT_LANGUAGE) == "RU":
         return msg_ru
     return msg_en
+
+def Referer(request):
+    referrer = request.referrer
+    referrer = referrer.split('?', 1)
+    referrer = referrer[0]
+    if referrer[-1] == '/':
+        referrer = referrer[:-1]
+    return referrer
 
 
 @app.teardown_appcontext
@@ -34,35 +54,40 @@ def close_db(error):
         g.link_db.close()
 
 
-def switch_language(switch_data):
+def switch_language(new_language):
     #Получаем выбранный язык из url и сохраняем его в session чтобы пользователю не приходилось выбирать его повторно
-    if switch_data is None:
-        if session.get('language') is None:
-            session['language'] = "RU"
-            target_language = session.get('language')
-        else:
-            target_language = session.get('language')
-    else:
-        session['language'] = switch_data
-        target_language = switch_data
-    return target_language
+    if new_language is None:
+        new_language = session.get('language', DEFAULT_LANGUAGE)
+    session['language'] = new_language
+    return new_language
 
 
-def user_data():
-    if session.get('user_id') is None:
-        return (False,None,None)
-    else:
-        return (True,session['user_id'],session['user_name'])
-        #Возвращаем данные пользователя (Состояние авторизации, ID, имя)
+def session_context():
+    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
+    user_id = session.get('user_id')
+    if user_id:
+        user = solver.find_user(id=user_id)
+        if user:
+            return solver, user
+    return solver, User(id=None, user_dict=dict(), solver=solver)
 
 
 @app.route("/setting/", methods=['POST'])
 def setting():
-    referrer = request.referrer
-    referrer = referrer.split('?', 1)
-    referrer = referrer[0]
-    msg = Message("Настройки успешно обновлены",
-                  "Settings updated successfully")
+    referrer = Referer(request)
+    solver, user = session_context()
+    for k in ['default_find_orientation'
+            , 'default_process_2_sides']:  # unchecked boxes are not present in request.form, we need to reset them
+        if not k in request.form:
+            user.params_dict[k] = "off"
+    if user.is_authenticated:
+        for attr in request.form:
+            user.params_dict[attr] = request.form[attr]
+        user.update()
+        msg = Message("Настройки успешно обновлены",
+                      "Settings updated successfully")
+    else:
+        msg = "system error 2108071100"
     return redirect(f"{referrer}/?answer={msg}&color=true")
 
 
@@ -90,7 +115,6 @@ def pass_to_mail():
 @app.route("/soc_login/", methods=['POST'])
 def user_register():
     token = request.form.get("token")
-    HTTP_HOST = "v2.angelina-reader.ru"
     response = requests.get(f'http://ulogin.ru/token.php?token={token}&host={HTTP_HOST}')
     todos = json.loads(response.text)
 
@@ -109,15 +133,12 @@ def user_register():
         return redirect(f"/?answer={msg}")
     else:
         session['user_id'] = user.id
-        session['user_name'] = user.name
-        session['user_mail'] = user.email
         return redirect(f"/")
 
 
 @app.route("/soc_register/", methods=['POST'])
 def user_login():
     token = request.form.get("token")
-    HTTP_HOST = "v2.angelina-reader.ru"
     response = requests.get(f'http://ulogin.ru/token.php?token={token}&host={HTTP_HOST}')
     todos = json.loads(response.text)
 
@@ -133,19 +154,10 @@ def user_login():
     if user is None:
         user = solver.register_user(name, email, password, network_name, network_id)
         session['user_id'] = user.id
-        session['user_name'] = user.name
-        session['user_mail'] = user.email
         return redirect(f"/")
 
     session['user_id'] = user.id
-    session['user_name'] = user.name
-    session['user_mail'] = user.email
     return redirect(f"/")
-
-
-@app.route("/test/")
-def test():
-    return render_template('test.html')
 
 
 @app.route("/upload_photo/", methods=['POST'])
@@ -157,13 +169,8 @@ def upload_photo():
         process_2_sides = request.form.get('process_2_sides') != 'False'
         has_public_confirm = request.form.get('has_public_confirm') != 'False'
         if file_storage != "":
-            user_id = None
-            if session.get('user_id') is not None:
-                user_id = session['user_id']
-
-            # print(file)
+            user_id = session.get('user_id')
             solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-
             task_id = solver.process(user_id=user_id,
                                  file_storage=file_storage,
                                  param_dict={"lang": lang,
@@ -187,12 +194,10 @@ def upload_photo():
 @app.route("/new_pass/", methods=['POST'])
 def new_pass():
     if request.method == 'POST':
-        status, id, username = user_data()
+        solver, user = session_context()
         password = request.form.get('pass')  # запрос к данным формы
         new_password = request.form.get('new_pass')
         if new_password != "" and password !="":
-            solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-            user = solver.find_user("","","",id)
             if user.check_password(password):
                 user.set_password(new_password)
                 msg = Message("Пароль успешно обновлен",
@@ -221,8 +226,6 @@ def login():
             if user is not None:
                 if user.check_password(password):
                     session['user_id'] = user.id
-                    session['user_name'] = user.name
-                    session['user_mail'] = user.email
                     return redirect("/")
                 else:
                     msg = Message("Неверный пароль",
@@ -253,8 +256,6 @@ def registration():
             if not found_users:
                 user = solver.register_user(name,email,password,network_name,network_id)
                 session['user_id'] = user.id
-                session['user_name'] = user.name
-                session['user_mail'] = user.email
                 return redirect("/")
             else:
                 msg = Message("Пользователь с таким email уже есть",
@@ -270,11 +271,7 @@ def registration():
 
 @app.route("/send_data/", methods=['POST'])
 def send_data():
-    referrer = request.referrer
-    referrer = referrer.split('?', 1)
-    referrer = referrer[0]
-    if referrer[-1] == '/':
-        referrer = referrer[:-1]
+    referrer = Referer(request)
     if request.method == 'POST':
         mail = request.form.get('mail')
         item_id = request.form.get('item_id')
@@ -298,9 +295,7 @@ def send_data():
 
 @app.route("/unpublic/<string:item_id>/<is_public>/")
 def unpublic(item_id, is_public):
-    referrer = request.referrer
-    referrer = referrer.split('?', 1)
-    referrer = referrer[0]
+    referrer = Referer(request)
     solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     if is_public == 'False':
         new_is_public = solver.set_public_acceess(item_id, False)
@@ -312,29 +307,38 @@ def unpublic(item_id, is_public):
 @app.route("/result_list/")
 def result_list():
     #Формируем список результатов пользователя и уходим на главную если пользователь не авторизирован
-    status, id, user_name = user_data()
+    solver, user = session_context()
     msg_log = request.args.get('answer')
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
-    if status == False:
+    if user.is_anonymous is None:
         msg = Message("Ошибка авторизации",
                       "Login error")
         return redirect(f"/?answer={msg}")
-
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-    my_list_item = solver.get_tasks_list(id, 0)
+    my_list_item = solver.get_tasks_list(user.id, 0)
     for item in my_list_item:
         item["desc"] = "<TT>" + item["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
-    return render_template('result_list.html',item_list=my_list_item, language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
+    return render_template('result_list.html'
+                           , Message=Message
+                           , lang_list=LANG_LIST
+                           , item_list=my_list_item
+                           , language=target_language
+                           , user=user
+                           , msg_log=msg_log)
 
 
 @app.route("/polit/")
 def polit():
-    status, id, user_name = user_data()
+    solver, user = session_context()
     msg_log = request.args.get('answer')
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
-    return render_template('polit.html', language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
+    return render_template('polit.html'
+                           , Message=Message
+                           , lang_list=LANG_LIST
+                           , language=target_language
+                           , user=user
+                           , msg_log=msg_log)
 
 
 @app.route('/service-worker.js')
@@ -345,7 +349,7 @@ def sw():
 @app.route("/")
 def index():
     #Данные пользователя
-    status, id, user_name = user_data()
+    solver, user= session_context()
     msg_log = request.args.get('answer')
     color = request.args.get('color')
     get_language = request.args.get('language')
@@ -353,21 +357,24 @@ def index():
 
     if request.args.get('exit') != None:
         del session['user_id']
-        del session['user_name']
         return redirect("/")
 
     count = 5
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-    task_list = solver.get_tasks_list(id, count)
+    task_list = solver.get_tasks_list(user.id, count)
     for item in task_list:
         item["desc"] = "<TT>" + item["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
-    return render_template('base.html', color=color, my_list_item=task_list,   language=target_language, status=status, id=id, name=user_name, msg_log=msg_log)
+    return render_template('base.html'
+                           , Message=Message
+                           , lang_list=LANG_LIST
+                           , color=color
+                           , my_list_item=task_list
+                           , language=target_language
+                           , user=user
+                           , msg_log=msg_log)
 
 #Проверка готовности
 @app.route("/result_test/<string:item_id>/")
 def result_test(item_id):
-    #user
-    status, id, user_name = user_data()
     solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     is_completed_test = solver.is_completed(item_id,1)
     return "True" if is_completed_test else "False"
@@ -376,19 +383,18 @@ def result_test(item_id):
 @app.route("/result/<string:item_id>/")
 def result(item_id):
     #Вывод стр результата распознавания
-    status, id, user_name = user_data()
+    solver, user = session_context()
     msg = request.args.get('answer')
     answer_modal = request.args.get('answer_modal')
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     is_completed_test = solver.is_completed(item_id)
     if is_completed_test:
         items_id = solver.get_results(item_id)
         decode_dict = []
         for item in items_id['item_data']:
-            user_mails =  solver.get_user_emails(id)
+            user_mails =  solver.get_user_emails(user.id)
 
             file = open(item[1], "r", encoding='utf-8')
             file_text = file.read()
@@ -400,39 +406,66 @@ def result(item_id):
 
             decode_dict.append([item[0],file_text,file_text_br])
 
-        if session.get('user_mail') is not None:
-            user_mail = session['user_mail']
-        else:
-            user_mail = ""
-
-        return render_template('result.html',msg=msg, answer_modal=answer_modal, user_mails=user_mails, public_sost=items_id["public"], user_mail=user_mail, item_id=item_id, prev_slag=items_id["prev_slag"], next_slag=items_id["next_slag"],  item_name=items_id['name'], item_date=items_id['create_date'], items_data=decode_dict,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html'
+                               , Message=Message
+                               , lang_list=LANG_LIST
+                               , msg=msg
+                               , answer_modal=answer_modal
+                               , user_mails=user_mails
+                               , public_sost=items_id["public"]
+                               , user_mail=user.email
+                               , item_id=item_id
+                               , prev_slag=items_id["prev_slag"]
+                               , next_slag=items_id["next_slag"]
+                               , item_name=items_id['name']
+                               , item_date=items_id['create_date']
+                               , items_data=decode_dict
+                               , language=target_language
+                               , user=user)
     else:
-        return render_template('result.html',msg=msg, item_id=item_id, answer_modal=answer_modal, completed=False,  language=target_language, status=status, id=id, name=user_name)
+        return render_template('result.html'
+                               , Message=Message
+                               , lang_list=LANG_LIST
+                               , msg=msg
+                               , item_id=item_id
+                               , answer_modal=answer_modal
+                               , completed=False
+                               , language=target_language
+                               , user=user)
 
 
 @app.route("/help/")
 def help():
-    status, id, user_name = user_data()
+    solver, user = session_context()
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
     search_qry = request.args.get('s')
     if search_qry is None:
         search_qry = ""
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     items = solver.help_list(target_language, search_qry)
-    return render_template('help.html', item_list=items, s=search_qry, language=target_language, status=status, id=id, name=user_name)
+    return render_template('help.html'
+                           , Message=Message
+                           , lang_list=LANG_LIST
+                           , item_list=items
+                           , s=search_qry
+                           , language=target_language
+                           , user=user)
 
 
 @app.route("/help/<slug>/")
 def showItem(slug):
-    status, id, user_name = user_data()
+    solver, user = session_context()
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     item = solver.help_item(target_language, slug)
-    return  render_template('post.html', itemData=item, language=target_language, status=status, id=id, name=user_name)
+    return  render_template('post.html'
+                            , Message=Message
+                            , lang_list=LANG_LIST
+                            , itemData=item
+                            , language=target_language
+                            , user=user)
 
 
 if __name__ == '__main__':
@@ -441,5 +474,5 @@ if __name__ == '__main__':
     if real_mode:
         from web_app.angelina_reader_core import AngelinaSolver
         print('real mode is ON')
-    app.run(host='0.0.0.0', port=port)
+    app.run(host='127.0.0.1', port=port)
 

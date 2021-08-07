@@ -53,7 +53,7 @@
   <div class="overlay">
   <nav class="overlayMenu">
                 <ul role="menu" {% if language == 'EN' %} style="width: 240px;" {% endif %}>
-                    {% if status == True %}
+                    {% if user.is_authenticated %}
                         <li><a href="/result_list/" role="menuitem">{% if language == 'RU' %}История{% else %}History{% endif %}</a></li>
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
                         <li><a href="#data_modal" data-fancybox role="menuitem">{% if language == 'RU' %}Настройки{% else %}Settings{% endif %}</a></li>
@@ -81,7 +81,7 @@
             </div>
             <div class="col-md-6 col-lg-6 hide990">
                 <ul role="menu"  >
-                    {% if status == True %}
+                    {% if user.is_authenticated %}
                         <li><a href="/result_list/" role="menuitem">{% if language == 'RU' %}История{% else %}History{% endif %}</a></li>
                         <li><a href="/help/" role="menuitem">{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</a></li>
 
@@ -103,8 +103,8 @@
                     </div>
                     <div class="col-7">
                         <div class="site-header__btn-panel">
-                            {% if status == True %}
-                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk" href="#data_modal"><img src="{{ url_for('static', filename='images/lk.png') }}" alt="{% if language == 'RU' %}Аккаунт{% else %}Account{% endif %}"><span style="line-height: 1;">{{name}}</span></a>
+                            {% if user.is_authenticated %}
+                            <a data-fancybox class="site-header__btn gr-btn gr-btn_lk" href="#data_modal"><img src="{{ url_for('static', filename='images/lk.png') }}" alt="{% if language == 'RU' %}Аккаунт{% else %}Account{% endif %}"><span style="line-height: 1;">{{user.name}}</span></a>
                             {% else %}
                             <a data-fancybox class="site-header__btn gr-btn gr-btn_lk login" href="#loginmodal"><img src="{{ url_for('static', filename='images/lk_login.png') }}" alt="{% if language == 'RU' %}Вход{% else %}Sign&nbspin{% endif %}"><span>{% if language == 'RU' %}Вход{% else %}Sign&nbspin{% endif %}</span></a>
                             {% endif %}
@@ -115,11 +115,7 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
-		
-		
 	</div>
 </header>
         {% if msg_log %}
@@ -137,20 +133,14 @@
 
       <div class="site-content site-content_home container ">
         <main class="site-main ">
-
-            {% if language == 'RU' %}
-                <h1 class="main-title">Распознавание текста шрифтом Брайля на изображении</h1>
-             {% else %}
-                <h1 class="main-title">Braille text recognition on an image.</h1>
-            {% endif %}
-
+          <h1 class="main-title">{{Message("Распознавание текста шрифтом Брайля на изображении",
+                                           "Braille text recognition on an image")}}</h1>
           <div class="site-block load-block">
-              {% if language == 'RU' %}
-                          <div class="load-block__sm-text">Загрузите фото текста на Брайле: изображение (jpg, png и др.), pdf или zip</div>
-              {% else %}
-                          <div class="load-block__sm-text">Upload a photo of the text in Braille: image (jpg, png, etc.), pdf or zip</span></div>
-              {% endif %}
-            <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}" alt="{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}"> <span>{% if language == 'RU' %}Как сделать фото?{% else %}How to take a photo?{% endif %}</span></a>
+            <div class="load-block__sm-text">{{Message("Загрузите фото текста на Брайле: изображение (jpg, png и др.), pdf или zip",
+                                                       "Upload a photo of the text in Braille: image (jpg, png, etc.), pdf or zip")}}</span></div>
+            <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}"
+                                                                 alt="{{Message("Как сделать фото?", "How to take a photo?")}}"> <span>
+                {{Message("Как сделать фото?", "How to take a photo?")}}</span></a>
 
 
 
@@ -208,51 +198,57 @@
 
             </div>
 
-              {% if language == 'RU' %}
-                    <p class="error_window" style="display: none;">Укажите, можно ли использовать файл для совершенствования алгоритмов распознавания Брайля</p>
-              {% else %}
-                    <p class="error_window" style="display: none;">Specify if the file can be used to improve Braille recognition algorithms</p>
-              {% endif %}
-
-              {% if language == 'RU' %}
-                    <p>Вы согласны, чтобы загруженное изображение было включено в публично доступный набор данных (<a href="#">подробнее</a>)?</p>
-              {% else %}
-                   <p>Do you agree that the uploaded image should be included in the publicly available dataset (<a href="#">read more</a>)?</p>
-              {% endif %}
+            <p class="error_window" style="display: none;">{{ Message(
+                    "Укажите, можно ли использовать файл для совершенствования алгоритмов распознавания Брайля",
+                    "Specify if the file can be used to improve Braille recognition algorithms")
+                    }}</p>
+            <p>{{ Message(
+                    'Вы согласны, чтобы загруженное изображение было включено в публично доступный набор данных (<a href="#">подробнее</a>)?',
+                    'Do you agree that the uploaded image should be included in the publicly available dataset (<a href="#">read more</a>)?')
+                    }}</p>
             <div class="load-block__agree">
               <div class="check-group target_intput" tabindex="0">
-                <input name="agree" type="radio" class="check-group__check" id="radio1"  tabindex="-1"/>
-                <label class="check-group__label" for="radio1" style="cursor: pointer;">{% if language == 'RU' %}Я согласен{% else %}I agree{% endif %}</label>
+                <input name="agree" type="radio" class="check-group__check" id="radio1" tabindex="-1"
+                    {{"checked" if user.params_dict.get("default_agreement")=="True" else ""}} />
+                <label class="check-group__label" for="radio1" style="cursor: pointer;">
+                    {{ Message('Я согласен', 'I agree') }}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input name="agree" type="radio" class="check-group__check" id="radio2"  tabindex="-1"/>
-                <label class="check-group__label" id="radio2_target" for="radio2" style="cursor: pointer;">{% if language == 'RU' %}Возражаю{% else %}Reject{% endif %}</label>
+                <input name="agree" type="radio" class="check-group__check" id="radio2" tabindex="-1"
+                    {{"checked" if user.params_dict.get("default_agreement")=="False" else ""}} />
+                <label class="check-group__label" id="radio2_target" for="radio2" style="cursor: pointer;">
+                    {{ Message('Возражаю','Reject') }}</label>
               </div>
             </div>
-            {% if language == 'RU' %}
-                <h3>Настройки распознавания <a href="#" style="color: black;">(подробнее)</a></h3>
-            {% else %}
-                <h3>Recognition Settings <a href="#" style="color: black;" >(more details)</a></h3>
-            {% endif %}
+            <h3>{{
+                    Message('Настройки распознавания', 'Recognition Settings')
+                    }} <a href="#" style="color: black;">({{
+                    Message('подробнее','more details') }})</a></h3>
             <div class="choice-box">
               <div class="check-group">
                 <select name="lang-choise" style="cursor: pointer;" id="" class="lang-choise">
-                  <option value="RU">Русский</option>
-                  <option value="EN">English</option>
-                  <option value="LV">Latviešu</option>
-                  <option value="UZ">Ўзбек</option>
-                  <option value="UZL">O'zbekcha</option>
-                  <option value="GR">Ελληνικά</option>
+                    {% for code, name in lang_list %}
+                        <option value="{{code}}"
+                                {{"selected" if user.params_dict.get("default_language", "RU")==code else ""}}>
+                            {{name}}
+                        </option>
+                    {% endfor %}
                 </select>
-                <label class="check-group__label check-group__label_lang">{% if language == 'RU' %}Язык текста{% else %}Text language{% endif %}</label>
+                <label class="check-group__label check-group__label_lang">
+                    {{Message("Язык текста", "Text language")}}</label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1"  checked="checked" tabindex="-1"/>
-                <label class="check-group__label" for="checkbox1" style="cursor: pointer;">{% if language == 'RU' %}Автоориентация{% else %}Auto-orientation{% endif %}</label>
+                <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1" tabindex="-1"
+                    {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}/>
+                <label class="check-group__label" for="checkbox1" style="cursor: pointer;">
+                    {{Message("Автоориентация", "Auto-orientation")}}
+                </label>
               </div>
               <div class="check-group target_intput" tabindex="0">
-                <input type="checkbox" name="process_2_sides" class="check-group__check" id="checkbox2" tabindex="-1"/>
-                <label class="check-group__label" for="checkbox2" style="cursor: pointer;">{% if language == 'RU' %}Обе стороны{% else %}Both sides{% endif %}</label>
+                <input type="checkbox" name="process_2_sides" class="check-group__check" id="checkbox2" tabindex="-1"
+                    {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}} />
+                <label class="check-group__label" for="checkbox2" style="cursor: pointer;">
+                    {{ Message("Обе стороны", "Both sides") }}</label>
               </div>
             </div>
           </div> <!-- eof site-block -->
@@ -285,7 +281,7 @@
           </div>
         </main>
 
-        {% if status == True %}
+        {% if user.is_authenticated %}
             {% include 'include_file/authorized_sidebar.html' %}
         {% else %}
             {% include 'include_file/not_authorized_sidebar.html' %}
@@ -509,44 +505,87 @@
   {% endif %}
 
 
-  {% if language == 'RU' %}
 <div id="data_modal" class="set_form modalbox">
     <div class="rg-form">
-        <p><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></p>
-        <h3 class="rg-form__title">Обновить пароль</h3>
+        <h3 class="rg-form__title">{{Message("Обновить пароль","Change password")}}</h3>
         <form action="/new_pass/" method="post" class="rg-form__form pass_switch">
             <div class="rg-form__group">
-                <input type="password" class="rg-form__inp" name="pass" required placeholder="Введите старый (временный) пароль">
-                <input type="password" class="rg-form__inp" name="new_pass" required placeholder="Введите новый пароль">
+                <input type="password" class="rg-form__inp" name="pass" required placeholder="{{Message(
+                        "Старый или временный пароль",
+                        "Old or temporary password")}}" tabindex="0">
+                <input type="password" class="rg-form__inp" name="new_pass" required placeholder="{{Message(
+                        "Новый пароль",
+                        "New password")}}" tabindex="0">
             </div>
             <div class="rg-form__btn-cont">
-                <button type="submit" class="rg-form__button btn">Обновить</button>
+                <button type="submit" class="rg-form__button btn" tabindex="0">
+                    {{Message("Обновить пароль", "Update password")}}
+                </button>
             </div>
         </form>
 
-        <h3 class="rg-form__title">Настройки</h3>
+        <h3 class="rg-form__title">{{Message("Индивидуальные настройки по умолчанию", "User default setting")}}</h3>
         <form action="/setting/" method="post" class="rg-form__form block_setting">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <select>
-                <option value="var1">Вариант 1</option>
-                <option value="var1">Вариант 1</option>
-                <option value="var1">Вариант 1</option>
-                <option value="var1">Вариант 1</option>
+            <h3>{{Message("Согласие на публичный доступ", "Publicity agreement")}}</h3>
+            <select name="default_agreement" tabindex="0">
+                <option value="None"
+                        {{"selected" if user.params_dict.get("default_agreement", "None")=="None" else ""}}>
+                    {{Message("Не устанавливать", "Don't set")}}
+                </option>
+                <option value="True"
+                        {{"selected" if user.params_dict.get("default_agreement")=="True" else ""}}>
+                    {{Message("Согласен", "Agree")}}
+                </option>
+                <option value="False"
+                        {{"selected" if user.params_dict.get("default_agreement")=="False" else ""}}>
+                    {{Message("Не согласен", "Reject")}}
+                </option>
             </select>
+            <h3>{{Message("Параметры распознавания", "Recognition settings")}}</h3>
+
+            <label class="check-group__label check-group__label_lang" for="default_language" >
+                {{Message("Язык текста", "Text language")}}</label>
+            <select name="default_language" tabindex="0">
+                {% for code, name in lang_list %}
+                    <option value="{{code}}"
+                            {{"selected" if user.params_dict.get("default_language", "RU")==code else ""}}>
+                        {{name}}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="choice-box" style="padding: 10px;">
+            <input name="default_find_orientation" type="checkbox" class="check-group__check"
+                id="default_find_orientation" tabindex="0"
+                {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}>
+            <label  class="check-group__label" for="default_find_orientation" style="cursor: pointer;">
+                {{Message("Автоориентация", "Auto-orientation")}}</label>
+            </div>
+            <div class="choice-box" style="padding: 10px;">
+            <input name="default_process_2_sides" type="checkbox" class="check-group__check"
+                id="default_process_2_sides" tabindex="0"
+                {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}}>
+            <label class="check-group__label" for="default_process_2_sides" style="cursor: pointer;">
+                {{ Message("Обе стороны", "Both sides") }}
+            </label>
+            </div>
+
+
+
+            <!--
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
             <input type="date" class="rg-form__inp">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
+            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
+            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
 
-
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
             <div class="choice-box" style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0" >
                     <input name="image" type="checkbox" class="check-group__check" id="radio_21" tabindex="-1" checked>
@@ -561,6 +600,7 @@
                     <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
                 </div>
             </div>
+
             <input type="file" class="rg-form__inp" />
             <div class="load-block__agree choice-box"  style="padding: 10px;">
                 <div class="check-group target_intput" tabindex="0">
@@ -572,72 +612,13 @@
                     <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
                 </div>
             </div>
+             -->
             <div class="rg-form__btn-cont">
-                <button type="submit" class="rg-form__button btn">Обновить</button>
+                <button type="submit" class="rg-form__button btn" tabindex="0">Обновить</button>
             </div>
         </form>
     </div>
 </div>
-  {% else %}
- <div id="data_modal" class="set_form modalbox">
-    <div class="rg-form">
-        <p><a href="/?exit=true" role="menuitem">{% if language == 'RU' %}Выход{% else %}Sign out{% endif %}</a></p>
-        <h3 class="rg-form__title">Update Password</h3>
-        <form action="/new_pass/" method="post" class="rg-form__form pass_switch">
-            <div class="rg-form__group">
-                <input type="password" class="rg-form__inp" name="pass" required placeholder="Enter your old (temporary) password">
-                <input type="password" class="rg-form__inp" name="new_pass" required placeholder="Enter your new password">
-            </div>
-            <div class="rg-form__btn-cont">
-                <button type="submit" class="rg-form__button btn">Update</button>
-            </div>
-        </form>
-
-        <h3 class="rg-form__title">Settings</h3>
-        <form action="/setting/" method="post" class="rg-form__form block_setting">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <select>
-                <option value="var1">Вариант 1</option>
-                <option value="var1">Вариант 1</option>
-                <option value="var1">Вариант 1</option>
-                <option value="var1">Вариант 1</option>
-            </select>
-            <input type="date" class="rg-form__inp">
-
-            <div class="choice-box" style="padding: 10px;">
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" tabindex="-1" checked>
-                    <label tabindex="0" class="check-group__label" for="radio_21" style="cursor: pointer;">Изображение</label>
-                </div>
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" tabindex="-1" checked>
-                    <label class="check-group__label" for="radio_22" style="cursor: pointer;">Текст</label>
-                </div>
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" tabindex="-1" checked>
-                    <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
-                </div>
-            </div>
-            <input type="file" class="rg-form__inp" />
-            <div class="load-block__agree choice-box"  style="padding: 10px;">
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio5" tabindex="-1">
-                    <label class="check-group__label" for="radio5" style="cursor: pointer;">Я согласен</label>
-                </div>
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio6" tabindex="-1">
-                    <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
-                </div>
-            </div>
-            <div class="rg-form__btn-cont">
-                <button type="submit" class="rg-form__button btn">Update</button>
-            </div>
-        </form>
-    </div>
-</div>
-  {% endif %}
-
 
 
   {% if language == 'RU' %}
