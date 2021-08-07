@@ -239,14 +239,14 @@
               </div>
               <div class="check-group target_intput" tabindex="0">
                 <input type="checkbox" name="find_orientation" class="check-group__check" id="checkbox1" tabindex="-1"
-                    {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}/>
+                    {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}>
                 <label class="check-group__label" for="checkbox1" style="cursor: pointer;">
                     {{Message("Автоориентация", "Auto-orientation")}}
                 </label>
               </div>
               <div class="check-group target_intput" tabindex="0">
                 <input type="checkbox" name="process_2_sides" class="check-group__check" id="checkbox2" tabindex="-1"
-                    {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}} />
+                    {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}}>
                 <label class="check-group__label" for="checkbox2" style="cursor: pointer;">
                     {{ Message("Обе стороны", "Both sides") }}</label>
               </div>
@@ -524,9 +524,17 @@
             </div>
         </form>
 
-        <h3 class="rg-form__title">{{Message("Индивидуальные настройки по умолчанию", "User default setting")}}</h3>
         <form action="/setting/" method="post" class="rg-form__form block_setting">
+
+            <h3 class="rg-form__title">{{Message('Имя пользователя','User name')}}</h3>
+            <input type="text" class="rg-form__inp" placeholder="{{ Message('Имя пользователя','User name') }}"
+                   value="{{ user.name }}"
+                   id="user_name" name="user_name">
+
+            <h3 class="rg-form__title">{{Message("Индивидуальные настройки по умолчанию", "User default setting")}}</h3>
+
             <h3>{{Message("Согласие на публичный доступ", "Publicity agreement")}}</h3>
+
             <select name="default_agreement" tabindex="0">
                 <option value="None"
                         {{"selected" if user.params_dict.get("default_agreement", "None")=="None" else ""}}>
@@ -541,7 +549,8 @@
                     {{Message("Не согласен", "Reject")}}
                 </option>
             </select>
-            <h3>{{Message("Параметры распознавания", "Recognition settings")}}</h3>
+
+            <h3>{{Message("Параметры распознавания", "Recognition defaults")}}</h3>
 
             <label class="check-group__label check-group__label_lang" for="default_language" >
                 {{Message("Язык текста", "Text language")}}</label>
@@ -554,22 +563,44 @@
                 {% endfor %}
             </select>
             <div class="choice-box" style="padding: 10px;">
-            <input name="default_find_orientation" type="checkbox" class="check-group__check"
-                id="default_find_orientation" tabindex="0"
-                {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}>
-            <label  class="check-group__label" for="default_find_orientation" style="cursor: pointer;">
-                {{Message("Автоориентация", "Auto-orientation")}}</label>
+                <div class="check-group target_intput" tabindex="0" >
+                    <input name="default_find_orientation" type="checkbox" class="check-group__check"
+                        id="default_find_orientation" tabindex="0"
+                        {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}/>
+                    <label  class="check-group__label" for="default_find_orientation" style="cursor: pointer;">
+                        {{Message("Автоориентация", "Auto-orientation")}}</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0" >
+                    <input name="default_process_2_sides" type="checkbox" class="check-group__check"
+                        id="default_process_2_sides" tabindex="0"
+                        {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}}/>
+                    <label class="check-group__label" for="default_process_2_sides" style="cursor: pointer;">
+                        {{ Message("Обе стороны", "Both sides") }}
+                    </label>
+                </div>
             </div>
+
+            <h3>{{Message("Параметры отправки по e-mail", "E-mail defaults")}}</h3>
             <div class="choice-box" style="padding: 10px;">
-            <input name="default_process_2_sides" type="checkbox" class="check-group__check"
-                id="default_process_2_sides" tabindex="0"
-                {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}}>
-            <label class="check-group__label" for="default_process_2_sides" style="cursor: pointer;">
-                {{ Message("Обе стороны", "Both sides") }}
-            </label>
+                <div class="check-group target_intput" tabindex="0" >
+                    <input name="default_send_image" type="checkbox" class="check-group__check"
+                           id="default_send_image" tabindex="-1"
+                           {{"checked" if user.params_dict.get("default_send_image", "on")=="on" else ""}}/>
+                    <label  class="check-group__label" for="default_send_image" style="cursor: pointer;">Изображение</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="default_send_text" type="checkbox" class="check-group__check"
+                           id="default_send_text" tabindex="-1"
+                           {{"checked" if user.params_dict.get("default_send_text", "on")=="on" else ""}}/>
+                    <label class="check-group__label" for="default_send_text" style="cursor: pointer;">Текст</label>
+                </div>
+                <div class="check-group target_intput" tabindex="0">
+                    <input name="default_send_braille" type="checkbox" class="check-group__check"
+                           id="default_send_braille" tabindex="-1"
+                           {{"checked" if user.params_dict.get("default_send_braille", "on")=="on" else ""}}/>
+                    <label class="check-group__label" for="default_send_braille" style="cursor: pointer;">Текст Брайля</label>
+                </div>
             </div>
-
-
 
             <!--
             <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
@@ -586,20 +617,7 @@
             <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
             <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
 
-            <div class="choice-box" style="padding: 10px;">
-                <div class="check-group target_intput" tabindex="0" >
-                    <input name="image" type="checkbox" class="check-group__check" id="radio_21" tabindex="-1" checked>
-                    <label  class="check-group__label" for="radio_21" style="cursor: pointer;">Изображение</label>
-                </div>
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="text" type="checkbox" class="check-group__check" id="radio_22" tabindex="-1" checked>
-                    <label class="check-group__label" for="radio_22" style="cursor: pointer;">Текст</label>
-                </div>
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="braille" type="checkbox" class="check-group__check" id="radio_23" tabindex="-1" checked>
-                    <label class="check-group__label" for="radio_23" style="cursor: pointer;">Текст Брайля</label>
-                </div>
-            </div>
+
 
             <input type="file" class="rg-form__inp" />
             <div class="load-block__agree choice-box"  style="padding: 10px;">
@@ -657,29 +675,20 @@
 
 
 
-
-
-  {% if language == 'RU' %}
-    <div id="emailmodal" class="modalbox">
-    <div class="rg-form">
-	<h3 class="rg-form__title">Отправить на e-mail</h3>
-	<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
-
-
-
-
-
-
+<div id="emailmodal" class="modalbox">
+<div class="rg-form">
+<h3 class="rg-form__title">{{ Message('Отправить на e-mail','Send To E-mail') }}</h3>
+<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
     <div class="rg-form__group">
-
-        <p style="margin-bottom: 5px;">Укажите email для отправки материалов<br><span class="more_tes">или несколько через ;</span></p>
-
+        <p style="margin-bottom: 5px;">{{ Message('Укажите e-mail для отправки материалов','Specify an e-mail to sending the results to') }}
+            <br>
+            <span class="more_tes">{{ Message('или несколько через ;','or several via ;') }}</span></p>
         <div class="mail_blockl">
-
             <div class="mail_li">
-                <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style=""  placeholder="Введите email для отправки результатов" value="{{user_mail}}"><button class="more_btn"></button>
+                <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style=""  placeholder="{{ Message('Введите e-mail(ы) адресатов',"Enter the recipient's e-mail(s)") }}" value="{{user_mail}}">
+                <!--<button class="more_btn"></button>-->
             </div>
-            <div class="form_error_itemail hkl_item" style="display: none;"><div>!</div>Укажите email</div>
+            <div class="form_error_itemail hkl_item" style="display: none;"><div>!</div>{{ Message('Укажите e-mail(ы) адресатов',"Enter the recipient's e-mail(s)") }}</div>
 
             <div class="option_list">
                 {% for item in user_mails %}
@@ -689,123 +698,42 @@
         </div>
 
     	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
-
-
-
-
-
-    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="Тема письма" value="" style="margin-top: 15px;">
-
-
-        <p>Что отправить?</p>
-
+        <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="{{ Message('Тема письма','E-mail subject') }}" value="" style="margin-top: 15px;">
+        <p>{{ Message('Что отправить?','What to send?') }}</p>
         <div class="choice-box" style="padding: 10px;">
             <div class="check-group">
-                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="-1" checked>
-                <label class="check-group__label" for="radio1" style="cursor: pointer;">Изображение</label>
+                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="-1"
+                       {{"checked" if user.params_dict.get("default_send_image", "on")=="on" else ""}}>
+                <label class="check-group__label" for="radio1" style="cursor: pointer;">{{ Message('Изображение','Image') }}</label>
             </div>
             <div class="check-group">
-                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="-1" checked>
-                <label class="check-group__label" for="radio2" style="cursor: pointer;">Текст</label>
+                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="-1"
+                       {{"checked" if user.params_dict.get("default_send_text", "on")=="on" else ""}}>
+                <label class="check-group__label" for="radio2" style="cursor: pointer;">{{ Message('Текст','Text') }}</label>
             </div>
             <div class="check-group">
-                <input name="braille" type="checkbox" class="check-group__check" id="radio3" tabindex="-1" checked>
-                <label class="check-group__label" for="radio3" style="cursor: pointer;">Текст Брайля</label>
+                <input name="braille" type="checkbox" class="check-group__check" id="radio3" tabindex="-1"
+                       {{"checked" if user.params_dict.get("default_send_braille", "on")=="on" else ""}}>
+                <label class="check-group__label" for="radio3" style="cursor: pointer;">{{ Message('Брайлевский текст','Braille text') }}</label>
             </div>
         </div>
-        <div class="form_error_item hkl_item" style="display: none;"><div>!</div>Укажите тип отправляемого файла</div>
-
+        <div class="form_error_item hkl_item" style="display: none;"><div>!</div>{{ Message('Выберите хотя бы один тип отправляемого файла','Specify at least one file type') }}</div>
         <div class="check-group rabComent">
             <input name="to_developers" type="checkbox" class="check-group__check" tabindex="-1" id="radio_rab">
-            <label class="check-group__label" for="radio_rab" style="cursor: pointer;">Отправить разработчику</label>
+            <label class="check-group__label" for="radio_rab" style="cursor: pointer;">{{ Message('Отправить разработчикам','Send to developers') }}</label>
         </div>
 
-        <p>Комментарий</p>
+        <p>{{ Message('Комментарий','Comment') }}</p>
         <textarea name="comment" id="item_comment"></textarea>
-        <div class="form_error_itemcom hkl_item" style="display: none;"><div>!</div>Укажите комментарий</div>
-
+        <div class="form_error_itemcom hkl_item" style="display: none;"><div>!</div>{{ Message('Укажите комментарий','Enter a comment') }}</div>
     </div>
     <div class="rg-form__btn-cont">
-    	<button type="submit" class="rg-form__button btn">Отправить</button>
+    	<button type="submit" class="rg-form__button btn">{{ Message('Отправить','Send') }}</button>
     </div>
-
-	</form>
+</form>
 </div>
-  </div>
-  {% else %}
-      <div id="emailmodal" class="modalbox">
-    <div class="rg-form">
-	<h3 class="rg-form__title">Send To E-mail</h3>
-	<form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
-
-
-
-
-
-
-    <div class="rg-form__group">
-
-        <p style="margin-bottom: 5px;">Specify an email address for sending materials<br><span class="more_tes">or several via ;</span></p>
-
-        <div class="mail_blockl">
-
-            <div class="mail_li">
-                <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style=""  placeholder="Enter your email address to send the results" value="{{user_mail}}"><button class="more_btn"></button>
-            </div>
-            <div class="form_error_itemail hkl_item" style="display: none;"><div>!</div>Enter your email address</div>
-
-            <div class="option_list">
-                {% for item in user_mails %}
-                    <div><a href="" name="{{item}}">{{item}}</a></div>
-                {% endfor %}
-            </div>
-        </div>
-
-    	<input type="text" name="item_id" class="rg-form__inp" id="file_id" required placeholder="item_id" style="display: none;">
-
-
-
-
-
-    <input type="text" name="mail_title" class="rg-form__inp" id="mail_dopp"   placeholder="Email subject" value="" style="margin-top: 15px;">
-
-
-        <p>What to send?</p>
-
-        <div class="choice-box" style="padding: 10px;">
-            <div class="check-group">
-                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="-1" checked>
-                <label class="check-group__label" for="radio1" style="cursor: pointer;">Image</label>
-            </div>
-            <div class="check-group">
-                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="-1" checked>
-                <label class="check-group__label" for="radio2" style="cursor: pointer;">Text</label>
-            </div>
-            <div class="check-group">
-                <input name="braille" type="checkbox" class="check-group__check" id="radio3" tabindex="-1" checked>
-                <label class="check-group__label" for="radio3" style="cursor: pointer;">Braille Text</label>
-            </div>
-        </div>
-        <div class="form_error_item hkl_item" style="display: none;"><div>!</div>Specify the type of file</div>
-
-        <div class="check-group rabComent">
-            <input name="to_developers" type="checkbox" class="check-group__check" id="radio_rab" tabindex="-1">
-            <label class="check-group__label" for="radio_rab" style="cursor: pointer;">Send to developer</label>
-        </div>
-
-        <p>Comment</p>
-        <textarea name="comment" id="item_comment"></textarea>
-        <div class="form_error_itemcom hkl_item" style="display: none;"><div>!</div>Enter a comment</div>
-
-    </div>
-    <div class="rg-form__btn-cont">
-    	<button type="submit" class="rg-form__button btn">Send</button>
-    </div>
-
-	</form>
 </div>
-  </div>
-  {% endif %}
+
 
 
 

@@ -76,13 +76,18 @@ def session_context():
 def setting():
     referrer = Referer(request)
     solver, user = session_context()
-    for k in ['default_find_orientation'
-            , 'default_process_2_sides']:  # unchecked boxes are not present in request.form, we need to reset them
+    user.name = request.form['user_name']
+    for k in [ 'default_find_orientation'
+              ,'default_process_2_sides'
+              ,'default_send_image'
+              ,'default_send_text'
+              ,'default_send_braille']:  # unchecked boxes are not present in request.form, we need to reset them
         if not k in request.form:
             user.params_dict[k] = "off"
     if user.is_authenticated:
         for attr in request.form:
-            user.params_dict[attr] = request.form[attr]
+            if attr != 'user_name':
+                user.params_dict[attr] = request.form[attr]
         user.update()
         msg = Message("Настройки успешно обновлены",
                       "Settings updated successfully")
