@@ -25,11 +25,11 @@
                                         <div class="documents-card__mediabox mediabox">
                                             {% if item.public == False %}
                                                 <div class="lock_item" >
-                                                    <a href="/unpublic/{{item.id}}/True/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/lock_item.png') }}" alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
+                                                    <a href="/setpublic/{{item.id}}/True/"  hline="/setpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/lock_item.png') }}" alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
                                                 </div>
                                             {% else %}
                                                 <div class="lock_item" >
-                                                    <a href="/unpublic/{{item.id}}/False/"  hline="/unpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
+                                                    <a href="/setpublic/{{item.id}}/False/"  hline="/setpublic/{{item.id}}/" tabindex="-1"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
                                                 </div>
                                             {% endif %}
 

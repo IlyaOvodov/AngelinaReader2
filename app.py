@@ -298,15 +298,11 @@ def send_data():
     return redirect(f"{referrer}/?answer={msg}")
 
 
-@app.route("/unpublic/<string:item_id>/<is_public>/")
-def unpublic(item_id, is_public):
-    referrer = Referer(request)
+@app.route("/setpublic/<string:item_id>/<new_is_public>/")
+def setpublic(item_id, new_is_public):
     solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-    if is_public == 'False':
-        new_is_public = solver.set_public_acceess(item_id, False)
-    else:
-        new_is_public = solver.set_public_acceess(item_id, True)
-    return new_is_public+""
+    new_is_public = solver.set_public_acceess(item_id, new_is_public == 'True')
+    return str(new_is_public)
 
 
 @app.route("/result_list/")

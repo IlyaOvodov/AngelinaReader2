@@ -80,11 +80,11 @@
 
                         {% if public_sost == False %}
                          <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
-                             <a href="/unpublic/{{item_id}}/True/"  hline="/unpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/lock_item.png') }}" alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
+                             <a href="/setpublic/{{item_id}}/True/"  hline="/setpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/lock_item.png') }}" alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
                          </div>
                         {% else %}
                          <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
-                             <a href="/unpublic/{{item_id}}/False/"  hline="/unpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
+                             <a href="/setpublic/{{item_id}}/False/"  hline="/setpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
                          </div>
                         {% endif %}
 
