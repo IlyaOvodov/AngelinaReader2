@@ -548,6 +548,9 @@
                     <label class="check-group__label" for="default_send_braille" style="cursor: pointer;">Текст Брайля</label>
                 </div>
             </div>
+            <textarea placeholder="{{ Message('Избраннные адресаты','Most usable e-mails') }}"
+                name="selected_emails" id="selected_emails" rows="5" width="100%"
+                >{{ user.params_dict.get('selected_emails','') }}</textarea>
 
             <!--
             <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">

@@ -399,7 +399,7 @@ def result(item_id):
         items_id = solver.get_results(item_id)
         decode_dict = []
         for item in items_id['item_data']:
-            user_mails =  solver.get_user_emails(user.id)
+            user_mails =  solver.get_user_emails(user)
 
             file = open(item[1], "r", encoding='utf-8')
             file_text = file.read()
