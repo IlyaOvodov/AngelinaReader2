@@ -367,99 +367,46 @@
     </div>
     <img id="rez_items" src="">
 </div>
+</div>
 
 
-
-  </div>
-
-  {% if language == 'RU' %}
-  <div id="regmodal" class="modalbox">
-    <div class="rg-form">
-	<h3 class="rg-form__title">Регистрация нового пользователя</h3>
-	<form action="/registration/" method="post"  class="rg-form__form" id="log_form">
-		<div class="rg-form__text">Для регистрации подтвердите, что Вы:</div>
-		<div class="rg-form__check-cont">
-
+<div id="regmodal" class="modalbox">
+<div class="rg-form">
+<h3 class="rg-form__title">{{ Message('Регистрация нового пользователя','New user registration') }}</h3>
+<form action="/registration/" method="post"  class="rg-form__form" id="log_form">
+    <div class="rg-form__text">{{ Message('Для регистрации подтвердите, что Вы:','To register, confirm that you:') }}</div>
+    <div class="rg-form__check-cont">
         <div class="check-group target_intput" tabindex="0">
-            <input type="checkbox"  class="check-group__check"  id="checkbox11" tabindex="-1" />
-            <label class="check-group__label" for="checkbox11" style="cursor: pointer;">посмотрели <a class="check-group__link" href="/help/">как правильно делать фото</a></label>
+            <input type="checkbox"  class="check-group__check"  id="checkbox_confirm1" tabindex="-1" />
+            <label class="check-group__label" for="checkbox_confirm1" style="cursor: pointer;">{{ Message('посмотрели ',"you've got acquainted with ") }}
+                <a class="check-group__link" href="/help/">{{ Message('как правильно делать фото','how to take a photo properly') }}</a></label>
         </div>
         <div class="check-group target_intput" tabindex="0">
-            <input type="checkbox" class="check-group__check"  id="checkbox12" tabindex="-1" />
-            <label class="check-group__label" for="checkbox12" style="cursor: pointer;">согласны с условиями <a class="check-group__link" href="/polit/">соглашения о конфиденциальности</a></label>
+            <input type="checkbox" class="check-group__check"  id="checkbox_confirm2" tabindex="-1" />
+            <label class="check-group__label" for="checkbox_confirm2" style="cursor: pointer;">{{ Message('согласны с условиями','you agree to the terms and conditions of ') }}
+                <a class="check-group__link" href="/polit/">{{ Message('соглашения о конфиденциальности ','privacy agreement') }}</a></label>
         </div>
     </div>
-    <div class="rg-form__text">C помощью социальных сетей:</div>
+    <div id="register_fields">
+        <!--
+        <div class="rg-form__text">{{ Message('C помощью социальных сетей:','Using social networks:') }}</div>
 
-<div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
-<div content="nd_error">
-    <div class="block_socfake">
-        <img src="{{ url_for('static', filename='images/soc_block.PNG') }}" alt="Cоц. сети" />
+        <div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
+
+        <div class="rg-form__text">{{ Message('Или используйте E-mail и пароль:','Or use your E-mail and password:') }}</div>
+        -->
+        <div class="rg-form__group">
+            <input type="text" class="rg-form__inp" required placeholder="{{ Message('Ваше имя','Your name') }}" name="name">
+            <input type="email" class="rg-form__inp" required placeholder="{{ Message('E-mail','E-mail') }}" name="mail">
+            <input type="password" class="rg-form__inp" required placeholder="{{ Message('Пароль','Password') }}" name="pass">
+        </div>
+        <div class="rg-form__btn-cont">
+            <button type="submit" class="rg-form__button btn">{{ Message('Зарегистрироваться','Register') }}</button>
+        </div>
     </div>
+</form>
 </div>
-
-    <div class="rg-form__text">Или используйте E-mail и пароль:</div>
-    <div class="rg-form__group">
-    	<input type="text" class="rg-form__inp" required placeholder="Ваше имя" name="name">
-			<input type="email" class="rg-form__inp" required placeholder="E-mail" name="mail">
-			<input type="password" class="rg-form__inp" required placeholder="Пароль" name="pass">
-
-    </div>
-        <p class="er_line" style="display: none;">Необходимо подтвердить, что Вы прочитали, как делать фото, чтобы программа работала, и согласны с политикой конфиденциальности </p>
-    <div class="rg-form__btn-cont">
-    	<button type="submit" class="rg-form__button btn">Зарегистрироваться</button>
-    </div>
-
-	</form>
-
-
 </div>
-  </div>
-  {% else %}
-  <div id="regmodal" class="modalbox">
-    <div class="rg-form">
-	<h3 class="rg-form__title">Registering a new user</h3>
-	<form action="/registration/" method="post" class="rg-form__form" id="log_form">
-		<div class="rg-form__text">To register, confirm that:</div>
-		<div class="rg-form__check-cont">
-      <div class="check-group target_intput" tabindex="0">
-        <input type="checkbox" class="check-group__check" id="checkbox11" tabindex="-1" />
-        <label class="check-group__label" for="checkbox11" style="cursor: pointer;">you've got acquainted with <a class="check-group__link" href="/help/">how to take a photo in the correct way</a></label>
-      </div>
-      <div class="check-group target_intput" tabindex="0">
-        <input type="checkbox" class="check-group__check" id="checkbox12" tabindex="-1" />
-        <label class="check-group__label" for="checkbox12" style="cursor: pointer;">you agree to the terms and conditions of <a class="check-group__link" href="/polit/">privacy agreement</a></label>
-      </div>
-    </div>
-    <div class="rg-form__text">Using social networks:</div>
-
-<div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
-<div content="nd_error">
-    <div class="block_socfake">
-        <img src="{{ url_for('static', filename='images/soc_block.PNG') }}" />
-    </div>
-</div>
-
-    <div class="rg-form__text">Or use your E-mail and password:</div>
-    <div class="rg-form__group">
-    	<input type="text" class="rg-form__inp" required placeholder="Your name" name="name">
-			<input type="email" class="rg-form__inp" required placeholder="E-mail" name="mail">
-			<input type="password" class="rg-form__inp" required placeholder="Password" name="pass">
-
-    </div>
-        <p class="er_line" style="dispaly: none;">You must confirm that you have read how to take a photo for the program to work, and agree to the privacy policy </p>
-    <div class="rg-form__btn-cont">
-    	<button type="submit" class="rg-form__button btn">Register</button>
-    </div>
-
-	</form>
-
-
-</div>
-  </div>
-
-  {% endif %}
-
 
 
    {% if language == 'RU' %}
@@ -686,7 +633,7 @@
         <div class="mail_blockl">
             <div class="mail_li">
                 <input type="text" name="mail" id="iten_bl" class="rg-form__inp" style=""  placeholder="{{ Message('Введите e-mail(ы) адресатов',"Enter the recipient's e-mail(s)") }}" value="{{user_mail}}">
-                <!--<button class="more_btn"></button>-->
+                <button class="more_btn"></button>
             </div>
             <div class="form_error_itemail hkl_item" style="display: none;"><div>!</div>{{ Message('Укажите e-mail(ы) адресатов',"Enter the recipient's e-mail(s)") }}</div>
 
@@ -746,10 +693,10 @@
     <div class="rg-form__group">
     	<input type="text" name="mail" class="rg-form__inp" required placeholder="Логин (mail)">
 			<input type="password" name="pass" class="rg-form__inp" required  placeholder="Пароль">
-
+    <!--
     <div class="rg-form__text">C помощью социальных сетей:</div>
         <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_login/;mobilebuttons=0;"></div>
-
+    -->
     </div>
         <p class="moibile_t">
             <a data-fancybox href="#regmodal" style="color: #3C3C3C; margin-right: 20px;">Регистрация</a>
@@ -771,11 +718,11 @@
     <div class="rg-form__group">
     	<input type="text" name="mail" class="rg-form__inp"  required placeholder="Login (mail)">
 			<input type="password" name="pass" class="rg-form__inp" required placeholder="Password">
-
+    <!--
     <div class="rg-form__text">Using social networks:</div>
 
     <div id="uLogin" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_login/;mobilebuttons=0;"></div>
-
+    -->
     </div>
         <p class="moibile_t">
             <a data-fancybox href="#regmodal" style="color: #3C3C3C; margin-right: 20px;">Registration</a>
