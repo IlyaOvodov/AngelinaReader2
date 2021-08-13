@@ -1,8 +1,4 @@
-# Call vendor to add the dependencies to the classpath
 # -*- coding: UTF-8 -*-
-
-import vendor
-
 import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
