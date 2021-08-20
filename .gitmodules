@@ -1,0 +1,3 @@
+[submodule "AngelinaReader"]
+	path = AngelinaReader
+	url = https://github.com/IlyaOvodov/AngelinaReader.git

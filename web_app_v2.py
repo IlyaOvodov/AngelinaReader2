@@ -5,7 +5,7 @@ import sys
 import json
 from pathlib import Path
 import requests
-sys.path.insert(1,str(Path(__file__).parent.parent/'MyCode'))
+sys.path.insert(1,str(Path(__file__).parent/'AngelinaReader'))
 from web_app.angelina_reader_core import AngelinaSolver, User
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
