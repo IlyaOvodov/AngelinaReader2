@@ -1,11 +1,11 @@
 {
 "dir": "/",
-"lang": "Russian",
-"name": "Angelina braille reader",
+"lang": "ru",
+"name": "Angelina Braille Reader",
+"short_name": "Angelina Reader",
 "scope": "/",
 "display": "standalone",
-"start_url": "https://v2.angelina-reader.ru/",
-"short_name": "Angelina reader",
+"start_url": "https://angelina-reader.com/",
 "description": "Распознавание текста шрифтом Брайля на изображении.",
 "orientation": "any",
 "background_color": "#ffffff",
@@ -14,101 +14,19 @@
 "prefer_related_applications": false,
 "icons": [
 {
-"src": "/static/json/24x24.png",
+"src": "/static/images/icon.png",
 "type": "image/png",
-"sizes": "24x24"
+"sizes": "51x49"
 },
 {
-"src": "/static/json/36x36.png",
-"type": "image/png",
-"sizes": "36x36"
-},
-{
-"src": "/static/json/44x44.png",
-"type": "image/png",
-"sizes": "44x44"
-},
-{
-"src": "/static/json/48x48.png",
-"type": "image/png",
-"sizes": "48x48"
-},
-{
-"src": "/static/json/50x50.png",
-"type": "image/png",
-"sizes": "50x50"
-},
-{
-"src": "/static/json/72x72.png",
-"type": "image/png",
-"sizes": "72x72"
-},
-{
-"src": "/static/json/76x76.png",
-"type": "image/png",
-"sizes": "76x76"
-},
-{
-"src": "/static/json/88x88.png",
-"type": "image/png",
-"sizes": "88x88"
-},
-{
-"src": "/static/json/96x96.png",
-"type": "image/png",
-"sizes": "96x96"
-},
-{
-"src": "/static/json/120x120.png",
-"type": "image/png",
-"sizes": "120x120"
-},
-{
-"src": "/static/json/144x144.png",
-"type": "image/png",
-"sizes": "144x144"
-},
-{
-"src": "/static/json/150x150.png",
-"type": "image/png",
-"sizes": "150x150"
-},
-{
-"src": "/static/json/152x152.png",
-"type": "image/png",
-"sizes": "152x152"
-},
-{
-"src": "/static/json/180x180.png",
-"type": "image/png",
-"sizes": "180x180"
-},
-{
-"src": "/static/json/192x192.png",
+"src": "/static/images/icon192x192.png",
 "type": "image/png",
 "sizes": "192x192"
 },
 {
-"src": "/static/json/300x300.png",
-"type": "image/png",
-"sizes": "300x300"
-},
-{
-"src": "/static/json/512x512.png",
+"src": "/static/images/icon512x512.png",
 "type": "image/png",
 "sizes": "512x512"
-},
-{
-"src": "/static/json/620x300.png",
-"type": "image/png",
-"sizes": "620x300"
-},
-{
-"src": "/static/json/1024x1024.png",
-"type": "image/png",
-"sizes": "1024x1024"
 }
 ]
 }
-
-
