@@ -3,20 +3,26 @@
             <div class="curious__mediabox ">
               <img class="item_rezBlock " style="max-width: 100%; height: auto;" src="/static/images/br_text.jpg" alt="{% if language == 'RU' %}Пример распознавания{% else %}Example result{% endif %}">
             </div>
-            <div class="curious__body">
-              <div class="curious__inner">
-                <div class="curious__text">
-                  В результате распознавания вы получите:<br><br>
-                  -	изображение с подписанными плоскими буквами<br>
-                  -	текст плоскопечатным шрифтом<br>
-                  -	текст рельефно-точечным шрифтом Брайля<br>
-                </div>
-              </div>
-            </div>
+            {% if language == 'RU' %}
+                <div class="registration__label">В результате распознавания вы получите:</div>
+                <ul class="registration-list">
+                  <li class="registration-list__item">изображение с подписанными плоскими буквами</li>
+                  <li class="registration-list__item">текст плоскопечатным шрифтом</li>
+                  <li class="registration-list__item">текст рельефно-точечным шрифтом Брайля</li>
+                </ul>
+            {% else %}
+                <div class="registration__label">As a result of recognition, you get:</div>
+                <ul class="registration-list">
+                  <li class="registration-list__item">image with signed flat letters</li>
+                  <li class="registration-list__item">flat-print text</li>
+                  <li class="registration-list__item">text in relief-dotted Braille</li>
+                </ul>
+            {% endif %}
           </div> <!-- eof site-block -->
 
         {% if language == 'RU' %}
-          <div class="registration site-block">
+          <div class="curious site-block mob_stnt">
+          <!--<div class="registration site-block">-->
             <a data-fancybox href="#regmodal" class="registration__btn btn">РЕГИСТРАЦИЯ</a>
             <div class="registration__label">Преимущества зарегистрированного
               пользователя:</div>

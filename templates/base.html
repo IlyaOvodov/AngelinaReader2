@@ -117,13 +117,13 @@
         </div>
 	</div>
 </header>
-        {% if msg_log %}
+        {% if answer %}
 
         <script>
             history.replaceState(null, '', window.location.pathname);
         </script>
-            <div class="msg_window" {% if color %} style="background: green;"{% endif %}>
-                <p>{{msg_log}}</p>
+            <div class="msg_window" {% if msg_color %} style="background: {{ msg_color }};"{% endif %}>
+                <p>{{answer}}</p>
             </div>
         {% endif %}
 
@@ -220,9 +220,9 @@
               </div>
             </div>
             <h3>{{
-                    Message('Настройки распознавания', 'Recognition Settings')
+                    Message('Настройки распознавания', 'Recognition options')
                     }} <a href="#" style="color: black;">({{
-                    Message('подробнее','more details') }})</a></h3>
+                    Message('подробнее','more details') }}):</a></h3>
             <div class="choice-box">
               <div class="check-group">
                 <select name="lang-choise" style="cursor: pointer;" id="" class="lang-choise">

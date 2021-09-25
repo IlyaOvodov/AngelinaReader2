@@ -57,21 +57,34 @@ def switch_language(new_language):
     session['language'] = new_language
     return new_language
 
-
-def session_context():
+def session_context(request):
     solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     user_id = session.get('user_id')
+    user = None
     if user_id:
         user = solver.find_user(id=user_id)
-        if user:
-            return solver, user
-    return solver, User(id=None, user_dict=dict(), solver=solver)
+    if not user:
+        user = User(id=None, user_dict=dict(), solver=solver)
+    get_language = request.args.get('language')
+    target_language = switch_language(get_language)
+
+    context = dict(
+        Message=Message,
+        lang_list=LANG_LIST,
+        language=target_language,
+        user=user,
+        answer=request.args.get('answer'),
+        answer_modal = request.args.get('answer_modal'),
+        msg_color=request.args.get('msg_color')
+    )
+    context["context"] = context
+    return solver, user, context
 
 
 @app.route("/setting/", methods=['POST'])
 def setting():
     referrer = Referer(request)
-    solver, user = session_context()
+    solver, user, context = session_context(request)
     user.name = request.form['user_name']
     for k in [ 'default_find_orientation'
               ,'default_process_2_sides'
@@ -89,7 +102,7 @@ def setting():
                       "Settings updated successfully")
     else:
         msg = "system error 2108071100"
-    return redirect(f"{referrer}/?answer={msg}&color=true")
+    return redirect(f"{referrer}/?answer={msg}&msg_color=green")
 
 
 @app.route("/pass_to_mail/", methods=['POST'])
@@ -103,7 +116,7 @@ def pass_to_mail():
                 user.send_new_pass_to_mail();
                 msg = Message("Инструкция по восстановлению пароля отправлена на e-mail ",
                               "Password recovery instructions have been sent to e-mail ") + mail
-                return redirect(f"/?answer={msg}&color=green")
+                return redirect(f"/?answer={msg}&msg_color=green")
             else:
                 msg = Message("Нет пользователя с таким e-mail",
                               "No user with this e-mail")
@@ -163,39 +176,46 @@ def user_login():
 
 @app.route("/upload_photo/", methods=['POST'])
 def upload_photo():
-    if request.method == 'POST':
-        file_storage = request.files['file']
-        lang = request.form.get('lang')
-        find_orientation = request.form.get('find_orientation') != 'False'
-        process_2_sides = request.form.get('process_2_sides') != 'False'
-        has_public_confirm = request.form.get('has_public_confirm') != 'False'
-        if file_storage != "":
-            user_id = session.get('user_id')
-            solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-            task_id = solver.process(user_id=user_id,
-                                 file_storage=file_storage,
-                                 param_dict={"lang": lang,
-                                             "find_orientation": find_orientation,
-                                             "process_2_sides": process_2_sides,
-                                             "has_public_confirm": has_public_confirm})
-            if not task_id:
+    try:
+        if request.method == 'POST':
+            file_storage = request.files['file']
+            lang = request.form.get('lang')
+            find_orientation = request.form.get('find_orientation') != 'False'
+            process_2_sides = request.form.get('process_2_sides') != 'False'
+            has_public_confirm = request.form.get('has_public_confirm') != 'False'
+            if file_storage != "":
+                user_id = session.get('user_id')
+                solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
+                task_id = solver.process(user_id=user_id,
+                                     file_storage=file_storage,
+                                     param_dict={"lang": lang,
+                                                 "find_orientation": find_orientation,
+                                                 "process_2_sides": process_2_sides,
+                                                 "has_public_confirm": has_public_confirm})
+                if not task_id:
+                    msg = Message("Ошибка загрузки фото",
+                                  "Image upload error")
+                else:
+                    return redirect(f"/result/{task_id}/")
+            else:
                 msg = Message("Ошибка загрузки фото",
                               "Image upload error")
-            else:
-                return redirect(f"/result/{task_id}/")
         else:
             msg = Message("Ошибка загрузки фото",
                           "Image upload error")
-    else:
-        msg = Message("Ошибка загрузки фото",
-                      "Image upload error")
+    except Exception as e:
+        msg = Message("Системная ошибка: ",
+                      "System error: ") + repr(e)
+    except:
+        msg = Message("Неизвестная системная ошибка: ",
+                      "Unknown system error: ") + str(2109262301)
     return redirect(f"/?answer={msg}")
 
 
 @app.route("/new_pass/", methods=['POST'])
 def new_pass():
     if request.method == 'POST':
-        solver, user = session_context()
+        solver, user, context = session_context(request)
         password = request.form.get('pass')  # запрос к данным формы
         new_password = request.form.get('new_pass')
         if new_password != "" and password !="":
@@ -304,10 +324,7 @@ def setpublic(item_id, new_is_public):
 @app.route("/result_list/")
 def result_list():
     #Формируем список результатов пользователя и уходим на главную если пользователь не авторизирован
-    solver, user = session_context()
-    msg_log = request.args.get('answer')
-    get_language = request.args.get('language')
-    target_language = switch_language(get_language)
+    solver, user, context = session_context(request)
     if user.is_anonymous is None:
         msg = Message("Ошибка авторизации",
                       "Login error")
@@ -316,26 +333,14 @@ def result_list():
     for item in my_list_item:
         item["desc"] = "<TT>" + item["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
     return render_template('result_list.html'
-                           , Message=Message
-                           , lang_list=LANG_LIST
                            , item_list=my_list_item
-                           , language=target_language
-                           , user=user
-                           , msg_log=msg_log)
+                           , **context)
 
 
 @app.route("/polit/")
 def polit():
-    solver, user = session_context()
-    msg_log = request.args.get('answer')
-    get_language = request.args.get('language')
-    target_language = switch_language(get_language)
-    return render_template('polit.html'
-                           , Message=Message
-                           , lang_list=LANG_LIST
-                           , language=target_language
-                           , user=user
-                           , msg_log=msg_log)
+    solver, user, context = session_context(request)
+    return render_template(f'polit_{context["language"]}.html', **context)
 
 
 @app.route('/service-worker.js')
@@ -346,28 +351,17 @@ def sw():
 @app.route("/")
 def index():
     #Данные пользователя
-    solver, user= session_context()
-    msg_log = request.args.get('answer')
-    color = request.args.get('color')
-    get_language = request.args.get('language')
-    target_language = switch_language(get_language)
-
+    solver, user, context = session_context(request)
     if request.args.get('exit') != None:
         del session['user_id']
         return redirect("/")
-
     count = 5
     task_list = solver.get_tasks_list(user.id, count)
     for item in task_list:
         item["desc"] = "<TT>" + item["desc"].replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
     return render_template('base.html'
-                           , Message=Message
-                           , lang_list=LANG_LIST
-                           , color=color
                            , my_list_item=task_list
-                           , language=target_language
-                           , user=user
-                           , msg_log=msg_log)
+                           , **context)
 
 #Проверка готовности
 @app.route("/result_test/<string:item_id>/")
@@ -380,89 +374,76 @@ def result_test(item_id):
 @app.route("/result/<string:item_id>/")
 def result(item_id):
     #Вывод стр результата распознавания
-    solver, user = session_context()
-    msg = request.args.get('answer')
-    answer_modal = request.args.get('answer_modal')
-    get_language = request.args.get('language')
-    target_language = switch_language(get_language)
+    try:
+        solver, user, context = session_context(request)
+        is_completed_test = solver.is_completed(item_id)
+        if is_completed_test:
+            items_id = solver.get_results(item_id)
+            decode_dict = []
+            for item in items_id['item_data']:
+                user_mails =  solver.get_user_emails(user)
 
-    is_completed_test = solver.is_completed(item_id)
-    if is_completed_test:
-        items_id = solver.get_results(item_id)
-        decode_dict = []
-        for item in items_id['item_data']:
-            user_mails =  solver.get_user_emails(user)
+                file = open(item[1], "r", encoding='utf-8')
+                file_text = file.read()
+                file_text = "<TT>" + file_text.replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
 
-            file = open(item[1], "r", encoding='utf-8')
-            file_text = file.read()
-            file_text = "<TT>" + file_text.replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
+                file = open(item[2], "r", encoding='utf-8')
+                file_text_br = file.read()
+                file_text_br = "<TT>" + file_text_br.replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
 
-            file = open(item[2], "r", encoding='utf-8')
-            file_text_br = file.read()
-            file_text_br = "<TT>" + file_text_br.replace('\r\n', '</br>').replace('\n', '</br>').replace(' ',' ') + "</TT>"  # простой пробел в неразрывный (&nbsp)
+                decode_dict.append([item[0],file_text,file_text_br])
 
-            decode_dict.append([item[0],file_text,file_text_br])
-
-        return render_template('result.html'
-                               , Message=Message
-                               , lang_list=LANG_LIST
-                               , msg=msg
-                               , answer_modal=answer_modal
-                               , user_mails=user_mails
-                               , public_sost=items_id["public"]
-                               , user_mail=user.email
-                               , item_id=item_id
-                               , prev_slag=items_id["prev_slag"]
-                               , next_slag=items_id["next_slag"]
-                               , item_name=items_id['name']
-                               , item_date=items_id['create_date']
-                               , items_data=decode_dict
-                               , language=target_language
-                               , user=user)
-    else:
-        return render_template('result.html'
-                               , Message=Message
-                               , lang_list=LANG_LIST
-                               , msg=msg
-                               , item_id=item_id
-                               , answer_modal=answer_modal
-                               , completed=False
-                               , language=target_language
-                               , user=user)
+            return render_template('result.html'
+                                   , user_mails=user_mails
+                                   , public_sost=items_id["public"]
+                                   , user_mail=user.email
+                                   , item_id=item_id
+                                   , completed=True
+                                   , prev_slag=items_id["prev_slag"]
+                                   , next_slag=items_id["next_slag"]
+                                   , item_name=items_id['name']
+                                   , item_date=items_id['create_date']
+                                   , items_data=decode_dict
+                                   , **context)
+        else:
+            return render_template('result.html'
+                                   , item_id=item_id
+                                   , completed=False
+                                   , **context)
+    except Exception as e:
+        msg = Message("Системная ошибка: ",
+                      "System error: ") + repr(e)
+    except:
+        msg = Message("Неизвестная системная ошибка: ",
+                      "Unknown system error: ") + str(2109262302)
+    return redirect(f"/?answer={msg}")
 
 
 @app.route("/help/")
 def help():
-    solver, user = session_context()
-    get_language = request.args.get('language')
-    target_language = switch_language(get_language)
+    solver, user, context = session_context(request)
+    return render_template(f'help_{context["language"]}.html', **context)
 
-    search_qry = request.args.get('s')
-    if search_qry is None:
-        search_qry = ""
-    items = solver.help_list(target_language, search_qry)
-    return render_template('help.html'
-                           , Message=Message
-                           , lang_list=LANG_LIST
-                           , item_list=items
-                           , s=search_qry
-                           , language=target_language
-                           , user=user)
-
-
-@app.route("/help/<slug>/")
-def showItem(slug):
-    solver, user = session_context()
-    get_language = request.args.get('language')
-    target_language = switch_language(get_language)
-
-    item = solver.help_item(target_language, slug)
-    return  render_template('post.html'
-                            , Message=Message
-                            , lang_list=LANG_LIST
-                            , itemData=item
-                            , language=target_language
-                            , user=user)
+# @app.route("/help/")
+# def help():
+#     solver, user, context = session_context(request)
+#     search_qry = request.args.get('s')
+#     if search_qry is None:
+#         search_qry = ""
+#     items = solver.help_list(context["language"], search_qry)
+#     return render_template('help.html'
+#                            , item_list=items
+#                            , s=search_qry
+#                            , **context)
+#
+#
+# @app.route("/help/<slug>/")
+# def showItem(slug):
+#     solver, user, context = session_context(request)
+#     item = solver.help_item(context["language"], slug)
+#     return  render_template('post.html'
+#                             , itemData=item
+#                             , **context)
 
 
 if __name__ == '__main__':
