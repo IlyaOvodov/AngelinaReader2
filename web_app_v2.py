@@ -3,9 +3,12 @@ import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
 import json
+import logging
+from logging.handlers import SMTPHandler
 from pathlib import Path
 import requests
 sys.path.insert(1,str(Path(__file__).parent/'AngelinaReader'))
+from web_app.config import Config as AngelinaSolverConfig
 from web_app.angelina_reader_core import AngelinaSolver, User
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
@@ -16,6 +19,21 @@ DEBUG = True
 app = Flask(__name__)
 
 app.config.from_object(__name__)
+
+# setup e-mails on error
+if True: #not app.debug:
+    auth = (AngelinaSolverConfig.SMTP_FROM, AngelinaSolverConfig.SMTP_PWD)
+    mail_handler = SMTPHandler(
+        mailhost=(AngelinaSolverConfig.SMTP_SERVER, AngelinaSolverConfig.SMTP_PORT),
+        fromaddr='no-reply@' + AngelinaSolverConfig.SMTP_SERVER,
+        toaddrs='angelina-reader@ovdv.ru', subject='Angelina Reader Failure',
+        credentials=auth, secure=None)
+    mail_handler.setLevel(logging.ERROR)
+    app.logger.addHandler(mail_handler)
+
+def LogException():
+    exc_type, exc_value, tb = sys.exc_info()
+    app.log_exception((exc_type, exc_value, tb))
 
 DATA_ROOT_PATH = Path(__file__).parent/"static"/"data"
 DEFAULT_LANGUAGE = "RU"
@@ -206,9 +224,13 @@ def upload_photo():
     except Exception as e:
         msg = Message("Системная ошибка: ",
                       "System error: ") + repr(e)
+        LogException()
+        #raise
     except:
         msg = Message("Неизвестная системная ошибка: ",
                       "Unknown system error: ") + str(2109262301)
+        LogException()
+        #raise
     return redirect(f"/?answer={msg}")
 
 
@@ -413,9 +435,13 @@ def result(item_id):
     except Exception as e:
         msg = Message("Системная ошибка: ",
                       "System error: ") + repr(e)
+        LogException()
+        #raise
     except:
         msg = Message("Неизвестная системная ошибка: ",
                       "Unknown system error: ") + str(2109262302)
+        LogException()
+        #raise
     return redirect(f"/?answer={msg}")
 
 
