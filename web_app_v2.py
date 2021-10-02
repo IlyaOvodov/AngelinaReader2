@@ -13,7 +13,7 @@ from web_app.angelina_reader_core import AngelinaSolver, User
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
 
-DEBUG = True
+#DEBUG = True
 
 # Import the Flask Framework
 app = Flask(__name__)
