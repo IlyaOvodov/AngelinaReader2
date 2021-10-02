@@ -1,7 +1,300 @@
 {% extends 'base.html' %}
 {% block content %}
-
 <div class="site-content  container ">
-    Here будет help. In the meantime <a href="https://angelina-reader.ru/help">можете почитать старый</a>
+<main class="site-main ">
+
+<h1 id="quick_start">Quick start</h1>
+
+<div class="help_item" id="basics"><div><div class="item_title">
+    What is the Angelina Braille Reader service
+</div><div class="item_text">
+    Allows you to quickly read handwritten or printed paper Braille text using a smartphone or computer:
+    <ol>
+        <li>Take a photo, taking into account <a href="#how_to_photo">recommendations</a>
+        <table width="100%" cellpadding="20%">
+            <tr>
+                <td><img src="/static/images/help/main_page.jpg" alt="main page screenshot"></td>
+                <td><img src="/static/images/help/page_example.jpg" alt="braille text image example"></td>
+            </tr>
+        </table>
+        </li>
+        <li>Get the recognition results as:</li>
+            <ul>
+            <li>recognized text in braille characters,</li>
+            <li>text in ordinary (flat-printed) letters,</li>
+            <li>images with the signed meaning of each braille character.</li>
+            </ul>
+        <table width="100%" cellpadding="20%">
+            <tr>
+                <td><img src="/static/images/help/result_image.jpg" alt="main page screenshot"></td>
+                <td><img src="/static/images/help/result_text.jpg" alt="braille text image example"></td>
+                <td><img src="/static/images/help/result_braille.jpg" alt="braille text image example"></td>
+            </tr>
+        </table>
+        <li>Read, save or send the result <a href="#email">to email</a>.</li>
+    </ol>
+    By using the service, you agree to the <a href="{{url_for("polit") }}">User Agreement and Privacy Policy</a>.
+</div></div></div>
+
+<div class="help_item" id="whom_for"><div><div class="item_title">
+    For whom it is intended
+</div><div class="item_text">
+    <ul>
+        <li>teachers working with blind students,</li>
+        <li>parents and relatives of blind people,</li>
+        <li>any people who communicate with the blind and who need to read the text in Braille.</li>
+    </ul>
+</div></div></div>
+
+<div class="help_item" id="app_setup"><div><div class="item_title">
+    Installation as an application on a smartphone
+</div><div class="item_text">
+
+    <table width="100%" cellpadding="20%">
+        <tr>
+            <td>The service can be installed as an application on a smartphone, .</td>
+            <td><img src="/static/images/help/icon.jpg" alt="application icon"></td>
+        </tr>
+    </table>
+
+    <table width="100%" cellpadding="20%">
+        <tr>
+            <td><img src="/static/images/help/install1.jpg" alt="installation_1"></td>
+            <td>A pop-up "Install" button appears in the lower right corner. If you press it, the application will be installed on your smartphone.</td>
+        </tr>
+    </table>
+
+    <table width="100%" cellpadding="20%">
+        <tr>
+            <td>An alternative way (for Chrome users) is to open the browser settings menu and select "Install Application".</td>
+            <td><img src="/static/images/help/install2.jpg" alt="installation_2"></td>
+            <td><img src="/static/images/help/install3.jpg" alt="installation_3"></td>
+        </tr>
+    </table>
+
+</div></div></div>
+
+<div class="help_item" id="registration"><div><div class="item_title">
+    Why do I need to register
+</div><div class="item_text">
+    Although you can use the service without registration, registration is required to fully work with the service.
+    It's free. Why is it needed?
+    <ul>
+        <li>First of all, you will be able to <a href="#history">view previously uploaded texts</a>.
+        Since these are your personal texts, you have to protect them with a username and password;</li>
+        <li>You can do <a href="#settings">default settings</a>, so as not to choose the operating mode every time;</li>
+        <li>You can <a href="#history">revoke permission</a> to publish previously uploaded materials after they have been uploaded and decrypted;</li>
+        <li>Unregistered users cannot prohibit the public distribution of uploaded texts.</li>
+    </ul>
+    When registering, you can specify any username you like.
+    However, we recommend that you specify a real E-mail address so that you can recover your password if you forget it.
+</div></div></div>
+
+<div class="help_item" id="public_access"><div><div class="item_title">
+    What is public access and why do I need it?
+</div><div class="item_text">
+    In order for artificial intelligence-based systems to work,
+    they need to be trained on a large number of examples.
+    Initially, the neural network underlying Angelina Reader was trained on a set of Braille texts,
+    <a href="https://arxiv.org/abs/1811.10893">published</a> by Chinese researchers and on texts independently prepared by the developers of Angelina Reader.
+    However, in order to make the quality of work better, additional training is needed on those images,
+    which are uploaded by users of the service. In addition, since Angelina Reader owes its appearance to a data set,
+    published in the public domain,
+    we consider ourselves indebted to other researchers and would like to publish a <a href="https://github.com/IlyaOvodov/AngelinaDataset">publicly available data set</a>.
+    <p/>
+    If your text does not contain personal or confidential information,
+    and you tick the "agree" box under the question of public access,
+    You are contributing to the improvement of Braille recognition algorithms.
+    <p/>
+    Of course, if you do not agree that the uploaded text should be seen by the developers,
+    You can choose the "reject" option. In this case, no one will see the content of the text you uploaded.
+</div></div></div>
+
+<div class="help_item" id="how_to_photo"><div><div class="item_title">
+    How to take a photo in a proper way
+</div><div class="item_text">
+    To get a satisfactory result, you need to follow a few simple rules:
+    <ol>
+        <li>the light should fall from the (upper) side of the sheet farthest from you and give a contrasting image of points with light and shadow.</li>
+        <li>The sheet should be photographed from above.</li>
+        <li>The image scale is such that the A4 sheet occupies almost the entire frame.</li>
+        <li>Resolution of at least 1000 points vertically and horizontally (photos from most smartphones and cameras are suitable).</li>
+    </ol>
+
+    <table>
+        <tr>
+            <td width="300px" align="center">
+                <img src="/static/images/help/correct_light.png" style="width:100%; object-fit:contain" align="middle">
+            </td>
+            <td width="300px" align="center">
+                <img src="/static/images/help/wrong_light.png" style="width:100%; object-fit:contain"  align="middle">
+            </td>
+            <td width="300px" align="center">
+                <img src="/static/images/help/wrong_position.png" style="width:100%; object-fit:contain"  align="middle">
+            </td>
+        </tr>
+        <tr>
+            <td width="300px" align="center">
+                <div style="color:green">Right</div>
+            </td>
+            <td width="300px" align="center">
+                <div style="color:#ff0000">Wrong</div> (the light falls from above, from the side or from behind)
+            </td>
+            <td width="300px" align="center">
+                <div style="color:red">Wrong</div> (it is necessary to photograph from above)
+            </td>
+        </tr>
+        <tr>
+            <td width="300px" align="center">
+                <img src="/static/images/help/page_example.jpg" style="width:50%; object-fit:contain" align="middle">
+            </td>
+            <td width="600px" align="center" colspan="2">
+                <img src="/static/images/help/wrong_image.jpg" style="width:30%; object-fit:contain"  align="center">
+            </td>
+        </tr>
+    </table>
+
+</div></div></div>
+
+
+<p/><p/>
+<h1 id="manual">User's Guide</h1>
+
+
+<div class="help_item" id="load_image"><div><div class="item_title">
+    Uploading images for recognition
+</div><div class="item_text">
+    The system for recognition can be loaded with:
+    <ul>
+        <li>when starting from a smartphone - a photo taken with the camera directly from the program;</li>
+        <li>a photo taken in advance (a file with an image of the type <b>*.jpg</b>, etc.);</li>
+        <li>file in Adobe Acrobat format (file type <b>*.pdf</b>, obtained, for example, from a scanner);</li>
+        <li>archive in <b>*.zip</b> format containing images.
+        To get an archive in Windows, select several files or a folder with files,
+        right-click and select "send to - compressed zip folder";</li>
+    </ul>
+</div></div></div>
+
+<div class="help_item" id="recognition_modes"><div><div class="item_title">
+    Text recognition modes
+</div><div class="item_text">
+    Before uploading an image, you are prompted to set the text processing parameters:
+    <ul>
+        <li><b>Consent</b> to <a href="#public_access">public access</a> to the uploaded text or <b>refusal</b> from it.
+        <li><b>The language of the text</b>. Determines the flat text in which the recognized Braille text will be translated.
+        <li><b>Auto-orientation</b>.
+        If this mode is enabled, the program itself determines how to rotate the sheet in the image correctly.
+        The fact is that when you take a picture from top to bottom, the smartphone may choose the wrong orientation,
+        the photo is turned upside down or turned on its side.
+        The "auto-orientation" mode allows you to correctly recognize even inverted images.
+        However, sometimes automatic orientation detection can fail.
+        In this case, make sure that the photo is oriented correctly and disable the "auto-orientation" option.
+        It is recommended to always select the "auto-orientation" option, except when using it gives incorrect results.
+        <li><b>Both sides</b>. This is a mode that, based on the image of only one side of a sheet with double-sided printing, allows you to
+        get text from both sides at once: front and back.
+        However, the quality of recognition of the reverse side will be worse,
+        therefore, it is recommended to enable this mode only when you need to quickly recognize the text for informational purposes.
+        For a better result, we recommend taking a separate photo of each side and recognizing it separately,
+        leaving the "both sides" mode off.
+    </ul>
+    Registered users can set default values for all listed parameters in <a href="#settings">in the "settings" section</a>.
+</div></div></div>
+
+
+<div class="help_item" id="history"><div><div class="item_title">
+    Working with the history of previously recognized texts
+</div><div class="item_text">
+    Registered users can access the history of previously uploaded texts.
+    If you need to go back to the previous page, you don't have to recognize it again.
+    It is enough to find it in the list of previous results.
+    <p/>
+    The last 5 documents are visible on the main page.
+    The full list is available in the "history" section or via the "show all" link at the end of the short list.
+    <p/>
+    Each entry in the history contains:
+    <table><tr>
+        <td>
+            <ul>
+                <li>date and time when the image (picture) was uploaded</li>
+                <li>name of the uploaded file</li>
+                <li>the first 3 lines of the uploaded text</li>
+                <li>icon that shows if public access <br/> is allowed <img src="/static/images/unlock_item.png" alt="unlock icon" width="30">
+                    or not <img src="/static/images/lock_item.png" alt="lock icon" width="30">.</li>
+            </ul>
+        </td>
+        <td>
+            <img src="/static/images/help/history.jpg" width="300">
+        </td>
+    </tr></table>
+    <p/>
+    Clicking on a line in the history opens <a href="#results">recognition results</a> in the same form as after loading the image.
+    <p/>
+    Clicking on the lock icon <img src="/static/images/unlock_item.png" alt="unlock icon" width="30"> allows you to change the decision about,
+    is <a href="#public_access">public access</a> allowed to the image.
+    <p/>
+    You can also navigate through the results from the history in the results form using the buttons <sp/>
+    <img src="/static/images/nav-arrow.png" alt="left_arrow" width="20"> <sp/> and  <sp/><img src="/static/images/nav-arrow-fwd.png" alt="left_arrow" width="20">.
+</div></div></div>
+
+
+<div class="help_item" id="results"><div><div class="item_title">
+    Recognition results
+</div><div class="item_text">
+    The recognition results are displayed on a separate page and include:
+    <ul>
+        <li>image with letters of flat text signed under braille characters;</li>
+        <li>recognized flat text;</li>
+        <li>recognized braille text.</li>
+    </ul>
+    <p/>
+    It an <a href="#load_image">archive</a> is loaded, all files in the archive will be displayed sequentially.
+    <p/>
+    If the <a href="#recognition_modes">"both sides" option is</a> enabled,
+    two pages with results will be shown for each uploaded image: the front and back side.
+    <p/>
+    You can use the buttons <sp/><img src="/static/images/nav-arrow.png" alt="left_arrow" width="20"><sp/>
+    and  <sp/><img src="/static/images/nav-arrow-fwd.png" alt="left_arrow" width="20"> to navigate between previously recognized images.
+    <p/>
+    Using the "Send to E-mail" button, the result can be <a href="#email"> sent to e-mail</a>.
+</div></div></div>
+
+
+<div class="help_item" id="email"><div><div class="item_title">
+    Sending results by e-mail
+</div><div class="item_text">
+    To send to E-mail, click the "send to E-mail" button on the results page.
+    <p/>
+    In the e-mail form you must enter the recipient's address.
+    <p/>
+    You can specify the subject of the letter. If you leave this field empty, the subject of the email will be "Recognized braille <i>name of the uploaded file</i>"
+    <p/>
+    You can also choose what to send: image, text or Braille text.
+    <p/>
+    In addition, you can add a text comment that will be included in the letter.
+    <p/>
+    If an error is detected, you can send an email or a copy of it to the developers by checking the appropriate box.
+    In this case, you will need to fill in the "comment" field. There you need to describe the problem you want to report.
+    <p/>
+    The system allows you to configure one or more recipient addresses for quick selection using the button
+    <sp/><img src="/static/images/fr_plans.png" width="30"> to the right of the destination address field.
+    The list of addresses to select is filled in in the "settings" section.
+    <p/>
+    Also in the "settings" section, you can configure the default values for the mail sending mode.
+</div></div></div>
+
+
+<div class="help_item"id="settings"><div><div class="item_title">
+    Settings
+</div><div class="item_text">
+    The "Settings" section allows you to change
+    <ul>
+        <li>password</li>
+        <li>user's display name</li>
+        <li>default settings for recognition modes and mail sending modes</li>
+        <li>list of the most frequently used recipient addresses</li>
+    </ul>
+</div></div></div>
+
+</main>
 </div>
 {% endblock %}
