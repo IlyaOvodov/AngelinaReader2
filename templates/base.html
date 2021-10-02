@@ -137,7 +137,7 @@
           <div class="site-block load-block">
             <div class="load-block__sm-text">{{Message("Загрузите фото текста на Брайле: изображение (jpg, png и др.), pdf или zip",
                                                        "Upload a photo of the text in Braille: image (jpg, png, etc.), pdf or zip")}}</span></div>
-            <a  href="/help/" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}"
+            <a  href="{{ url_for("help", _anchor="how_to_photo") }}" class="load-block__question "><img src="{{ url_for('static', filename='images/img_546257.png') }}"
                                                                  alt="{{Message("Как сделать фото?", "How to take a photo?")}}"> <span>
                 {{Message("Как сделать фото?", "How to take a photo?")}}</span></a>
 
@@ -204,7 +204,7 @@
             <p>{{ Message(
                     'Вы согласны, чтобы загруженное изображение было включено в публично доступный набор данных',
                     'Do you agree that the uploaded image should be included in the publicly available dataset')
-                    }} (<a href="#">{{ Message('подробнее','read more') }}</a>)?</p>
+                    }} (<a href="{{ url_for("help", _anchor="public_access") }}">{{ Message('подробнее','read more') }}</a>)?</p>
             <div class="load-block__agree">
               <div class="check-group target_intput" tabindex="0">
                 <input name="agree" type="radio" class="check-group__check" id="radio1" tabindex="-1"
@@ -221,8 +221,8 @@
             </div>
             <h3>{{
                     Message('Настройки распознавания', 'Recognition options')
-                    }} <a href="#" style="color: black;">({{
-                    Message('подробнее','more details') }}):</a></h3>
+                    }} (<a href="{{ url_for("help", _anchor="recognition_modes") }}">{{
+                    Message('подробнее','read more') }}</a>):</h3>
             <div class="choice-box">
               <div class="check-group">
                 <select name="lang-choise" style="cursor: pointer;" id="" class="lang-choise">
@@ -265,7 +265,7 @@
                     <li class="registration-list__item" style="margin-bottom: 14px;">свет падал наклонно с верхней стороны листа</li>
                     <li class="registration-list__item" style="margin-bottom: 14px;">лист был сфотографирован сверху</li>
                 </ul>
-                   <p style="margin-top: 12px;"><a href="/help/" class="photo-card__readmore readmore a_hover">ПОДРОБНЕЕ</a></p>
+                   <p style="margin-top: 12px;"><a href="{{ url_for("help", _anchor="how_to_photo") }}" class="photo-card__readmore readmore a_hover">ПОДРОБНЕЕ</a></p>
                {% else %}
                   <h4 class="photo-card__title">How to take a photo correctly?</h4>
                     <p>It is desirable that:</p>
@@ -274,7 +274,7 @@
                     <li class="registration-list__item" style="margin-bottom: 14px;">the light fell obliquely from the upper side of the leaf</li>
                     <li class="registration-list__item" style="margin-bottom: 14px;">the sheet was photographed from above</li>
                 </ul>
-                  <p style="margin-top: 12px;"><a href="/help/" class="photo-card__readmore readmore a_hover">MORE</a></p>
+                  <p style="margin-top: 12px;"><a href="{{ url_for("help", _anchor="how_to_photo") }}" class="photo-card__readmore readmore a_hover">READ MORE</a></p>
                {% endif %}
             </div>
           </div>
@@ -378,12 +378,14 @@
         <div class="check-group target_intput" tabindex="0">
             <input type="checkbox"  class="check-group__check"  id="checkbox_confirm1" tabindex="-1" />
             <label class="check-group__label" for="checkbox_confirm1" style="cursor: pointer;">{{ Message('посмотрели ',"you've got acquainted with ") }}
-                <a class="check-group__link" href="/help/">{{ Message('как правильно делать фото','how to take a photo properly') }}</a></label>
+                <a class="check-group__link" href="{{ url_for("help", _anchor="how_to_photo") }}">
+                {{ Message('как правильно делать фото','how to take a photo properly') }}</a></label>
         </div>
         <div class="check-group target_intput" tabindex="0">
             <input type="checkbox" class="check-group__check"  id="checkbox_confirm2" tabindex="-1" />
             <label class="check-group__label" for="checkbox_confirm2" style="cursor: pointer;">{{ Message('согласны с условиями','you agree to the terms and conditions of ') }}
-                <a class="check-group__link" href="/polit/">{{ Message('соглашения о конфиденциальности ','privacy agreement') }}</a></label>
+                <a class="check-group__link" href="{{ url_for("polit") }}">
+                {{ Message('соглашения о конфиденциальности ','privacy agreement') }}</a></label>
         </div>
     </div>
     <div id="register_fields">

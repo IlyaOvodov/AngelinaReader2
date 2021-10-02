@@ -478,5 +478,5 @@ if __name__ == '__main__':
     if real_mode:
         from web_app.angelina_reader_core import AngelinaSolver
         print('real mode is ON')
-    app.run(host='127.0.0.1', port=port)
+    app.run(host='0.0.0.0', port=port, threaded=True)
 
