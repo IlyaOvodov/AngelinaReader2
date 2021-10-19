@@ -37,6 +37,7 @@ def LogException():
 
 DATA_ROOT_PATH = Path(__file__).parent/"static"/"data"
 DEFAULT_LANGUAGE = "RU"
+ALT_LANGUAGE = "EN"
 HTTP_HOST = "v2.angelina-reader.ru"
 LANG_LIST=[
               ('RU', 'Русский')
@@ -49,7 +50,7 @@ LANG_LIST=[
 
 
 def Message(msg_ru, msg_en):
-    if session.get('language', DEFAULT_LANGUAGE) == "RU":
+    if session.get('language', DEFAULT_LANGUAGE) == DEFAULT_LANGUAGE:
         return msg_ru
     return msg_en
 
@@ -72,6 +73,8 @@ def switch_language(new_language):
     #Получаем выбранный язык из url и сохраняем его в session чтобы пользователю не приходилось выбирать его повторно
     if new_language is None:
         new_language = session.get('language', DEFAULT_LANGUAGE)
+    if new_language not in (DEFAULT_LANGUAGE, ALT_LANGUAGE):
+        new_language = DEFAULT_LANGUAGE
     session['language'] = new_language
     return new_language
 
