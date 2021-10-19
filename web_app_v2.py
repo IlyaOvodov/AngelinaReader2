@@ -326,6 +326,7 @@ def send_data():
                           'send_braille': request.form.get('braille') == 'on',
                           'to_developers': request.form.get('to_developers') == 'on',
                           'comment': request.form.get('comment')}
+            assert len(item_id.split("_"))==2, (f"Incorrect (wrong split by _) task_id '{item_id}'.\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             product_list.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
             msg = Message("Данные отправлены",
                           "Data were sent")
@@ -369,6 +370,9 @@ def polit():
 def sw():
     return app.send_static_file('service-worker.js'), 200, {'Content-Type': 'text/javascript'}
 
+@app.route("/index/")
+def index_stub():
+    return redirect("/")
 
 @app.route("/")
 def index():
