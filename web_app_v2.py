@@ -318,16 +318,18 @@ def send_data():
     if request.method == 'POST':
         mail = request.form.get('mail')
         item_id = request.form.get('item_id')
-        if item_id !="":
-            product_list = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
+        if item_id:
+            solver, user, context = session_context(request)
+            assert user.is_authenticated, (f"Incorrect call to send_data (wrong user) task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
+            assert len(item_id.split("_"))==2, (f"Incorrect call to send_data (wrong split by _), task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
+            assert mail, (f"Incorrect call to send_data (mail), task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             parameters = {'subject': request.form.get('mail_title'),
                           'send_image':   request.form.get('image')  == 'on',
                           'send_text':    request.form.get('text')   == 'on',
                           'send_braille': request.form.get('braille') == 'on',
                           'to_developers': request.form.get('to_developers') == 'on',
                           'comment': request.form.get('comment')}
-            assert len(item_id.split("_"))==2, (f"Incorrect (wrong split by _) task_id '{item_id}'.\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
-            product_list.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
+            solver.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
             msg = Message("Данные отправлены",
                           "Data were sent")
             return redirect(f"{referrer}/?answer_modal={msg}")

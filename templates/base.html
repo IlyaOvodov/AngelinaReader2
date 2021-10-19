@@ -644,6 +644,7 @@
 <div id="emailmodal" class="modalbox">
 <div class="rg-form">
 <h3 class="rg-form__title">{{ Message('Отправить на e-mail','Send To E-mail') }}</h3>
+{% if user.is_authenticated %}
 <form action="/send_data/" method="post" class="rg-form__form" id="ms_form">
     <div class="rg-form__group">
         <p style="margin-bottom: 5px;">{{ Message('Укажите e-mail для отправки материалов','Specify an e-mail to sending the results to') }}
@@ -697,6 +698,12 @@
     	<button type="submit" class="rg-form__button btn">{{ Message('Отправить','Send') }}</button>
     </div>
 </form>
+{% else %}
+    <div class="error_window">{{Message("Только зарегистрированные пользователи могут отправлять e-mail",
+                   "Only registered users can send e-mails")}}</div>
+    <div>{{Message("чтобы через приложение не рассылали спам",
+                   "to prevent spam distribution throught the application")}}</div>
+{% endif %}
 </div>
 </div>
 
