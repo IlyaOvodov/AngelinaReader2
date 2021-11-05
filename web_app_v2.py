@@ -42,10 +42,11 @@ HTTP_HOST = "v2.angelina-reader.ru"
 LANG_LIST=[
               ('RU', 'Русский')
             , ('EN', 'English')
+            , ('GR', 'Ελληνικά')
             , ('LV', 'Latviešu')
+            , ('PL', 'Polski')
             , ('UZ', 'Ўзбек')
             , ('UZL', "O'zbekcha")
-            , ('GR', 'Ελληνικά')
            ]
 
 
@@ -199,7 +200,9 @@ def user_login():
 def upload_photo():
     try:
         if request.method == 'POST':
-            file_storage = request.files['file']
+            assert hasattr(request, 'files'),  (f"Incorrect request to upload photo (request_files is None).\nUser {user.id} {user.email}\nRequest: '{repr(request)}'")
+            request_files = request.files
+            file_storage = request_files['file']
             lang = request.form.get('lang')
             find_orientation = request.form.get('find_orientation') != 'False'
             process_2_sides = request.form.get('process_2_sides') != 'False'
