@@ -200,17 +200,25 @@ def user_login():
 def upload_photo():
     try:
         if request.method == 'POST':
-            assert hasattr(request, 'files'),  (f"Incorrect request to upload photo (request_files is None).\nUser {user.id} {user.email}\nRequest: '{repr(request)}'")
+            solver, user, context = session_context(request)
+            if not hasattr(request, 'files'):
+                app.logger.error(f"Incorrect request to upload photo (request has no files).\nUser {user.id} {user.email}\nRequest: '{repr(request)}'")
+                msg = Message("Ошибка загрузки фото",
+                              "Image upload error")
+                return redirect(f"/?answer={msg}")
             request_files = request.files
+            if not ('file' in request_files):
+                app.logger.error(f"Incorrect request to upload photo (request_files has no file).\nUser {user.id} {user.email}\nRequest: '{repr(request)}'")
+                msg = Message("Ошибка загрузки фото",
+                              "Image upload error")
+                return redirect(f"/?answer={msg}")
             file_storage = request_files['file']
             lang = request.form.get('lang')
             find_orientation = request.form.get('find_orientation') != 'False'
             process_2_sides = request.form.get('process_2_sides') != 'False'
             has_public_confirm = request.form.get('has_public_confirm') != 'False'
             if file_storage != "":
-                user_id = session.get('user_id')
-                solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
-                task_id = solver.process(user_id=user_id,
+                task_id = solver.process(user_id=user.id,
                                      file_storage=file_storage,
                                      param_dict={"lang": lang,
                                                  "find_orientation": find_orientation,
@@ -387,7 +395,8 @@ def index():
     #Данные пользователя
     solver, user, context = session_context(request)
     if request.args.get('exit') != None:
-        del session['user_id']
+        if 'user_id' in session.keys():
+            del session['user_id']
         return redirect("/")
     count = 5
     task_list = solver.get_tasks_list(user.id, count)
