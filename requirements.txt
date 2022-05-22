@@ -5,13 +5,13 @@
 #
 # Note: The `lib` directory is added to `sys.path` by `appengine_config.py`.
 --find-links https://download.pytorch.org/whl/torch_stable.html
-torch==1.6.0
-torchvision==0.7.0
+torch>=1.6.0
+torchvision>=0.7.0
 numpy>=1.15.1
 pillow>=6.2.0
 scikit-build
 albumentations==0.4.5
-PyMuPDF==1.17.5
+PyMuPDF>=1.17.5
 -e git+https://github.com/IlyaOvodov/OvoTools.git@asi#egg=OvoTools
 
 Flask==0.10

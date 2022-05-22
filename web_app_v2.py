@@ -1,4 +1,5 @@
 # -*- coding: UTF-8 -*-
+import datetime
 import os
 from flask import Flask, render_template, g, session, request, redirect
 import sys
@@ -12,6 +13,7 @@ from web_app.config import Config as AngelinaSolverConfig
 from web_app.angelina_reader_core import AngelinaSolver, User
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
+PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=60*24*365*2)
 
 #DEBUG = True
 
