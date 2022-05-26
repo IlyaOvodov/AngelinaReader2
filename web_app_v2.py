@@ -81,14 +81,18 @@ def switch_language(new_language):
     session['language'] = new_language
     return new_language
 
-def session_context(request):
+def session_context(request, item_id=None):
     solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
     user_id = session.get('user_id')
     user = None
     if user_id:
         user = solver.find_user(id=user_id)
+        assert user, f"System error 2205261: {user_id}"
     if not user:
         user = User(id=None, user_dict=dict(), solver=solver)
+    if item_id:
+        x = item_id.split("_")
+        assert len(x) == 2 and x[0] == (user_id or ""), f"System error 2205262: incorrect request {user_id} : {item_id}"
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
@@ -335,7 +339,7 @@ def send_data():
         mail = request.form.get('mail')
         item_id = request.form.get('item_id')
         if item_id:
-            solver, user, context = session_context(request)
+            solver, user, context = session_context(request, item_id)
             assert user.is_authenticated, (f"Incorrect call to send_data (wrong user) task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             assert len(item_id.split("_"))==2, (f"Incorrect call to send_data (wrong split by _), task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             assert mail, (f"Incorrect call to send_data (mail), task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
@@ -357,7 +361,7 @@ def send_data():
 
 @app.route("/setpublic/<string:item_id>/<new_is_public>/")
 def setpublic(item_id, new_is_public):
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
+    solver, user, context = session_context(request, item_id)
     new_is_public = solver.set_public_acceess(item_id, new_is_public == 'True')
     return str(new_is_public)
 
@@ -411,7 +415,7 @@ def index():
 #Проверка готовности
 @app.route("/result_test/<string:item_id>/")
 def result_test(item_id):
-    solver = AngelinaSolver(data_root_path=DATA_ROOT_PATH)
+    solver, user, context = session_context(request, item_id)
     is_completed_test = solver.is_completed(item_id,1)
     return "True" if is_completed_test else "False"
 
@@ -420,7 +424,7 @@ def result_test(item_id):
 def result(item_id):
     #Вывод стр результата распознавания
     try:
-        solver, user, context = session_context(request)
+        solver, user, context = session_context(request, item_id)
         is_completed_test = solver.is_completed(item_id)
         if is_completed_test:
             items_id = solver.get_results(item_id)
