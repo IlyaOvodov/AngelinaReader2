@@ -42,13 +42,15 @@ DEFAULT_LANGUAGE = "RU"
 ALT_LANGUAGE = "EN"
 HTTP_HOST = "v2.angelina-reader.ru"
 LANG_LIST=[
-              ('RU', 'Русский')
-            , ('EN', 'English')
-            , ('GR', 'Ελληνικά')
-            , ('LV', 'Latviešu')
-            , ('PL', 'Polski')
-            , ('UZ', 'Ўзбек')
-            , ('UZL', "O'zbekcha")
+             # code   RU name       EN name
+              ('RU', 'Русский',    'Russian')
+            , ('EN', 'Английский', 'English')
+            , ('DE', 'Немецкий',   'German')
+            , ('GR', 'Греческий',  'Greek')
+            , ('LV', 'Латвийский', 'Latvian')
+            , ('PL', 'Польский',   'Polish')
+            , ('UZ', 'Узбекский',  'Uzbek')
+            , ('UZL','Узбекский (латиница)',  'Uzbek (latin)')
            ]
 
 
@@ -56,6 +58,9 @@ def Message(msg_ru, msg_en):
     if session.get('language', DEFAULT_LANGUAGE) == DEFAULT_LANGUAGE:
         return msg_ru
     return msg_en
+
+def lang_list():
+    return [(lang[0], Message(lang[1], lang[2])) for  lang in LANG_LIST]
 
 def Referer(request):
     referrer = request.referrer
@@ -98,7 +103,7 @@ def session_context(request, item_id=None):
 
     context = dict(
         Message=Message,
-        lang_list=LANG_LIST,
+        lang_list=lang_list(),
         language=target_language,
         user=user,
         answer=request.args.get('answer'),
