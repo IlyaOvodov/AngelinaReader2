@@ -10,7 +10,7 @@ from pathlib import Path
 import requests
 sys.path.insert(1,str(Path(__file__).parent/'AngelinaReader'))
 from web_app.config import Config as AngelinaSolverConfig
-from web_app.angelina_reader_core import AngelinaSolver, User
+from web_app.angelina_reader_core import AngelinaSolver, User, AngelinaException
 
 SECRET_KEY = 'fdgfh78@#5?>gfhf89bx,v06k'
 PERMANENT_SESSION_LIFETIME = datetime.timedelta(minutes=60*24*365*2)
@@ -92,12 +92,21 @@ def session_context(request, item_id=None):
     user = None
     if user_id:
         user = solver.find_user(id=user_id)
-        assert user, f"System error 2205261: {user_id}"
-    if not user:
+        if user is None:
+            del session['user_id']
+            raise AngelinaException(f"Пользователь не найден: {user_id}", f"User not found: {user_id}")
+    else:
         user = User(id=None, user_dict=dict(), solver=solver)
     if item_id:
         x = item_id.split("_")
-        assert len(x) == 2 and x[0] == (user_id or ""), f"System error 2205262: incorrect request {user_id} : {item_id}"
+        assert len(x) == 2, f"Error 2205262: incorrect request {user_id} : {item_id}"
+        if user_id:
+            assert x[0] == user_id, f"Error 2205267: incorrect request {user_id} : {item_id}"
+        else:
+            if x[0] != "":
+                raise AngelinaException("Войдите в систему чтобы получить доступ к этому документу",
+                                        "Please log in to access this document")
+
     get_language = request.args.get('language')
     target_language = switch_language(get_language)
 
@@ -246,16 +255,17 @@ def upload_photo():
         else:
             msg = Message("Ошибка загрузки фото",
                           "Image upload error")
+    except AngelinaException as e:
+        msg = Message(e.msg_ru, e.msg_en)
+        LogException()
     except Exception as e:
         msg = Message("Системная ошибка: ",
                       "System error: ") + repr(e)
         LogException()
-        #raise
     except:
         msg = Message("Неизвестная системная ошибка: ",
                       "Unknown system error: ") + str(2109262301)
         LogException()
-        #raise
     return redirect(f"/?answer={msg}")
 
 
@@ -464,16 +474,17 @@ def result(item_id):
                                    , item_id=item_id
                                    , completed=False
                                    , **context)
+    except AngelinaException as e:
+        msg = Message(e.msg_ru, e.msg_en)
+        LogException()
     except Exception as e:
         msg = Message("Системная ошибка: ",
                       "System error: ") + repr(e)
         LogException()
-        #raise
     except:
         msg = Message("Неизвестная системная ошибка: ",
                       "Unknown system error: ") + str(2109262302)
         LogException()
-        #raise
     return redirect(f"/?answer={msg}")
 
 
