@@ -28,8 +28,10 @@
                                 </a>
                             </div>
                             <a href="/result/{{item.id}}/" tabindex="-1" style="color: black;text-decoration: none;">
-                                {% if item.sost == False %}
+                                {% if item.sost == "P" %}
                                     <div class="documents-card__body">{% if language == 'RU' %}В процессе распознавания{% else %}Recognition is in progress{% endif %}...</div>
+                                {% elif item.sost == "E" %}
+                                    <div class="documents-card__body">{% if language == 'RU' %}Ошибка обработки{% else %}Processing error{% endif %}</div>
                                 {% else %}
                                     <div class="documents-card__body">{{item.desc|safe}}...</div>
                                 {% endif %}
