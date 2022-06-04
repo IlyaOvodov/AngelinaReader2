@@ -179,7 +179,7 @@
                       <label for="file-input_load">
                         <img src="{{ url_for('static', filename='images/Layer_144.png') }}" alt="{% if language == 'RU' %}Загрузить файл{% else %}Upload file{% endif %}"><span>{% if language == 'RU' %}Загрузить файл{% else %}Upload file{% endif %}</span>
                       </label>
-                      <input id="file-input_load" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip" >
+                      <input id="file-input_load" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.tif,.jfif,.pdf,.zip" >
 
 
                       <input type="text" name="lang" id="input_lang" style="display: none;">
@@ -201,7 +201,7 @@
                             <img src="{{ url_for('static', filename='images/load_ci.gif') }}" class="" style="display: none;"  />
                         </div>
                       </label>
-                      <input id="file-input_loadpc" class="blocktest" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
+                      <input id="file-input_loadpc" class="blocktest" type="file" name="file" style="display: none;" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.tif,.jfif,.pdf,.zip">
 
 
                       <input type="text" name="lang" id="input_lang" style="display: none;">
@@ -432,7 +432,7 @@
 	<form action="/upload_photo/" method="post" class="rg-form__form" enctype="multipart/form-data" id="form_SendPhoto">
 
     <div class="rg-form__group">
-        <input type="file" name="file" class="rg-form__inp" required placeholder="Выбор документа" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
+        <input type="file" name="file" class="rg-form__inp" required placeholder="Выбор документа" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.tif,.jfif,.pdf,.zip">
         <input type="text" name="lang" id="input_lang" style="display: none;">
         <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
         <input type="text" name="process_2_sides" id="process_2_sides" style="display: none;">
@@ -452,7 +452,7 @@
 	<form action="/upload_photo/" method="post"  class="rg-form__form" enctype="multipart/form-data" id="form_SendPhoto">
 
     <div class="rg-form__group">
-        <input type="file" name="file" class="rg-form__inp" required placeholder="Upload photo" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.pdf,.zip">
+        <input type="file" name="file" class="rg-form__inp" required placeholder="Upload photo" accept=".jpg,.jpe,.jpeg,.png,.gif,.svg,.bmp,.tiff,.tif,.jfif,.pdf,.zip">
         <input type="text" name="lang" id="input_lang" style="display: none;">
         <input type="text" name="find_orientation" id="find_orientation" style="display: none;">
         <input type="text" name="process_2_sides" id="process_2_sides" style="display: none;">
