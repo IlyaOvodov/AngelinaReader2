@@ -343,7 +343,8 @@
             </div>
             <div class="site-footer__col">
                 <div class="site-footer__help">Помочь в разработке: <a href="https://github.com/IlyaOvodov/AngelinaReader/issues" target="_blank">GitHub</a></div>
-                <div class="site-footer__polit">© 2020 Angelina braille reader.  Все права защищены.</div>
+                <div class="site-footer__polit">© 2021 Angelina braille reader.  Все права защищены.</div>
+                <img src="{{ url_for('static', filename='images/pgrants_logo_gp_dark.png') }}" alt="При поддержке Фонда Президентских Грантов" align="right" width="40%">
             </div>
         {% else %}
             <div class="site-footer__col">
@@ -363,6 +364,7 @@
             <div class="site-footer__col">
                 <div class="site-footer__help">Help with development: <a href="https://github.com/IlyaOvodov/AngelinaReader/issues" target="_blank">GitHub</a></div>
                 <div class="site-footer__polit">© 2021 Angelina braille reader.  All rights reserved.</div>
+                <img src="{{ url_for('static', filename='images/pgrants_logo_gp_eng_dark.png') }}" alt="Supported by Presidential Grants Foundation" align="right" width="40%">
             </div>
         {% endif %}
 
