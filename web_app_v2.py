@@ -234,6 +234,8 @@ def upload_photo():
                 return redirect(f"/?answer={msg}")
             file_storage = request_files['file']
             lang = request.form.get('lang')
+            if not lang:
+                raise AngelinaException(f"Выберите язык текста", f"Select text language")
             find_orientation = request.form.get('find_orientation') != 'False'
             process_2_sides = request.form.get('process_2_sides') != 'False'
             has_public_confirm = request.form.get('has_public_confirm') != 'False'
@@ -355,9 +357,9 @@ def send_data():
         item_id = request.form.get('item_id')
         if item_id:
             solver, user, context = session_context(request, item_id)
-            assert user.is_authenticated, (f"Incorrect call to send_data (wrong user) task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
-            assert len(item_id.split("_"))==2, (f"Incorrect call to send_data (wrong split by _), task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
-            assert mail, (f"Incorrect call to send_data (mail), task_id '{item_id}'.\nUser {user.id} {user.email}\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
+            assert user.is_authenticated, (22060515, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
+            assert len(item_id.split("_"))==2, (22060516, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
+            assert mail, (22060516, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             parameters = {'subject': request.form.get('mail_title'),
                           'send_image':   request.form.get('image')  == 'on',
                           'send_text':    request.form.get('text')   == 'on',
