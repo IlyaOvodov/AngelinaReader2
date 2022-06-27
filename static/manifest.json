@@ -4,10 +4,11 @@
 "short_name": "Angelina Reader",
 "scope": "/",
 "display": "standalone",
-"start_url": "https://angelina-reader.com/",
+"start_url": "/",
 "description": "Optical Braille recognition. Recognize Braille text on photo.",
 "orientation": "any",
 "background_color": "#EAEFF2",
+"theme_color": "#ffffff",
 "related_applications": [],
 "prefer_related_applications": false,
 "icons": [
