@@ -28,7 +28,7 @@ if True: #not app.debug:
     mail_handler = SMTPHandler(
         mailhost=(AngelinaSolverConfig.SMTP_SERVER, AngelinaSolverConfig.SMTP_PORT),
         fromaddr='no-reply@' + AngelinaSolverConfig.SMTP_SERVER,
-        toaddrs='angelina-reader@ovdv.ru', subject='Angelina Reader Failure',
+        toaddrs='admin@angelina-reader.com', subject='Angelina Reader Failure',
         credentials=auth, secure=None)
     mail_handler.setLevel(logging.ERROR)
     app.logger.addHandler(mail_handler)
