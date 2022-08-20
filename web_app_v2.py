@@ -76,6 +76,15 @@ def close_db(error):
     if hasattr(g, 'link_db'):
         g.link_db.close()
 
+def init_session(user):
+    session['user_id'] = user.id
+    session.permanent = True
+    return redirect("/")
+
+def end_session():
+    if 'user_id' in session.keys():
+        del session['user_id']
+    session.permanent = False
 
 def switch_language(new_language):
     #Получаем выбранный язык из url и сохраняем его в session чтобы пользователю не приходилось выбирать его повторно
@@ -93,7 +102,7 @@ def session_context(request, item_id=None):
     if user_id:
         user = solver.find_user(id=user_id)
         if user is None:
-            del session['user_id']
+            end_session()
             raise AngelinaException(f"Пользователь не найден: {user_id}", f"User not found: {user_id}")
     else:
         user = User(id=None, user_dict=dict(), solver=solver)
@@ -188,8 +197,7 @@ def user_register():
                       "User not found")
         return redirect(f"/?answer={msg}")
     else:
-        session['user_id'] = user.id
-        return redirect(f"/")
+        return init_session(user)
 
 
 @app.route("/soc_register/", methods=['POST'])
@@ -209,11 +217,7 @@ def user_login():
     user = solver.find_user(network_name,network_id,None,None)
     if user is None:
         user = solver.register_user(name, email, password, network_name, network_id)
-        session['user_id'] = user.id
-        return redirect(f"/")
-
-    session['user_id'] = user.id
-    return redirect(f"/")
+    return init_session(user)
 
 
 @app.route("/upload_photo/", methods=['POST'])
@@ -305,8 +309,7 @@ def login():
             user = solver.find_user("","",username)
             if user is not None:
                 if user.check_password(password):
-                    session['user_id'] = user.id
-                    return redirect("/")
+                    return init_session(user)
                 else:
                     msg = Message("Неверный пароль",
                                   "Incorrect password")
@@ -335,8 +338,7 @@ def registration():
             found_users = solver.find_users_by_email(email)
             if not found_users:
                 user = solver.register_user(name,email,password,network_name,network_id)
-                session['user_id'] = user.id
-                return redirect("/")
+                return init_session(user)
             else:
                 msg = Message("Пользователь с таким email уже есть",
                               "User with this email already exists")
@@ -418,8 +420,7 @@ def index():
     #Данные пользователя
     solver, user, context = session_context(request)
     if request.args.get('exit') != None:
-        if 'user_id' in session.keys():
-            del session['user_id']
+        end_session()
         return redirect("/")
     count = 5
     task_list = solver.get_tasks_list(user.id, count)
