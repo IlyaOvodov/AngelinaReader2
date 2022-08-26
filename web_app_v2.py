@@ -44,7 +44,8 @@ HTTP_HOST = "v2.angelina-reader.ru"
 LANG_LIST=[
              # code   RU name       EN name
               ('RU', 'Русский',    'Russian')
-            , ('EN', 'Английский', 'English')
+            , ('EN2','Gr2 Английский', 'Gr2 English')
+            , ('EN', 'Gr1 Английский', 'Gr1 English')
             , ('DE', 'Немецкий',   'German')
             , ('GR', 'Греческий',  'Greek')
             , ('LV', 'Латвийский', 'Latvian')
