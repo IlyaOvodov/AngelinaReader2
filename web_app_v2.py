@@ -65,6 +65,8 @@ def lang_list():
 
 def Referer(request):
     referrer = request.referrer
+    if referrer is None:
+        return ""
     referrer = referrer.split('?', 1)
     referrer = referrer[0]
     if referrer[-1] == '/':
