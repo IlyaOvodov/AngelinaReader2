@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import datetime
 import os
-from flask import Flask, render_template, g, session, request, redirect
+from flask import Flask, render_template, g, session, request, redirect, abort
 import sys
 import json
 import logging
@@ -158,6 +158,22 @@ def setting():
         msg = "system error 2108071100"
     return redirect(f"{referrer}/?answer={msg}&msg_color=green")
 
+@app.route("/unsubscribe/<string:user_id>/")
+def unsubscribe(user_id, value=True):
+    solver, user, context = session_context(request)
+    user = solver.find_user(id=user_id)
+    if user:
+        user.set_unsubscribed(value)
+        app.logger.error(f"{'Unsubscribed' if value else 'Subscribed BACK'}: {user_id} {user.name} {user.email}")
+        return render_template("user_unsubscribed.html", **context)
+    else:
+        app.logger.error(f"{'Unsubscribed' if value else 'Subscribed'} NON EXISTING USER: {user_id}")
+        abort(404)
+
+@app.route("/subscribe/<string:user_id>/")
+def subscribe(user_id):
+    r = unsubscribe(user_id, False)
+    return "OK"
 
 @app.route("/pass_to_mail/", methods=['POST'])
 def pass_to_mail():
