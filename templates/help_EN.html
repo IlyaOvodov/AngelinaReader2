@@ -13,8 +13,8 @@
         <li>Take a photo, taking into account <a href="#how_to_photo">recommendations</a>
         <table width="100%" cellpadding="20%">
             <tr>
-                <td><img src="/static/images/help/main_page.jpg" alt="main page screenshot"></td>
-                <td><img src="/static/images/help/page_example.jpg" alt="braille text image example"></td>
+                <td><img src="{{ url_for('static', filename='images/help/main_page.jpg') }}" alt="main page screenshot"></td>
+                <td><img src="{{ url_for('static', filename='images/help/page_example.jpg') }}" alt="braille text image example"></td>
             </tr>
         </table>
         </li>
@@ -26,9 +26,9 @@
             </ul>
         <table width="100%" cellpadding="20%">
             <tr>
-                <td><img src="/static/images/help/result_image.jpg" alt="main page screenshot"></td>
-                <td><img src="/static/images/help/result_text.jpg" alt="braille text image example"></td>
-                <td><img src="/static/images/help/result_braille.jpg" alt="braille text image example"></td>
+                <td><img src="{{ url_for('static', filename='images/help/result_image.jpg') }}" alt="main page screenshot"></td>
+                <td><img src="{{ url_for('static', filename='images/help/result_text.jpg') }}" alt="braille text image example"></td>
+                <td><img src="{{ url_for('static', filename='images/help/result_braille.jpg') }}" alt="braille text image example"></td>
             </tr>
         </table>
         <li>Read, save or send the result <a href="#email">to email</a>.</li>
@@ -53,13 +53,13 @@
     <table width="100%" cellpadding="20%">
         <tr>
             <td>The service can be installed as an application on a smartphone, .</td>
-            <td><img src="/static/images/help/icon.jpg" alt="application icon"></td>
+            <td><img src="{{ url_for('static', filename='images/help/icon.jpg') }}" alt="application icon"></td>
         </tr>
     </table>
 
     <table width="100%" cellpadding="20%">
         <tr>
-            <td><img src="/static/images/help/install1.jpg" alt="installation_1"></td>
+            <td><img src="{{ url_for('static', filename='images/help/install1.jpg') }}" alt="installation_1"></td>
             <td>A pop-up "Install" button appears in the lower right corner. If you press it, the application will be installed on your smartphone.</td>
         </tr>
     </table>
@@ -67,8 +67,8 @@
     <table width="100%" cellpadding="20%">
         <tr>
             <td>An alternative way (for Chrome users) is to open the browser settings menu and select "Install Application".</td>
-            <td><img src="/static/images/help/install2.jpg" alt="installation_2"></td>
-            <td><img src="/static/images/help/install3.jpg" alt="installation_3"></td>
+            <td><img src="{{ url_for('static', filename='images/help/install2.jpg') }}" alt="installation_2"></td>
+            <td><img src="{{ url_for('static', filename='images/help/install3.jpg') }}" alt="installation_3"></td>
         </tr>
     </table>
 
@@ -124,13 +124,13 @@
     <table>
         <tr>
             <td width="300px" align="center">
-                <img src="/static/images/help/correct_light.png" style="width:100%; object-fit:contain" align="middle">
+                <img src="{{ url_for('static', filename='images/help/correct_light.png') }}" style="width:100%; object-fit:contain" align="middle">
             </td>
             <td width="300px" align="center">
-                <img src="/static/images/help/wrong_light.png" style="width:100%; object-fit:contain"  align="middle">
+                <img src="{{ url_for('static', filename='images/help/wrong_light.png') }}" style="width:100%; object-fit:contain"  align="middle">
             </td>
             <td width="300px" align="center">
-                <img src="/static/images/help/wrong_position.png" style="width:100%; object-fit:contain"  align="middle">
+                <img src="{{ url_for('static', filename='images/help/wrong_position.png') }}" style="width:100%; object-fit:contain"  align="middle">
             </td>
         </tr>
         <tr>
@@ -146,10 +146,10 @@
         </tr>
         <tr>
             <td width="300px" align="center">
-                <img src="/static/images/help/page_example.jpg" style="width:50%; object-fit:contain" align="middle">
+                <img src="{{ url_for('static', filename='images/help/page_example.jpg') }}" style="width:50%; object-fit:contain" align="middle">
             </td>
             <td width="600px" align="center" colspan="2">
-                <img src="/static/images/help/wrong_image.jpg" style="width:30%; object-fit:contain"  align="center">
+                <img src="{{ url_for('static', filename='images/help/wrong_image.jpg') }}" style="width:30%; object-fit:contain"  align="center">
             </td>
         </tr>
     </table>
@@ -218,22 +218,22 @@
                 <li>date and time when the image (picture) was uploaded</li>
                 <li>name of the uploaded file</li>
                 <li>the first 3 lines of the uploaded text</li>
-                <li>icon that shows if public access <br/> is allowed <img src="/static/images/unlock_item.png" alt="unlock icon" width="30">
-                    or not <img src="/static/images/lock_item.png" alt="lock icon" width="30">.</li>
+                <li>icon that shows if public access <br/> is allowed <img src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="unlock icon" width="30">
+                    or not <img src="{{ url_for('static', filename='images/lock_item.png') }}" alt="lock icon" width="30">.</li>
             </ul>
         </td>
         <td>
-            <img src="/static/images/help/history.jpg" width="300">
+            <img src="{{ url_for('static', filename='images/help/history.jpg') }}" width="300">
         </td>
     </tr></table>
     <p/>
     Clicking on a line in the history opens <a href="#results">recognition results</a> in the same form as after loading the image.
     <p/>
-    Clicking on the lock icon <img src="/static/images/unlock_item.png" alt="unlock icon" width="30"> allows you to change the decision about,
+    Clicking on the lock icon <img src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="unlock icon" width="30"> allows you to change the decision about,
     is <a href="#public_access">public access</a> allowed to the image.
     <p/>
     You can also navigate through the results from the history in the results form using the buttons <sp/>
-    <img src="/static/images/nav-arrow.png" alt="left_arrow" width="20"> <sp/> and  <sp/><img src="/static/images/nav-arrow-fwd.png" alt="left_arrow" width="20">.
+    <img src="{{ url_for('static', filename='images/nav-arrow.png') }}" alt="left_arrow" width="20"> <sp/> and  <sp/><img src="{{ url_for('static', filename='images/nav-arrow-fwd.png') }}" alt="left_arrow" width="20">.
 </div></div></div>
 
 

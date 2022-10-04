@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*-
 import datetime
 import os
-from flask import Flask, render_template, g, session, request, redirect, abort
+from flask import Flask, render_template, g, session, request, redirect, abort, url_for
 import sys
 import json
 import logging
@@ -36,6 +36,22 @@ if True: #not app.debug:
 def LogException():
     exc_type, exc_value, tb = sys.exc_info()
     app.log_exception((exc_type, exc_value, tb))
+
+@app.context_processor
+def override_url_for():
+    return dict(url_for=dated_url_for)
+
+def file_stamp(endpoint, filename):
+    file_path = os.path.join(app.root_path,
+                             endpoint, filename)
+    return {"q": int(os.stat(file_path).st_mtime)}
+
+def dated_url_for(endpoint, **values):
+    if endpoint == 'static':
+        filename = values.get('filename')
+        if filename:
+            values.update(file_stamp(endpoint, filename))
+    return url_for(endpoint, **values)
 
 DATA_ROOT_PATH = Path(__file__).parent/"static"/"data"
 DEFAULT_LANGUAGE = "RU"
