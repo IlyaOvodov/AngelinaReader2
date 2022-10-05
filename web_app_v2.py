@@ -124,7 +124,7 @@ def session_context(request, item_id=None):
             end_session()
             raise AngelinaException(f"Пользователь не найден: {user_id}", f"User not found: {user_id}")
     else:
-        user = User(id=None, user_dict=dict(), solver=solver)
+        user = User(id=None, user_dict=dict(), data_root=solver.data_root)
     if item_id:
         x = item_id.split("_")
         assert len(x) == 2, f"Error 2205262: incorrect request {user_id} : {item_id}"
