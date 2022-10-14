@@ -396,13 +396,13 @@ def send_data():
             solver, user, context = session_context(request, item_id)
             assert user.is_authenticated, (22060515, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             assert len(item_id.split("_"))==2, (22060516, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
-            assert mail, (22060516, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             parameters = {'subject': request.form.get('mail_title'),
                           'send_image':   request.form.get('image')  == 'on',
                           'send_text':    request.form.get('text')   == 'on',
                           'send_braille': request.form.get('braille') == 'on',
                           'to_developers': request.form.get('to_developers') == 'on',
                           'comment': request.form.get('comment')}
+            assert mail or parameters['to_developers'], (22060516, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")
             solver.send_results_to_mail(mail,task_id=item_id, parameters=parameters)
             msg = Message("Данные отправлены",
                           "Data were sent")
