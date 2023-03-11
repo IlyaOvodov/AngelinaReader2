@@ -160,7 +160,8 @@ def setting():
               ,'default_process_2_sides'
               ,'default_send_image'
               ,'default_send_text'
-              ,'default_send_braille']:  # unchecked boxes are not present in request.form, we need to reset them
+              ,'default_send_braille'
+              ,'default_unicode_braille']:  # unchecked boxes are not present in request.form, we need to reset them
         if not k in request.form:
             user.params_dict[k] = "off"
     if user.is_authenticated:
@@ -400,6 +401,7 @@ def send_data():
                           'send_image':   request.form.get('image')  == 'on',
                           'send_text':    request.form.get('text')   == 'on',
                           'send_braille': request.form.get('braille') == 'on',
+                          'unicode_braille': request.form.get('unicode_braille') == 'on',
                           'to_developers': request.form.get('to_developers') == 'on',
                           'comment': request.form.get('comment')}
             assert mail or parameters['to_developers'], (22060516, f"'{item_id}' '{user.id}' '{user.email}'\nRequest: '{repr(request)}'.\nForm: {repr(request.form)}")

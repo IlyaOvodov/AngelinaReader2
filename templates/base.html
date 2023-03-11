@@ -220,7 +220,7 @@
                     'Вы согласны, чтобы загруженное изображение было включено в публично доступный набор данных',
                     'Do you agree that the uploaded image should be included in the publicly available dataset')
                     }} (<a href="{{ url_for("help", _anchor="public_access") }}">{{ Message('подробнее','read more') }}</a>)?</p>
-            <div class="load-block__agree">
+            <div class="choice-box" style="padding: 10px;">
               <div class="check-group target_intput" tabindex="0">
                 <input name="agree" type="radio" class="check-group__check" id="radio1" tabindex="-1"
                     {{"checked" if user.params_dict.get("default_agreement")=="True" else ""}} />
@@ -238,7 +238,7 @@
                     Message('Настройки распознавания', 'Recognition options')
                     }} (<a href="{{ url_for("help", _anchor="recognition_modes") }}">{{
                     Message('подробнее','read more') }}</a>):</h3>
-            <div class="choice-box">
+            <div class="choice-box" style="padding: 10px;">
               <div class="check-group">
                 <select name="lang-choise" style="cursor: pointer;" id="" class="lang-choise">
                     {% for code, name in lang_list %}
@@ -528,14 +528,14 @@
                 {% endfor %}
             </select>
             <div class="choice-box" style="padding: 10px;">
-                <div class="check-group target_intput" tabindex="0" >
+                <div class="check-group target_intput">
                     <input name="default_find_orientation" type="checkbox" class="check-group__check"
                         id="default_find_orientation" tabindex="0"
                         {{"checked" if user.params_dict.get("default_find_orientation", "on")=="on" else ""}}/>
                     <label  class="check-group__label" for="default_find_orientation" style="cursor: pointer;">
                         {{Message("Автоориентация", "Auto-orientation")}}</label>
                 </div>
-                <div class="check-group target_intput" tabindex="0" >
+                <div class="check-group target_intput">
                     <input name="default_process_2_sides" type="checkbox" class="check-group__check"
                         id="default_process_2_sides" tabindex="0"
                         {{"checked" if user.params_dict.get("default_process_2_sides", "off")=="on" else ""}}/>
@@ -547,58 +547,43 @@
 
             <h3>{{Message("Параметры отправки по e-mail", "E-mail defaults")}}</h3>
             <div class="choice-box" style="padding: 10px;">
-                <div class="check-group target_intput" tabindex="0" >
+                <div class="check-group target_intput">
                     <input name="default_send_image" type="checkbox" class="check-group__check"
-                           id="default_send_image" tabindex="-1"
+                           id="default_send_image" tabindex="0"
                            {{"checked" if user.params_dict.get("default_send_image", "on")=="on" else ""}}/>
-                    <label  class="check-group__label" for="default_send_image" style="cursor: pointer;">Изображение</label>
+                    <label  class="check-group__label" for="default_send_image" style="cursor: pointer;">{{ Message('Изображение','Image') }}</label>
                 </div>
-                <div class="check-group target_intput" tabindex="0">
+                <div class="check-group target_intput">
                     <input name="default_send_text" type="checkbox" class="check-group__check"
-                           id="default_send_text" tabindex="-1"
+                           id="default_send_text" tabindex="0"
                            {{"checked" if user.params_dict.get("default_send_text", "on")=="on" else ""}}/>
-                    <label class="check-group__label" for="default_send_text" style="cursor: pointer;">Текст</label>
+                    <label class="check-group__label" for="default_send_text" style="cursor: pointer;">{{ Message('Текст','Text') }}</label>
                 </div>
-                <div class="check-group target_intput" tabindex="0">
+                <div class="check-group target_intput">
                     <input name="default_send_braille" type="checkbox" class="check-group__check"
-                           id="default_send_braille" tabindex="-1"
+                           id="default_send_braille" tabindex="0"
                            {{"checked" if user.params_dict.get("default_send_braille", "on")=="on" else ""}}/>
-                    <label class="check-group__label" for="default_send_braille" style="cursor: pointer;">Текст Брайля</label>
+                    <label class="check-group__label" for="default_send_braille" style="cursor: pointer;">{{ Message('Брайлевский текст','Braille text') }}</label>
+                </div>
+            </div>
+            <p>{{ Message('Формат брайлевского текста','Braille text format:') }}</p>
+            <div class="choice-box" style="padding: 10px;">
+                <div class="check-group target_intput">
+                    <input name="default_unicode_braille" type="radio" value="on" class="check-group__check" id="default_unicode_braille"  tabindex="0"
+                        {{"checked" if user.params_dict.get("default_unicode_braille", "on")=="on" else ""}} />
+                    <label class="check-group__label" for="default_unicode_braille" style="cursor: pointer;">
+                        {{ Message('Unicode', 'Unicode') }}</label>
+                </div>
+                <div class="check-group target_intput">
+                    <input name="default_unicode_braille" type="radio" value="off" class="check-group__check" id="default_ascii_braille" tabindex="0"
+                        {{"checked" if user.params_dict.get("default_unicode_braille", "on")!="on" else ""}} />
+                    <label class="check-group__label" for="default_ascii_braille" style="cursor: pointer;">
+                        {{ Message('ASCII (BRF)','ASCII (BRF)') }}</label>
                 </div>
             </div>
             <textarea placeholder="{{ Message('Избраннные адресаты','Most usable e-mails') }}"
                 name="selected_emails" id="selected_emails" rows="5" width="100%"
                 >{{ user.params_dict.get('selected_emails','') }}</textarea>
-
-            <!--
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="date" class="rg-form__inp">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-            <input type="text" class="rg-form__inp" placeholder="Какой-то текст ">
-            <input type="number" class="rg-form__inp" placeholder="Ну и тут какой-то текст ">
-
-
-
-            <input type="file" class="rg-form__inp" />
-            <div class="load-block__agree choice-box"  style="padding: 10px;">
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio5" tabindex="-1">
-                    <label class="check-group__label" for="radio5" style="cursor: pointer;">Я согласен</label>
-                </div>
-                <div class="check-group target_intput" tabindex="0">
-                    <input name="item_agree" type="radio" class="check-group__check" id="radio6" tabindex="-1">
-                    <label class="check-group__label" id="radio6_target" for="radio6" style="cursor: pointer;">Возражаю</label>
-                </div>
-            </div>
-             -->
             <div class="rg-form__btn-cont">
                 <button type="submit" class="rg-form__button btn" tabindex="0">Обновить</button>
             </div>
@@ -671,24 +656,51 @@
         <p>{{ Message('Что отправить?','What to send?') }}</p>
         <div class="choice-box" style="padding: 10px;">
             <div class="check-group">
-                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="-1"
+                <input name="image" type="checkbox" class="check-group__check" id="radio1" tabindex="0"
                        {{"checked" if user.params_dict.get("default_send_image", "on")=="on" else ""}}>
                 <label class="check-group__label" for="radio1" style="cursor: pointer;">{{ Message('Изображение','Image') }}</label>
             </div>
             <div class="check-group">
-                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="-1"
+                <input name="text" type="checkbox" class="check-group__check" id="radio2" tabindex="0"
                        {{"checked" if user.params_dict.get("default_send_text", "on")=="on" else ""}}>
                 <label class="check-group__label" for="radio2" style="cursor: pointer;">{{ Message('Текст','Text') }}</label>
             </div>
             <div class="check-group">
-                <input name="braille" type="checkbox" class="check-group__check" id="radio3" tabindex="-1"
-                       {{"checked" if user.params_dict.get("default_send_braille", "on")=="on" else ""}}>
-                <label class="check-group__label" for="radio3" style="cursor: pointer;">{{ Message('Брайлевский текст','Braille text') }}</label>
+                <input name="braille" type="checkbox" class="check-group__check" id="radio_braille_text" tabindex="0"
+                       {{"checked" if user.params_dict.get("default_send_braille", "on")=="on" else ""}}
+                        onclick="show_hide_braille_format();">
+                <label class="check-group__label" for="radio_braille_text" style="cursor: pointer;">{{ Message('Брайлевский текст','Braille text') }}</label>
+            </div>
+        </div>
+        <script>
+            function show_hide_braille_format() {
+                if($("#radio_braille_text:checked").is(':checked')){
+                    $('#braille_format_div').show();
+                }else{
+                    $('#braille_format_div').hide();
+                }
+            }
+        </script>
+        <div id="braille_format_div">
+            <p>{{ Message('Формат брайлевского текста','Braille text format:') }}</p>
+            <div class="choice-box" style="padding: 10px;">
+                <div class="check-group target_intput">
+                    <input name="unicode_braille" type="radio" class="check-group__check" value="on" id="unicode_braille" tabindex="0"
+                        {{"checked" if user.params_dict.get("default_unicode_braille", "on")=="on" else ""}} />
+                    <label class="check-group__label" for="unicode_braille" style="cursor: pointer;">
+                        {{ Message('Unicode', 'Unicode') }}</label>
+                </div>
+                <div class="check-group target_intput">
+                    <input name="unicode_braille" type="radio" class="check-group__check" value="off" id="ascii_braille" tabindex="0"
+                        {{"checked" if user.params_dict.get("default_unicode_braille", "on")!="on" else ""}} />
+                    <label class="check-group__label" for="ascii_braille" style="cursor: pointer;">
+                        {{ Message('ASCII (BRF)','ASCII (BRF)') }}</label>
+                </div>
             </div>
         </div>
         <div class="form_error_item hkl_item" style="display: none;"><div>!</div>{{ Message('Выберите хотя бы один тип отправляемого файла','Specify at least one file type') }}</div>
         <div class="check-group rabComent">
-            <input name="to_developers" type="checkbox" class="check-group__check" tabindex="-1" id="radio_rab">
+            <input name="to_developers" type="checkbox" class="check-group__check" tabindex="0" id="radio_rab">
             <label class="check-group__label" for="radio_rab" style="cursor: pointer;">{{ Message('Отправить разработчикам','Send to developers') }}</label>
         </div>
 
