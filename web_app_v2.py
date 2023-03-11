@@ -122,7 +122,10 @@ def session_context(request, item_id=None):
         user = solver.find_user(id=user_id)
         if user is None:
             end_session()
-            raise AngelinaException(f"Пользователь не найден: {user_id}", f"User not found: {user_id}")
+            user = User(id=None, user_dict=dict(), data_root=solver.data_root)
+            # exception is disabled because it results in continuously failing request
+            app.logger.error(Message(f"Пользователь не найден: {user_id}", f"User not found: {user_id}"))
+            #raise AngelinaException(f"Пользователь не найден: {user_id}", f"User not found: {user_id}")
     else:
         user = User(id=None, user_dict=dict(), data_root=solver.data_root)
     if item_id:
