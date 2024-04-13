@@ -1,27 +1,29 @@
 {% extends 'base.html' %}
 {% block content %}
 
-      <div class="site-content  container ">
-          <main class="site-main ">
-             <h1>{% if language == 'RU' %}Помощь{%else%}Help{%endif%}</h1>
-              <form method="get" class="search">
-                  <input name="s" type="text" value="{{s}}" placeholder="{% if language == 'RU' %}Поиск{%else%}Search{%endif%}">
-                  <input type="submit" value=" " >
-              </form>
-              {% for item in item_list %}
-                  <div class="help_item">
-                      <div>
-                          <div class="item_title">{{item.title|safe}}</div>
-                          <div class="item_text">{{item.announce|safe}}</div>
-                          <p class="more_btn">
-                            <a href="/help/{{item.slug}}/" class=" ">{% if language == 'RU' %}Подробнее{%else%}More{%endif%} </a>
-                          </p>
-                      </div>
-                  </div>
-              {% endfor %}
+    <div class="site-content  container ">
+        <main class="site-main ">
+            <h1>{% if language == 'RU' %}Помощь{% else %}Help{% endif %}</h1>
+            <form method="get" class="search">
+                <input name="s" type="text" value="{{ s }}"
+                       placeholder="{% if language == 'RU' %}Поиск{% else %}Search{% endif %}">
+                <input type="submit" value=" ">
+            </form>
+            {% for item in item_list %}
+                <div class="help_item">
+                    <div>
+                        <div class="item_title">{{ item.title|safe }}</div>
+                        <div class="item_text">{{ item.announce|safe }}</div>
+                        <p class="more_btn">
+                            <a href="/help/{{ item.slug }}/" class=" ">{% if language == 'RU' %}Подробнее{% else %}
+                                More{% endif %} </a>
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
 
-          </main>
-    </div> 
+        </main>
+    </div>
 
 
 {% endblock %}

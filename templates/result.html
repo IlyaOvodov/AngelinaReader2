@@ -1,127 +1,136 @@
 {% extends 'base.html' %}
 {% block content %}
 
-{% if completed != False %}
-    {% if false==false  %}
-        <div class="top-panel">
-            <div class="container">
-                {% if language == 'RU' %}
-                    <p>Отправить результат себе и/или сообщить разработчикам об ошибках распознавания, чтобы программа стала лучше.</p>
-                {% else %}
-                    <p>Send the result to yourself and/or report recognition errors to the developers to make the program better.</p>
-                {% endif %}
-
-                <div class="top-panel__cont">
-                    <div class="top-panel__col" style="order: 1">
-                        <div class="image-nav">
-                            {% if prev_slag != None %}
-                                <a href="/result/{{prev_slag}}/">
-                                    <div class="image-nav__btn image-nav__btn_prev"></div>
-                                </a>
-                            {% else %}
-                                <a href="#">
-                                    <div class="image-nav__btn image-nav__btn_prev" style="background: #bfcdd5;"></div>
-                                </a>
-                            {% endif %}
-                            <div class="image-nav__info">
-                                <span class="image-nav__img">{{item_date}}</span>
-                                <span class="image-nav__date">{{item_name}}</span>
-                            </div>
-
-                            {% if next_slag != None %}
-                                <a href="/result/{{next_slag}}/">
-                                    <div class="image-nav__btn image-nav__btn_next"></div>
-                                </a>
-                            {% else %}
-                                <a href="#">
-                                    <div class="image-nav__btn image-nav__btn_next" style="background: #bfcdd5;"></div>
-                                </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% if completed != False %}
-                    <div class="top-panel__col" style="order: 2">
-                        <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'RU' %}Отправить на e-mail{% else %}Send to e-mail{% endif %}</a>
-                    </div>
+    {% if completed != False %}
+        {% if false==false %}
+            <div class="top-panel">
+                <div class="container">
+                    {% if language == 'RU' %}
+                        <p>Отправить результат себе и/или сообщить разработчикам об ошибках распознавания, чтобы
+                            программа стала лучше.</p>
+                    {% else %}
+                        <p>Send the result to yourself and/or report recognition errors to the developers to make the
+                            program better.</p>
                     {% endif %}
+
+                    <div class="top-panel__cont">
+                        <div class="top-panel__col" style="order: 1">
+                            <div class="image-nav">
+                                {% if prev_slag != None %}
+                                    <a href="/result/{{ prev_slag }}/">
+                                        <div class="image-nav__btn image-nav__btn_prev"></div>
+                                    </a>
+                                {% else %}
+                                    <a href="#">
+                                        <div class="image-nav__btn image-nav__btn_prev"
+                                             style="background: #bfcdd5;"></div>
+                                    </a>
+                                {% endif %}
+                                <div class="image-nav__info">
+                                    <span class="image-nav__img">{{ item_date }}</span>
+                                    <span class="image-nav__date">{{ item_name }}</span>
+                                </div>
+
+                                {% if next_slag != None %}
+                                    <a href="/result/{{ next_slag }}/">
+                                        <div class="image-nav__btn image-nav__btn_next"></div>
+                                    </a>
+                                {% else %}
+                                    <a href="#">
+                                        <div class="image-nav__btn image-nav__btn_next"
+                                             style="background: #bfcdd5;"></div>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% if completed != False %}
+                            <div class="top-panel__col" style="order: 2">
+                                <a data-fancybox href="#emailmodal" class="btn top-panel__btn">{% if language == 'RU' %}
+                                    Отправить на e-mail{% else %}Send to e-mail{% endif %}</a>
+                            </div>
+                        {% endif %}
+                    </div>
                 </div>
             </div>
-        </div>
 
             {% if answer != None %}
-                        <script>
-                            history.replaceState(null, '', window.location.pathname);
-                        </script>
+                <script>
+                    history.replaceState(null, '', window.location.pathname);
+                </script>
                 <div class="msg_window" style="background: #08730D;">
-                    <p>{{answer}}</p>
+                    <p>{{ answer }}</p>
                 </div>
             {% endif %}
 
             <div class="container">
-                    <div class="more_photo"><a href="/">{% if language == 'RU' %}Загрузить следующий файл{%else%}Upload another file{%endif%}</a></div>
+                <div class="more_photo"><a href="/">{% if language == 'RU' %}Загрузить следующий файл{% else %}Upload
+                    another file{% endif %}</a></div>
             </div>
 
-        {% for item in items_data %}
-            <div class="site-content site-content_result_1and2 container " style="margin-bottom: -20px; padding-bottom: 0px;">
-                <div class="site-content__col site-content__col_fline">
-                    <div class="site-block result-mediabox" style="position: relative;">
-                        <img  class="item_rezBlock" src="{{item[0]}}" alt="{% if language == 'RU' %}Результат распознавания{% else %}Recognition result{% endif %}">
+            {% for item in items_data %}
+                <div class="site-content site-content_result_1and2 container "
+                     style="margin-bottom: -20px; padding-bottom: 0px;">
+                    <div class="site-content__col site-content__col_fline">
+                        <div class="site-block result-mediabox" style="position: relative;">
+                            <img class="item_rezBlock" src="{{ item[0] }}"
+                                 alt="{% if language == 'RU' %}Результат распознавания{% else %}Recognition result{% endif %}">
 
 
 
 
 
-                        {% if public_sost == False %}
-                         <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
-                             <a href="/setpublic/{{item_id}}/True/"  hline="/setpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/lock_item.png') }}" alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
-                         </div>
-                        {% else %}
-                         <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
-                             <a href="/setpublic/{{item_id}}/False/"  hline="/setpublic/{{item_id}}/"><img  src="{{ url_for('static', filename='images/unlock_item.png') }}" alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
-                         </div>
-                        {% endif %}
+                            {% if public_sost == False %}
+                                <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
+                                    <a href="/setpublic/{{ item_id }}/True/" hline="/setpublic/{{ item_id }}/"><img
+                                            src="{{ url_for('static', filename='images/lock_item.png') }}"
+                                            alt="{% if language == 'RU' %}Документ публичен{% else %}The document is public{% endif %}"></a>
+                                </div>
+                            {% else %}
+                                <div class="lock_item" style=" top: 30px; right: 30px; height: 40px; width: 40px;">
+                                    <a href="/setpublic/{{ item_id }}/False/" hline="/setpublic/{{ item_id }}/"><img
+                                            src="{{ url_for('static', filename='images/unlock_item.png') }}"
+                                            alt="{% if language == 'RU' %}Документ приватен{% else %}The document is private{% endif %}"></a>
+                                </div>
+                            {% endif %}
 
 
-
-
-
+                        </div>
                     </div>
-                </div>
-                <div class="site-content__col site-content__col_tline">
-                    <div class="site-block reads">
-                        <div class="read-card">
-                            <div class="read-card__inner">
-                                <div class="read-card__text">
-                                    {{item[1]|safe}}
+                    <div class="site-content__col site-content__col_tline">
+                        <div class="site-block reads">
+                            <div class="read-card">
+                                <div class="read-card__inner">
+                                    <div class="read-card__text">
+                                        {{ item[1]|safe }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="read-card">
+                                <div class="read-card__inner">
+                                    <div class="read-card__text">
+                                        {{ item[2]|safe }}
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="read-card">
-                            <div class="read-card__inner">
-                                <div class="read-card__text">
-                                    {{item[2]|safe}}
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        {% endfor %}
+            {% endfor %}
 
+        {% else %}
+            <div class="container" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
+                <h1>Нет доступа к файлу</h1>
+            </div>
+        {% endif %}
     {% else %}
-        <div class="container" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
-            <h1>Нет доступа к файлу</h1>
+        <div class="container load_blockitem" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
+            <h1>Файл в процессе распознавания</h1>
+            <!-- , Вы можете дождаться окончания рапознования либо просмотреть результат позже в Вашей истории распознований -->
+            <img src="{{ url_for('static', filename='images/load_ci.gif') }}"/>
         </div>
-    {% endif %}
-{% else %}
-    <div class="container load_blockitem" style="padding: 35px 0px; min-height: calc(100vh - 250px);">
-        <h1>Файл в процессе распознавания</h1>
-        <!-- , Вы можете дождаться окончания рапознования либо просмотреть результат позже в Вашей истории распознований -->
-        <img src="{{ url_for('static', filename='images/load_ci.gif') }}" />
-    </div>
 
-    <script>
-        var flag_proc = "True";
-    </script>
-{% endif %}
+        <script>
+            var flag_proc = "True";
+        </script>
+    {% endif %}
 {% endblock %}
