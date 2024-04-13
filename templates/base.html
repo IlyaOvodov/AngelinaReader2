@@ -497,12 +497,12 @@
             </div>
             <div id="register_fields">
                 <!--
-        <div class="rg-form__text">{{ Message('C помощью социальных сетей:','Using social networks:') }}</div>
+                <div class="rg-form__text">{{ Message('C помощью социальных сетей:','Using social networks:') }}</div>
 
-        <div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
+                <div id="uLogin2" data-ulogin="display=panel;theme=classic;fields=first_name,last_name;providers=vkontakte,facebook,google,yandex,uid;redirect_uri=https://v2.angelina-reader.ru/soc_register/;mobilebuttons=0;"></div>
 
-        <div class="rg-form__text">{{ Message('Или используйте E-mail и пароль:','Or use your E-mail and password:') }}</div>
-        -->
+                <div class="rg-form__text">{{ Message('Или используйте E-mail и пароль:','Or use your E-mail and password:') }}</div>
+                -->
                 <div class="rg-form__group">
                     <input type="text" class="rg-form__inp" required placeholder="{{ Message('Ваше имя','Your name') }}"
                            name="name">
@@ -695,39 +695,21 @@
 </div>
 
 
-{% if language == 'RU' %}
-    <div id="sw_passsf" class="modalbox">
-        <div class="rg-form">
-            <h3 class="rg-form__title">Восстановить пароль</h3>
-            <form action="/pass_to_mail/" method="post" class="rg-form__form">
+<div id="sw_passsf" class="modalbox">
+    <div class="rg-form">
+    <h3 class="rg-form__title">{{ Message('Восстановить пароль','Restore Password') }}</h3>
+        <form action="/pass_to_mail/" method="post" class="rg-form__form">
 
-                <div class="rg-form__group">
-                    <input type="email" class="rg-form__inp" name="pass" required placeholder="Email">
-                </div>
-                <div class="rg-form__btn-cont">
-                    <button type="submit" class="rg-form__button btn">Восстановить</button>
-                </div>
+            <div class="rg-form__group">
+                <input type="email" class="rg-form__inp" name="pass" required placeholder="Email">
+            </div>
+            <div class="rg-form__btn-cont">
+                <button type="submit" class="rg-form__button btn">{{ Message('Восстановить','Recover') }}</button>
+            </div>
 
-            </form>
-        </div>
+        </form>
     </div>
-{% else %}
-    <div id="sw_passsf" class="modalbox">
-        <div class="rg-form">
-            <h3 class="rg-form__title">Restore Password</h3>
-            <form action="/pass_to_mail/" method="post" class="rg-form__form">
-
-                <div class="rg-form__group">
-                    <input type="email" class="rg-form__inp" name="pass" required placeholder="Email">
-                </div>
-                <div class="rg-form__btn-cont">
-                    <button type="submit" class="rg-form__button btn">Recover</button>
-                </div>
-
-            </form>
-        </div>
-    </div>
-{% endif %}
+</div>
 
 
 
